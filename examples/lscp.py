@@ -7,7 +7,7 @@ import pulp
 
 if __name__ == "__main__":
     d = DemandDataset("sample_data/demand_point.shp", "GEOID10", "Population")
-    s = SupplyDataset("sample_data/facility.shp", "ORIG_ID")
+    s = SupplyDataset("sample_data/facility.shp", "ID")
     coverage = generate_coverage(d, [s], CoverageType.BINARY)
     model = coverage.create_model(ModelType.LSCP)
     solution = model.solve(pulp.GLPK())
