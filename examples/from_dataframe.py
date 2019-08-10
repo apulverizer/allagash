@@ -1,4 +1,4 @@
-from allagash.dataset import DemandDataset, SupplyDataset
+from allagash.dataset import SupplyDataset, DemandDataset
 from allagash.coverage import Coverage, CoverageType
 from allagash.model import ModelType
 import pulp
@@ -10,8 +10,11 @@ if __name__ == "__main__":
     s = SupplyDataset(geopandas.read_file("sample_data/facility_service_areas.shp"), "ORIG_ID")
     s2 = SupplyDataset(geopandas.read_file("sample_data/facility2_service_areas.shp"), "ORIG_ID")
     coverage = Coverage(d, [s, s2], CoverageType.BINARY)
-    model = coverage.create_model(ModelType.LSCP)
-    model.problem.writeLP("test.lp")
+    df1 = coverage._coverage[s]
+    df2 = coverage._coverage[s2]
+    coverage2 = Coverage.from_existing_dataframes(d, {s: df1, s2: df2}, CoverageType.BINARY)
+    model = coverage2.create_model(ModelType.MCLP, max_supply={s: 5, s2: 10})
+    model.problem.writeLP("mclp.lp")
     solution = model.solve(pulp.GLPK(msg=0))
     selected_locations = solution.selected_supply(s)
     selected_locations2 = solution.selected_supply(s2)
@@ -19,4 +22,3 @@ if __name__ == "__main__":
     print(selected_locations2)
     covered_locations = solution.covered_demand
     print(covered_locations)
-    print(f'{(covered_locations["Population"].sum() / d.df["Population"].sum()*100):0.2f}')

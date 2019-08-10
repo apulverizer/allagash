@@ -1,15 +1,19 @@
+import random
+import string
 
 
 class Dataset:
-    def __init__(self, dataframe, name, unique_field):
+    def __init__(self, dataframe, unique_field, name=None):
         self.df = dataframe
         self.unique_field = unique_field
         self.name = name
+        if self.name is None:
+            self.name = ''.join(random.choices(string.ascii_uppercase, k=6))
 
 
 class DemandDataset(Dataset):
-    def __init__(self, dataframe, name, unique_field, demand_field):
-        super().__init__(dataframe, name, unique_field)
+    def __init__(self, dataframe, unique_field, demand_field,  name=None):
+        super().__init__(dataframe, unique_field, name=name)
         self._demand_field = demand_field
         self._validate_demand_field()
 
@@ -21,5 +25,5 @@ class DemandDataset(Dataset):
 
 
 class SupplyDataset(Dataset):
-    def __init__(self, dataframe, name, unique_field):
-        super().__init__(dataframe, name, unique_field)
+    def __init__(self, dataframe, unique_field, name=None):
+        super().__init__(dataframe, unique_field, name=name)

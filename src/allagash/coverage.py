@@ -12,18 +12,28 @@ class CoverageType(Enum):
 
 
 class Coverage:
-    def __init__(self, demand_dataset, supply_datasets, coverage_type, delineator="$"):
+    def __init__(self, demand_dataset, supply_datasets, coverage_type, delineator="$", generate_coverage=True):
         self.demand_dataset = demand_dataset
         self.delineator = delineator
+        self._coverage = {}
         if isinstance(supply_datasets, SupplyDataset):
             self.supply_datasets = [supply_datasets]
         else:
             self.supply_datasets = supply_datasets
         self.coverage_type = coverage_type
-        if self.coverage_type == CoverageType.BINARY:
-            self._generate_binary_coverage()
-        elif self.coverage_type == CoverageType.PARTIAL:
-            self._generate_partial_coverage()
+        if generate_coverage:
+            if self.coverage_type == CoverageType.BINARY:
+                self._generate_binary_coverage()
+            elif self.coverage_type == CoverageType.PARTIAL:
+                self._generate_partial_coverage()
+
+    @staticmethod
+    def from_existing_dataframes(demand_dataset, supply_coverage_mapping, coverage_type, delineator="$"):
+        c = Coverage(demand_dataset, [], coverage_type, delineator=delineator, generate_coverage=False)
+        for supply_dataset, dataframe in supply_coverage_mapping.items():
+            c.supply_datasets.append(supply_dataset)
+            c._coverage[supply_dataset] = dataframe
+        return c
 
     def create_model(self, model_type, **kwargs):
         if model_type == ModelType.LSCP:
