@@ -12,7 +12,7 @@ setup(name='Allagash',
     install_requires=[
         'pulp>=1.6.1',
         'pyshp==1.2.11',
-        'geopandas=0.4.1'
+        'geopandas==0.4.1'
     ],
     classifiers=[
       'Intended Audience :: Developers/Researchers',
