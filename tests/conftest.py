@@ -1,7 +1,7 @@
 import pytest
 import geopandas
 from allagash.dataset import DemandDataset, SupplyDataset
-from allagash.coverage import Coverage, CoverageType
+from allagash.coverage import Coverage
 
 
 @pytest.fixture(scope="class")
@@ -21,9 +21,9 @@ def facility2_service_areas():
 
 @pytest.fixture(scope="class")
 def binary_coverage(demand_points, facility_service_areas):
-    return Coverage(demand_points, facility_service_areas, CoverageType.BINARY)
+    return Coverage(demand_points, facility_service_areas, 'binary')
 
 
 @pytest.fixture(scope="class")
 def binary_coverage_multiple_supply(demand_points, facility_service_areas, facility2_service_areas):
-    return Coverage(demand_points, [facility_service_areas, facility2_service_areas], CoverageType.BINARY)
+    return Coverage(demand_points, [facility_service_areas, facility2_service_areas], 'binary')
