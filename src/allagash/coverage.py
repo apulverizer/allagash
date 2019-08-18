@@ -51,13 +51,13 @@ class Coverage:
 
     def create_model(self, model_type, delineator="$", **kwargs):
         if model_type == 'lscp':
-            return self._generate_lscp(delineator)
+            return Model(self._generate_lscp_problem(delineator), self, model_type, delineator)
         elif model_type == 'mclp':
-            return self._generate_mclp(delineator, **kwargs)
+            return Model(self._generate_mclp_problem(delineator, **kwargs), self, model_type, delineator)
         else:
-            raise ValueError(f"Invalid model type: '{model_type}'")
+            raise ValueError(f"Invalid model_type: '{model_type}'")
 
-    def _generate_lscp(self, delineator="$"):
+    def _generate_lscp_problem(self, delineator="$"):
         demand_vars = {}
         for _, row in self._demand_dataset.df.iterrows():
             name = f"{self._demand_dataset.name}{delineator}{row[self._demand_dataset.unique_field]}"
@@ -78,17 +78,19 @@ class Coverage:
         for _, demand in self._demand_dataset.df.iterrows():
             to_sum = []
             for supply, coverage in self._coverage.items():
-                rows = coverage.loc[coverage[self._demand_dataset.unique_field] == demand[self._demand_dataset.unique_field]].T
+                rows = coverage.loc[
+                    coverage[self._demand_dataset.unique_field] == demand[self._demand_dataset.unique_field]].T
                 for i, row in rows.iloc[1:].iterrows():
                     if row.values[0] is True:
                         name = f"{supply.name}{delineator}{i}"
                         to_sum.append(supply_vars[name])
             if not to_sum:
-                to_sum = [pulp.LpVariable(f"__dummy{delineator}{demand[self._demand_dataset.unique_field]}", 0, 0, pulp.LpInteger)]
+                to_sum = [pulp.LpVariable(f"__dummy{delineator}{demand[self._demand_dataset.unique_field]}", 0, 0,
+                                          pulp.LpInteger)]
             prob += pulp.lpSum(to_sum) >= 1, f"D{demand[self._demand_dataset.unique_field]}"
-        return Model(prob, self, 'lscp', delineator=delineator)
+        return prob
 
-    def _generate_mclp(self, delineator="$", **kwargs):
+    def _generate_mclp_problem(self, delineator="$", **kwargs):
         max_supply = kwargs.get('max_supply', None)
         if max_supply is None:
             raise ValueError("'max_supply' is required")
@@ -142,7 +144,7 @@ class Coverage:
                 name = f"{supply_dataset.name}{delineator}{row[supply_dataset.unique_field]}"
                 to_sum.append(supply_vars[name])
             prob += pulp.lpSum(to_sum) <= max_supply[supply_dataset], f"Num{delineator}{supply_dataset.name}"
-        return Model(prob, self, 'mclp', delineator=delineator)
+        return prob
 
     def _generate_binary_coverage(self):
         self._coverage = {}

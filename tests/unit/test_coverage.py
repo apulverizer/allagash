@@ -100,3 +100,9 @@ class TestCoverage:
         with pytest.raises(TypeError) as e:
             c.create_model('mclp', max_supply={facility_service_areas: "test"})
         assert(e.value.args[0] == "Expected 'int' type for max_supply value, got '<class 'str'>'")
+
+    def test_create_model_invalid_model_type(self, demand_points, facility_service_areas):
+        c = Coverage(demand_points, facility_service_areas)
+        with pytest.raises(ValueError) as e:
+            c.create_model('test')
+        assert (e.value.args[0] == f"Invalid model_type: 'test'")

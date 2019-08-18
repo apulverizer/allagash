@@ -50,3 +50,13 @@ def binary_coverage_multiple_supply(demand_points, facility_service_areas, facil
 @pytest.fixture(scope="class")
 def coverage_dataframe(demand_points, facility_service_areas):
     return Coverage(demand_points, facility_service_areas)._coverage[facility_service_areas]
+
+
+@pytest.fixture(scope="class")
+def binary_lscp_problem(binary_coverage):
+    return binary_coverage._generate_lscp_problem()
+
+
+@pytest.fixture(scope="class")
+def binary_mclp_problem(binary_coverage):
+    return binary_coverage._generate_mclp_problem(max_supply={binary_coverage.supply_datasets[0]: 5})
