@@ -1,7 +1,10 @@
 import pytest
 import geopandas
-from allagash.dataset import DemandDataset, SupplyDataset, Dataset
+from allagash.dataset import DemandDataset, SupplyDataset
 from allagash.coverage import Coverage
+from allagash.model import Model
+from allagash.solution import Solution
+from pulp.solvers import GLPK
 import os
 
 dir_name = os.path.dirname(__file__)
@@ -60,3 +63,14 @@ def binary_lscp_problem(binary_coverage):
 @pytest.fixture(scope="class")
 def binary_mclp_problem(binary_coverage):
     return binary_coverage._generate_mclp_problem(max_supply={binary_coverage.supply_datasets[0]: 5})
+
+
+@pytest.fixture(scope="class")
+def mclp_model(binary_mclp_problem, binary_coverage):
+    return Model(binary_mclp_problem, binary_coverage, 'mclp')
+
+
+@pytest.fixture(scope="class")
+def mclp_solution(mclp_model):
+    mclp_model.solve(GLPK())
+    return Solution(mclp_model)

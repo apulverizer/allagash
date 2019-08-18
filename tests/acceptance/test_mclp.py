@@ -29,7 +29,7 @@ class TestMCLP:
         solution = model.solve(pulp.GLPK())
         selected_locations = solution.selected_supply(s)
         selected_locations2 = solution.selected_supply(s2)
-        coverage = math.ceil((solution.covered_demand["Population"].sum() / d.df["Population"].sum()) * 100)
+        coverage = math.ceil((solution.covered_demand()["Population"].sum() / d.df["Population"].sum()) * 100)
         assert len(selected_locations == 5)
         assert len(selected_locations2 == 10)
         assert coverage == 96

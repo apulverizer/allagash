@@ -20,7 +20,6 @@ class TestLSCP:
             model.solve(pulp.GLPK())
 
     def test_multiple_supply(self):
-
         d = DemandDataset(geopandas.read_file(os.path.join(self.dir_name, "../test_data/demand_point.shp")), "GEOID10", "Population")
         s = SupplyDataset(geopandas.read_file(os.path.join(self.dir_name, "../test_data/facility_service_areas.shp")), "ORIG_ID")
         s2 = SupplyDataset(geopandas.read_file(os.path.join(self.dir_name, "../test_data/facility2_service_areas.shp")), "ORIG_ID")
@@ -29,7 +28,7 @@ class TestLSCP:
         solution = model.solve(pulp.GLPK())
         selected_locations = solution.selected_supply(s)
         selected_locations2 = solution.selected_supply(s2)
-        coverage = math.ceil((solution.covered_demand["Population"].sum() / d.df["Population"].sum()) * 100)
+        coverage = math.ceil((solution.covered_demand()["Population"].sum() / d.df["Population"].sum()) * 100)
         assert(len(selected_locations) == 5)
         assert(len(selected_locations2) == 19)
         assert(coverage == 100)
