@@ -45,3 +45,8 @@ def binary_coverage(demand_points, facility_service_areas):
 @pytest.fixture(scope="class")
 def binary_coverage_multiple_supply(demand_points, facility_service_areas, facility2_service_areas):
     return Coverage(demand_points, [facility_service_areas, facility2_service_areas], 'binary')
+
+
+@pytest.fixture(scope="class")
+def coverage_dataframe(demand_points, facility_service_areas):
+    return Coverage(demand_points, facility_service_areas)._coverage[facility_service_areas]

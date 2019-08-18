@@ -1,15 +1,18 @@
-from allagash.dataset import SupplyDataset
+from allagash.dataset import SupplyDataset, DemandDataset
 from allagash.model import Model
 import pandas as pd
 import pulp
 
 
 class Coverage:
-    def __init__(self, demand_dataset=None, supply_datasets=None, coverage_type='binary', **kwargs):
+    def __init__(self, demand_dataset, supply_datasets=None, coverage_type='binary', **kwargs):
+        self._validate(demand_dataset, supply_datasets, coverage_type, **kwargs)
         self._demand_dataset = demand_dataset
         self._coverage = {}
         if isinstance(supply_datasets, SupplyDataset):
             self._supply_datasets = [supply_datasets]
+        elif supply_datasets is None:
+            self._supply_datasets = []
         else:
             self._supply_datasets = supply_datasets
         self.coverage_type = coverage_type.lower()
@@ -21,6 +24,15 @@ class Coverage:
             else:
                 raise ValueError(f"Invalid coverage type: '{coverage_type}'")
 
+    @staticmethod
+    def _validate(demand_dataset, supply_datasets, coverage_type, **kwargs):
+        if not isinstance(demand_dataset, DemandDataset):
+            raise TypeError(f"Expected 'DemandDataset' type for demand_dataset, got '{type(demand_dataset)}'")
+        if not isinstance(supply_datasets, (list, SupplyDataset)) and supply_datasets is not None :
+            raise TypeError(f"Expected 'SupplyDataset' or 'list' type for supply_datasets, got '{type(supply_datasets)}'")
+        if not isinstance(coverage_type, str) and coverage_type is not None:
+            raise TypeError(f"Expected 'str' or 'None' for coverage_type, got '{type(coverage_type)}'")
+
     @property
     def demand_dataset(self):
         return self._demand_dataset
@@ -29,23 +41,19 @@ class Coverage:
     def supply_datasets(self):
         return self._supply_datasets
 
-    @property
-    def coverage(self):
-        return self._coverage
-
     @classmethod
-    def from_coverage_matrices(cls, demand_dataset, supply_coverage_mapping, coverage_type):
+    def from_coverage_dataframe(cls, demand_dataset, supply_coverage_mapping, coverage_type='binary'):
         c = cls(demand_dataset, coverage_type=coverage_type, build_coverage=False)
         for supply_dataset, dataframe in supply_coverage_mapping.items():
             c._supply_datasets.append(supply_dataset)
             c._coverage[supply_dataset] = dataframe
         return c
 
-    def create_model(self, model_type, **kwargs):
+    def create_model(self, model_type, delineator="$", **kwargs):
         if model_type == 'lscp':
-            return self._generate_lscp(**kwargs)
+            return self._generate_lscp(delineator)
         elif model_type == 'mclp':
-            return self._generate_mclp(**kwargs)
+            return self._generate_mclp(delineator, **kwargs)
         else:
             raise ValueError(f"Invalid model type: '{model_type}'")
 
@@ -81,7 +89,18 @@ class Coverage:
         return Model(prob, self, 'lscp', delineator=delineator)
 
     def _generate_mclp(self, delineator="$", **kwargs):
-        max_supply = kwargs['max_supply']
+        max_supply = kwargs.get('max_supply', None)
+        if max_supply is None:
+            raise ValueError("'max_supply' is required")
+        if not isinstance(max_supply, dict):
+            raise TypeError(f"Expected 'dict' type for max_supply, got '{type(max_supply)}'")
+        if len(max_supply.keys()) <= 0:
+            raise ValueError("'max_supply' must contain at least one key/value pair")
+        for key, value in max_supply.items():
+            if not isinstance(key, SupplyDataset):
+                raise TypeError(f"Expected 'SupplyDataset' type for max_supply key, got '{type(key)}'")
+            if not isinstance(value, int):
+                raise TypeError(f"Expected 'int' type for max_supply value, got '{type(value)}'")
         demand_vars = {}
         for _, row in self._demand_dataset.df.iterrows():
             name = f"{self._demand_dataset.name}{delineator}{row[self._demand_dataset.unique_field]}"
