@@ -1,22 +1,40 @@
 import pytest
 import geopandas
-from allagash.dataset import DemandDataset, SupplyDataset
+from allagash.dataset import DemandDataset, SupplyDataset, Dataset
 from allagash.coverage import Coverage
+import os
+
+dir_name = os.path.dirname(__file__)
+
+
+@pytest.fixture(scope='class')
+def demand_points_dataframe():
+    return geopandas.read_file(os.path.join(dir_name, "test_data/demand_point.shp"))
+
+
+@pytest.fixture(scope='class')
+def facility_service_areas_dataframe():
+    return geopandas.read_file(os.path.join(dir_name, "test_data/facility_service_areas.shp"))
+
+
+@pytest.fixture(scope='class')
+def facility2_service_areas_dataframe():
+    return geopandas.read_file(os.path.join(dir_name, "test_data/facility2_service_areas.shp"))
 
 
 @pytest.fixture(scope="class")
-def demand_points():
-    return DemandDataset(geopandas.read_file("test_data/demand_point.shp"), "GEOID10", "Population")
+def demand_points(demand_points_dataframe):
+    return DemandDataset(demand_points_dataframe, "GEOID10", "Population")
 
 
 @pytest.fixture(scope="class")
-def facility_service_areas():
-    return SupplyDataset(geopandas.read_file("test_data/facility_service_areas.shp"), "ORIG_ID")
+def facility_service_areas(facility_service_areas_dataframe):
+    return SupplyDataset(facility_service_areas_dataframe, "ORIG_ID")
 
 
 @pytest.fixture(scope="class")
-def facility2_service_areas():
-    return SupplyDataset(geopandas.read_file("test_data/facility2_service_areas.shp"), "ORIG_ID")
+def facility2_service_areas(facility2_service_areas_dataframe):
+    return SupplyDataset(facility2_service_areas_dataframe, "ORIG_ID")
 
 
 @pytest.fixture(scope="class")
