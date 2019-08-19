@@ -1,7 +1,6 @@
 from allagash.solution import Solution
 import pandas as pd
 import pytest
-from pulp.solvers import GLPK
 
 
 class TestSolution:

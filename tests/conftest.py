@@ -1,9 +1,9 @@
 import pytest
 import geopandas
-from allagash.dataset import DemandDataset, SupplyDataset
-from allagash.coverage import Coverage
-from allagash.model import Model
-from allagash.solution import Solution
+from allagash import DemandDataset, SupplyDataset
+from allagash import Coverage
+from allagash import Model
+from allagash import Solution
 from pulp.solvers import GLPK
 import os
 

@@ -18,6 +18,11 @@ You should now be able to run the example notebooks.
 1. Navigate to tests directory `cd tests`
 2. Run tests `pytest`
 
+### Building Documentation
+1. From the repo directory run `sphinx-build -b html ./src-doc ../docs -a`
+
+This will deploy html documentation to the docs folder.
+
 ### Running with Docker
 You can build the local docker image that includes Allagash, Python, Jupyter, GLPK, and COIN-OR CBC.
 

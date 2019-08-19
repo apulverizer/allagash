@@ -1,4 +1,3 @@
-from . exceptions import InfeasibleException, UnboundedException, UndefinedException, NotSolvedException
 from pulp import LpProblem
 from pulp import LpSolver
 
@@ -56,3 +55,23 @@ class Model:
         elif self._problem.status == -3:
             raise UndefinedException('Undefined solution')
         return Solution(self)
+
+
+class NotSolvedException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class InfeasibleException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class UnboundedException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class UndefinedException(Exception):
+    def __init__(self, message):
+        super().__init__(message)

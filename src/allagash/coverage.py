@@ -6,6 +6,14 @@ import pulp
 
 class Coverage:
     def __init__(self, demand_dataset, supply_datasets=None, coverage_type='binary', **kwargs):
+        """
+        A representation of the spatial relationship between a :class:`~allagash.dataset.DemandDataset` and
+        one or more :class:`~allagash.dataset.SupplyDataset`
+
+        :param ~allagash.dataset.DemandDataset demand_dataset: A :class:`~allagash.dataset.DemandDataset` representing the locations that should be covered.
+        :param list supply_datasets: A list of :class:`~allagash.dataset.SupplyDataset` representing the locations that can cover the demand
+        :param str coverage_type: The type of coverage to generate. Options are a either `binary` or `partial`
+        """
         self._validate(demand_dataset, supply_datasets, coverage_type, **kwargs)
         self._demand_dataset = demand_dataset
         self._coverage = {}
@@ -35,14 +43,34 @@ class Coverage:
 
     @property
     def demand_dataset(self):
+        """
+
+        :return: The demand dataset used in the coverage
+        :rtype: ~allagash.dataset.DemandDataset
+        """
         return self._demand_dataset
 
     @property
     def supply_datasets(self):
+        """
+
+        :return: The list of supply datasets used in the coverage
+        :rtype: list
+        """
         return self._supply_datasets
 
     @classmethod
     def from_coverage_dataframe(cls, demand_dataset, supply_coverage_mapping, coverage_type='binary'):
+        """
+        Creates a :class:`~allagash.coverage.Coverage` from one or more existing :class:`~pandas.DataFrame` representing a coverage matrix.
+        Columns represent each supply location. Rows represent each demand location. The cell value represents if or how much of that demand location is covered by the supply location.
+
+        :param ~allagash.dataset.DemandDataset demand_dataset: A dataset representing the locations that should be covered
+        :param dict supply_coverage_mapping: A dictionary where each key represents a :class:`~allagash.dataset.SupplyDataset` and each value is a :class:`~pandas.DataFrame`
+        :param str coverage_type: The type of coverage to generate. Options are either `binary` or `partial`
+        :return: A new coverage object
+        :rtype: ~allagash.coverage.Coverage
+        """
         c = cls(demand_dataset, coverage_type=coverage_type, build_coverage=False)
         for supply_dataset, dataframe in supply_coverage_mapping.items():
             c._supply_datasets.append(supply_dataset)
@@ -50,6 +78,15 @@ class Coverage:
         return c
 
     def create_model(self, model_type, delineator="$", **kwargs):
+        """
+        Creates a :class:`~allagash.model.Model` from the coverage. This model can then be solved.
+
+        :param str model_type: The type of model to build. Options are either `mclp` or `lscp`
+        :param str delineator: A string used to split a variable in the model into two sections for parsing
+        :param kwargs: Additional parameters determined by the type of model being created
+        :return: A model based on the coverage that can be solved
+        :rtype: ~allagash.model.Model
+        """
         if model_type == 'lscp':
             return Model(self._generate_lscp_problem(delineator), self, model_type, delineator)
         elif model_type == 'mclp':

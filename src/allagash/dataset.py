@@ -5,6 +5,13 @@ import pandas as pd
 
 class Dataset:
     def __init__(self, dataframe, unique_field, name=None):
+        """
+        The base dataset that :class:`~allagash.dataset.DemandDataset` and :class:`~allagash.dataset.SupplyDataset` are derived from
+
+        :param dataframe: A Geopandas :class:`~geopandas.GeoDataFrame` containing the spatial data.
+        :param unique_field: A unique field/column name in the GeoDataframe
+        :param name: An optional name for the dataset
+        """
         self._validate(dataframe, name, unique_field)
         self._df = dataframe
         self._unique_field = unique_field

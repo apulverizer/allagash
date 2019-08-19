@@ -1,6 +1,6 @@
 from allagash.dataset import DemandDataset, SupplyDataset
 from allagash.coverage import Coverage
-from allagash.exceptions import InfeasibleException, UndefinedException
+from allagash.model import InfeasibleException, UndefinedException
 import pulp
 import geopandas
 import math
