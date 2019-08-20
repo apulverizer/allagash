@@ -10,7 +10,7 @@ class Coverage:
         A representation of the spatial relationship between a :class:`~allagash.dataset.DemandDataset` and
         one or more :class:`~allagash.dataset.SupplyDataset`
 
-        :param ~allagash.dataset.DemandDataset demand_dataset: A :class:`~allagash.dataset.DemandDataset` representing the locations that should be covered.
+        :param ~allagash.dataset.DemandDataset demand_dataset: A dataset representing the locations that should be covered.
         :param list supply_datasets: A list of :class:`~allagash.dataset.SupplyDataset` representing the locations that can cover the demand
         :param str coverage_type: The type of coverage to generate. Options are a either `binary` or `partial`
         """

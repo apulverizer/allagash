@@ -62,5 +62,6 @@ autoclass_content = 'both'
 intersphinx_mapping = {
     'geopandas': ('http://geopandas.org/', None),
     'python': ('https://docs.python.org/3', None),
-    'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None)
+    'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
+    'pulp': ('https://pythonhosted.org/PuLP/', None)
 }

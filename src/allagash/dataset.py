@@ -8,9 +8,9 @@ class Dataset:
         """
         The base dataset that :class:`~allagash.dataset.DemandDataset` and :class:`~allagash.dataset.SupplyDataset` are derived from
 
-        :param dataframe: A Geopandas :class:`~geopandas.GeoDataFrame` containing the spatial data.
-        :param unique_field: A unique field/column name in the GeoDataframe
-        :param name: An optional name for the dataset
+        :param ~geopandas.GeoDataFrame dataframe: A geodataframe containing the spatial data
+        :param str unique_field: A unique field/column name in the geodataframe
+        :param str name: An optional name for the dataset
         """
         self._validate(dataframe, name, unique_field)
         self._df = dataframe
@@ -32,19 +32,42 @@ class Dataset:
 
     @property
     def df(self):
+        """
+
+        :return: The geodataframe the dataset is based on
+        :rtype: ~geopandas.GeoDataFrame
+        """
         return self._df
 
     @property
     def unique_field(self):
+        """
+
+        :return: The field used to identify unique locations
+        :rtype: str
+        """
         return self._unique_field
 
     @property
     def name(self):
+        """
+
+        :return: The name of the dataset
+        :rtype: str
+        """
         return self._name
 
 
 class DemandDataset(Dataset):
     def __init__(self, dataframe, unique_field, demand_field,  name=None):
+        """
+        The dataset representing the demand to be used when creating a model
+
+        :param ~geopandas.GeoDataFrame dataframe: A geodataframe containing the spatial data
+        :param str unique_field: A unique field/column name in the geodataframe
+        :param str demand_field: The field representing the quantity of the demand for each location
+        :param str name: An optional name for the dataset
+        """
         super().__init__(dataframe, unique_field, name=name)
         if not isinstance(demand_field, str):
             raise TypeError(f"Expected 'str' type for demand_field, got '{type(demand_field)}'")
@@ -53,6 +76,11 @@ class DemandDataset(Dataset):
 
     @property
     def demand_field(self):
+        """
+
+        :return: The field representing the quantity of the demand for each location
+        :rtype: str
+        """
         return self._demand_field
 
     def _validate_demand_field(self):
@@ -64,4 +92,11 @@ class DemandDataset(Dataset):
 
 class SupplyDataset(Dataset):
     def __init__(self, dataframe, unique_field, name=None):
+        """
+        The dataset representing the supply to be used when creating a model
+
+        :param ~geopandas.GeoDataFrame dataframe: A geodataframe containing the spatial data
+        :param str unique_field: A unique field/column name in the geodataframe
+        :param str name: An optional name for the dataset
+        """
         super().__init__(dataframe, unique_field, name=name)

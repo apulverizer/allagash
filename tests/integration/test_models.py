@@ -1,7 +1,7 @@
 import pulp
 import pytest
 import math
-from allagash.model import InfeasibleException, UndefinedException
+from allagash.solution import InfeasibleException, UndefinedException
 
 
 class TestMCLP:
