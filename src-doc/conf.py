@@ -13,7 +13,7 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-
+import allagash
 
 # -- Project information -----------------------------------------------------
 
@@ -22,7 +22,7 @@ copyright = '2019, Aaron Pulver'
 author = 'Aaron Pulver'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = allagash.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -64,4 +64,11 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
     'pulp': ('https://pythonhosted.org/PuLP/', None)
+}
+
+html_context = {
+  'display_github': True,
+  'github_user': 'apulverizer',
+  'github_repo': 'allagash',
+  'github_version': 'master/src-doc/'
 }
