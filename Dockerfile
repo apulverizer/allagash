@@ -47,7 +47,7 @@ WORKDIR $HOME/allagash
 COPY --chown=allagash-user:allagash-user environment.yml environment.yml
 RUN conda env create -f environment.yml\
     && rm -rf environment.yml
-COPY --chown=allagash-user:allagash-user examples examples
+COPY --chown=allagash-user:allagash-user src-doc/examples examples
 COPY --chown=allagash-user:allagash-user src src
 RUN $HOME/.conda/envs/allagash/bin/pip install ./src --no-deps\
     && rm -rf src

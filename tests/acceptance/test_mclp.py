@@ -1,11 +1,9 @@
 from allagash.dataset import DemandDataset, SupplyDataset
 from allagash.coverage import Coverage
-from allagash.solution import InfeasibleException, UndefinedException
 import pulp
 import geopandas
 import math
 import os
-import pytest
 
 
 class TestMCLP:
@@ -16,9 +14,10 @@ class TestMCLP:
         d = DemandDataset(geopandas.read_file(os.path.join(self.dir_name, "../test_data/demand_point.shp")), "GEOID10", "Population")
         s = SupplyDataset(geopandas.read_file(os.path.join(self.dir_name, "../test_data/facility_service_areas.shp")), "ORIG_ID")
         coverage = Coverage(d, s, 'binary')
-        model = coverage.create_model('lscp')
-        with pytest.raises((InfeasibleException, UndefinedException)) as e:
-            model.solve(pulp.GLPK())
+        model = coverage.create_model('mclp', max_supply={s: 5})
+        solution = model.solve(pulp.GLPK(msg=0))
+        coverage = math.ceil((solution.covered_demand()["Population"].sum() / d.df["Population"].sum()) * 100)
+        assert coverage == 53
 
     def test_multiple_supply(self):
         d = DemandDataset(geopandas.read_file(os.path.join(self.dir_name, "../test_data/demand_point.shp")), "GEOID10", "Population")
