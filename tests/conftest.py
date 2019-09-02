@@ -2,7 +2,6 @@ import pytest
 import geopandas
 from allagash import Coverage
 from allagash import Model
-from allagash import Solution
 from pulp.solvers import GLPK
 import os
 
@@ -58,12 +57,12 @@ def binary_coverage_dataframe(binary_coverage):
 
 @pytest.fixture(scope="class")
 def binary_lscp_problem(binary_coverage, binary_coverage2):
-    return Model.lscp([binary_coverage, binary_coverage2]).problem
+    return Model.lscp([binary_coverage, binary_coverage2]).pulp_problem
 
 
 @pytest.fixture(scope="class")
 def binary_mclp_problem(binary_coverage):
-    return Model.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5}).problem
+    return Model.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5}).pulp_problem
 
 
 @pytest.fixture(scope="class")

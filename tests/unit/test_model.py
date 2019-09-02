@@ -1,5 +1,4 @@
 from allagash.model import Model
-from allagash.solution import Solution
 import pytest
 from pulp.solvers import GLPK
 
@@ -32,7 +31,7 @@ class TestModel:
 
     def test_problem_property(self, binary_lscp_problem, binary_coverage):
         m = Model(binary_lscp_problem, binary_coverage, 'lscp')
-        assert(m.problem == binary_lscp_problem)
+        assert(m.pulp_problem == binary_lscp_problem)
 
     def test_coverage_property(self, binary_lscp_problem, binary_coverage):
         m = Model(binary_lscp_problem, binary_coverage, 'lscp')
@@ -42,14 +41,10 @@ class TestModel:
         m = Model(binary_lscp_problem, binary_coverage, 'lscp')
         assert(m.model_type == 'lscp')
 
-    def test_delineator_property(self, binary_lscp_problem, binary_coverage):
-        m = Model(binary_lscp_problem, binary_coverage, 'lscp')
-        assert(m.delineator == '$')
-
     def test_solver(self, binary_lscp_problem, binary_coverage):
         m = Model(binary_lscp_problem, binary_coverage, 'lscp')
-        s = m.solve(GLPK())
-        assert(isinstance(s, Solution))
+        m = m.solve(GLPK())
+        assert(isinstance(m, Model))
 
     def test_invalid_solver(self, binary_lscp_problem, binary_coverage):
         m = Model(binary_lscp_problem, binary_coverage, 'lscp')
@@ -109,3 +104,29 @@ class TestModel:
         with pytest.raises(TypeError) as e:
             m = Model.mclp(binary_coverage, max_supply=None)
         assert (e.value.args[0] == "Expected 'dict' type for max_supply, got '<class 'NoneType'>'")
+
+    def test_selected_supply_list(self, mclp_model_solved):
+        assert (isinstance(mclp_model_solved.selected_supply(mclp_model_solved.coverages[0]), list))
+
+    def test_selected_supply_invalid_coverage(self, mclp_model_solved):
+        with pytest.raises(TypeError) as e:
+            mclp_model_solved.selected_supply(None)
+        assert (e.value.args[0] == "Expected 'Coverage' type for coverage, got '<class 'NoneType'>'")
+
+    def test_selected_supply_invalid_operator(self, mclp_model_solved):
+        with pytest.raises(TypeError) as e:
+            mclp_model_solved.selected_supply(mclp_model_solved.coverages[0], operation=None)
+        assert (e.value.args[0] == "Expected callable for operation, got '<class 'NoneType'>'")
+
+    def test_selected_supply_invalid_value(self, mclp_model_solved):
+        with pytest.raises(TypeError) as e:
+            mclp_model_solved.selected_supply(mclp_model_solved.coverages[0], value=None)
+        assert (e.value.args[0] == "Expected 'int' or 'float' for value, got '<class 'NoneType'>'")
+
+    def test_covered_demand(self, mclp_model_solved):
+        assert (isinstance(mclp_model_solved.selected_demand(mclp_model_solved.coverages[0]), list))
+
+    def test_covered_demand_invalid_coverage(self, mclp_model_solved):
+        with pytest.raises(TypeError) as e:
+            mclp_model_solved.selected_demand(None)
+        assert (e.value.args[0] == "Expected 'Coverage' type for coverage, got '<class 'NoneType'>'")
