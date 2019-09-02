@@ -21,13 +21,14 @@ The following example show how an LSCP model can be created and solved.
 
 .. code-block:: python
 
-    from allagash import DemandDataset, SupplyDataset, Coverage
+    from allagash import Coverage, Model
     import pulp
     import geopandas
 
-    d = DemandDataset(geopandas.read_file(r"../sample_data/demand_point.shp")), "GEOID10", "Population")
-    s = SupplyDataset(geopandas.read_file(r"../sample_data/facility_service_areas.shp")), "ORIG_ID")
-    s2 = SupplyDataset(geopandas.read_file(r"../sample_data/facility2_service_areas.shp")), "ORIG_ID")
-    coverage = Coverage(d, [s, s2], 'binary')
-    model = coverage.create_model('lscp')
+    d = geopandas.read_file("sample_data/demand_point.shp")
+    s = geopandas.read_file("sample_data/facility_service_areas.shp")
+    s2 = geopandas.read_file("sample_data/facility2_service_areas.shp")
+    coverage1 = Coverage.from_geodataframes(d, s, "GEOID10", "ORIG_ID", demand_name="demand")
+    coverage2 = Coverage.from_geodataframes(d, s2, "GEOID10", "ORIG_ID", demand_name="demand")
+    model = Model.lscp([coverage1, coverage2])
     solution = model.solve(pulp.GLPK())

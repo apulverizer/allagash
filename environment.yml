@@ -12,4 +12,4 @@ dependencies:
   - nbsphinx>=0.4.2
   - pip:
     - pulp==1.6.10
-    - pip sphinx-rtd-theme=0.4.3
+    - pip sphinx-rtd-theme==0.4.3
