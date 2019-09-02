@@ -1,7 +1,7 @@
 import pytest
 import geopandas
 from allagash import Coverage
-from allagash import Model
+from allagash import Problem
 from pulp.solvers import GLPK
 import os
 
@@ -56,26 +56,27 @@ def binary_coverage_dataframe(binary_coverage):
 
 
 @pytest.fixture(scope="class")
-def binary_lscp_problem(binary_coverage, binary_coverage2):
-    return Model.lscp([binary_coverage, binary_coverage2]).pulp_problem
+def binary_lscp_pulp_problem(binary_coverage, binary_coverage2):
+    return Problem.lscp([binary_coverage, binary_coverage2]).pulp_problem
 
 
 @pytest.fixture(scope="class")
-def binary_mclp_problem(binary_coverage):
-    return Model.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5}).pulp_problem
+def binary_mclp_pulp_problem(binary_coverage):
+    return Problem.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5}).pulp_problem
 
 
 @pytest.fixture(scope="class")
-def mclp_model(binary_coverage, binary_coverage2):
-    return Model.mclp([binary_coverage, binary_coverage2], max_supply={binary_coverage: 5, binary_coverage2: 10})
+def mclp_problem(binary_coverage, binary_coverage2):
+    return Problem.mclp([binary_coverage, binary_coverage2], max_supply={binary_coverage: 5, binary_coverage2: 10})
 
 
 @pytest.fixture(scope="class")
-def lscp_model(binary_coverage, binary_coverage2):
-    return Model.lscp([binary_coverage, binary_coverage2])
+def lscp_problem(binary_coverage, binary_coverage2):
+    return Problem.lscp([binary_coverage, binary_coverage2])
 
 
 @pytest.fixture(scope="class")
-def mclp_model_solved(mclp_model):
-    mclp_model.solve(GLPK())
-    return mclp_model
+def mclp_problem_solved(binary_coverage, binary_coverage2):
+    problem = Problem.mclp([binary_coverage, binary_coverage2], max_supply={binary_coverage: 5, binary_coverage2: 10})
+    problem.solve(GLPK())
+    return problem

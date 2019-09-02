@@ -6,7 +6,7 @@
 Allagash |release|
 =============================
 
-Allagash can be used to generate and solve spatial optimization models using GeoPandas PuLP.
+Allagash can be used to generate and solve spatial optimization problems using GeoPandas PuLP.
 
 .. toctree::
    :maxdepth: 2
@@ -18,18 +18,17 @@ Allagash can be used to generate and solve spatial optimization models using Geo
 
 .. toctree::
    :maxdepth: 2
-   :caption: Models
+   :caption: Problems
 
-   models.lscp
-   models.mclp
+   problems.lscp
+   problems.mclp
 
 .. toctree::
    :maxdepth: 2
    :caption: API Reference
 
    allagash.coverage
-   allagash.model
-   allagash.solution
+   allagash.problem
 
 .. toctree::
    :maxdepth: 2
