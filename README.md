@@ -19,7 +19,7 @@ You should now be able to run the example notebooks.
 2. Run tests `pytest`
 
 ### Building Documentation
-1. From the repo directory run `sphinx-build -b html ./src-doc ../docs -a`
+1. From the repo directory run `sphinx-build -b html ./src-doc ./docs -a`
 
 This will deploy html documentation to the docs folder.
 

@@ -28,7 +28,6 @@ Allagash can be used to generate and solve spatial optimization models using Geo
    :caption: API Reference
 
    allagash.coverage
-   allagash.dataset
    allagash.model
    allagash.solution
 

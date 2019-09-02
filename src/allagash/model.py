@@ -10,16 +10,17 @@ class Model:
     def __init__(self, problem, coverages, model_type):
         """
         A representation of the linear programming problem that can be solved.
-        This is not intended to be created on it's own but rather from a :class:`~allagash.coverage.Coverage` using the `create_model` method.
+        This is not intended to be created on it's own but rather from one of the factory methods
+        :meth:`~allagash.model.Model.lscp` or :meth:`~allagash.model.Model.mclp`
 
         .. code-block:: python
 
-            coverage.create_model('lscp')
+            Model.lscp(coverage)
+            Model.lscp([coverage1, coverage2])
 
         :param ~pulp.LpProblem problem: The pulp problem that will be solved
-        :param ~allagash.coverage.Coverage coverage: The coverage that was used to build the problem
+        :param list[~allagash.coverage.Coverage] coverages: The coverages that were used to build the problem
         :param str model_type: The type of model that was generated
-        :param str delineator: The string used to split a variable in the model into two sections for parsing
         """
         self._validate(problem, coverages, model_type)
         self._problem = problem
@@ -78,7 +79,7 @@ class Model:
     def solve(self, solver):
         """
 
-        :param ~pulp.LpSover solver: The solver to use for this model
+        :param ~pulp.solvers.LpSolver solver: The solver to use for this model
         :return: The solution for this model
         :rtype: ~allagash.solution.Solution
         """
@@ -98,6 +99,13 @@ class Model:
 
     @classmethod
     def lscp(cls, coverages):
+        """
+        Creates a new :class:`~allagash.model.Model` object representing the Location Covering Set Problem
+
+        :param list[~allagash.coverage.Coverag]e coverages: The coverages to be used to create the model
+        :return: The created model
+        :rtype: ~allagash.model.Model
+        """
         if not isinstance(coverages, (Coverage, list)):
             raise TypeError(f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'")
         if isinstance(coverages, Coverage):
@@ -111,6 +119,14 @@ class Model:
 
     @classmethod
     def mclp(cls, coverages, max_supply):
+        """
+        Creates a new :class:`~allagash.model.Model` object representing the Maximum Covering Location Problem
+
+        :param list[~allagash.coverage.Coverage] coverages: The coverages to be used to create the model
+        :param dict[~allagash.coverage.Coverage,int] max_supply: The maximum number of supply locations to allow
+        :return: The created model
+        :rtype: ~allagash.model.Model
+        """
         if not isinstance(coverages, (Coverage, list)):
             raise TypeError(f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'")
         if isinstance(coverages, Coverage):

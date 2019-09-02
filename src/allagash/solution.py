@@ -24,6 +24,15 @@ class Solution:
         return self._model
 
     def selected_supply(self, coverage, operation=operator.eq, value=1):
+        """
+        Gets the list of the supply locations that were selected when the optimization problem was solved.
+
+        :param ~allagash.coverage.Coverage coverage: The coverage that selected locations may be found in.
+        :param function operation: The operation to use when determining whether a location was selected
+        :param int value: The value to apply the operation to
+        :return: The list of location ids of the selected locations
+        :rtype: list
+        """
         from allagash.coverage import Coverage
         if not isinstance(coverage, Coverage):
             raise TypeError(f"Expected 'Coverage' type for coverage, got '{type(coverage)}'")
@@ -38,7 +47,16 @@ class Solution:
                     ids.append(var.name.split(self._model.delineator)[1])
         return ids
 
-    def covered_demand(self, coverage):
+    def selected_demand(self, coverage):
+        """
+        Gets the list of the demand locations that were selected when the optimization problem was solved.
+
+        :param ~allagash.coverage.Coverage coverage: The coverage that the demand locations may be found in. If multiple
+                coverages were used that have the same demand, locations covered by any other coverages will also
+                be returned.
+        :return: The list of location ids of the covered locations
+        :rtype: list
+        """
         from allagash.coverage import Coverage
         if not isinstance(coverage, Coverage):
             raise TypeError(f"Expected 'Coverage' type for coverage, got '{type(coverage)}'")

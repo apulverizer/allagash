@@ -19,7 +19,7 @@ class TestMCLP:
         coverage = Coverage.from_geodataframes(d, s, demand_id_col, supply_id_col, demand_col=demand_col)
         model = Model.mclp(coverage, max_supply={coverage: 5})
         solution = model.solve(pulp.GLPK())
-        covered_demand = d.query(f"{demand_id_col} in ({[f'{i}' for i in solution.covered_demand(coverage)]})")
+        covered_demand = d.query(f"{demand_id_col} in ({[f'{i}' for i in solution.selected_demand(coverage)]})")
         result = math.ceil((covered_demand[demand_col].sum() / d[demand_col].sum()) * 100)
         assert result == 53
 
@@ -36,7 +36,7 @@ class TestMCLP:
         solution = model.solve(pulp.GLPK())
         selected_locations = solution.selected_supply(coverage)
         selected_locations2 = solution.selected_supply(coverage2)
-        covered_demand = d.query(f"{demand_id_col} in ({[f'{i}' for i in solution.covered_demand(coverage)]})")
+        covered_demand = d.query(f"{demand_id_col} in ({[f'{i}' for i in solution.selected_demand(coverage)]})")
         result = math.ceil((covered_demand[demand_col].sum() / d[demand_col].sum()) * 100)
         assert (len(selected_locations) == 5)
         assert (len(selected_locations2) == 10)

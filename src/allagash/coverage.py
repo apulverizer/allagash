@@ -5,6 +5,23 @@ import string
 
 class Coverage:
     def __init__(self, dataframe, demand_col=None, demand_name=None, supply_name=None, coverage_type="binary"):
+        """
+        An object that stores the relationship between a set of demand locations and a set of supply locations.
+        Use this initializer if the coverage matrix has already been created, otherwise this can be created from two
+        geodataframes using the :meth:`~allagash.coverage.Coverage.from_geodataframes` factory method.
+
+        .. code-block:: python
+
+            Coverage.from_geodataframes(df1, df2, "Demand_Id", "Supply_Id")
+
+        :param ~pandas.DataFrame dataframe: A dataframe containing a matrix of demand (rows) and supply (columns).
+                                        An additional column containing the demand values can optionally be provided.
+        :param str demand_col: (optional) The name of the column storing the demand value.
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
+        :param str coverage_type: (optional) The type of coverage this represents (optional). If not supplied, the default is
+                                  "binary". Options are "binary" and "partial".
+        """
         self._validate_init(coverage_type, dataframe, demand_col, demand_name, supply_name)
         self._demand_col = demand_col
         self._dataframe = dataframe
@@ -39,26 +56,67 @@ class Coverage:
 
     @property
     def df(self):
+        """
+
+        :return: The geodataframe the dataset is based on
+        :rtype: ~geopandas.GeoDataFrame
+        """
         return self._dataframe
 
     @property
     def demand_name(self):
+        """
+
+        :return: The name of the demand
+        :rtype: str
+        """
         return self._demand_name
 
     @property
     def supply_name(self):
+        """
+
+        :return: The name of the supply
+        :rtype: str
+        """
         return self._supply_name
 
     @property
     def coverage_type(self):
+        """
+
+        :return: The type of coverage
+        :rtype: str
+        """
         return self._coverage_type
 
     @property
     def demand_col(self):
+        """
+
+        :return: The name of the demand column in the underlying dataframe
+        :rtype: str or None
+        """
         return self._demand_col
 
     @classmethod
     def from_geodataframes(cls, demand_df, supply_df, demand_id_col, supply_id_col, demand_name=None, supply_name=None, demand_col=None, coverage_type="binary"):
+        """
+        Creates a new Coverage from two GeoDataFrames representing the demand and supply locations. The coverage
+        is determined by intersecting the two dataframes.
+
+        :param ~geopandas.GeoDataFrame demand_df: The GeoDataFrame containing the demand locations
+        :param ~geopandas.GeoDataFrame supply_df: The GeoDataFrame containing the supply locations
+        :param str demand_id_col: The name of the column that has unique identifiers for the demand locations
+        :param str supply_id_col: The name of the column that has unique identifiers for the supply locations
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
+        :param str demand_col: (optional) The name of the column that stores the amount of demand for the demand
+                                          locations. Required if generating partial coverage.
+        :param str coverage_type: (optional) The type of coverage this represents. If not supplied, the default is
+                                  "binary". Options are "binary" and "partial".
+        :return:
+        """
         cls._validate_from_geodataframes(coverage_type, demand_col, demand_df, demand_id_col, demand_name, supply_df,
                                          supply_id_col)
 

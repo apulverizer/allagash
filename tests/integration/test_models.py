@@ -11,7 +11,7 @@ class TestMCLP:
     def test_single_supply(self, demand_points_dataframe, binary_coverage):
         model = Model.mclp(binary_coverage, max_supply={binary_coverage: 5})
         solution = model.solve(pulp.GLPK(msg=0))
-        res = demand_points_dataframe.query(f"GEOID10 in ({[f'{i}' for i in solution.covered_demand(binary_coverage)]})")
+        res = demand_points_dataframe.query(f"GEOID10 in ({[f'{i}' for i in solution.selected_demand(binary_coverage)]})")
         coverage = math.ceil(res["Population"].sum() / demand_points_dataframe["Population"].sum() * 100)
         assert coverage == 53
 
@@ -19,7 +19,7 @@ class TestMCLP:
     def test_multiple_supply(self, demand_points_dataframe, binary_coverage, binary_coverage2):
         model = Model.mclp([binary_coverage, binary_coverage2], max_supply={binary_coverage: 5, binary_coverage2: 10})
         solution = model.solve(pulp.GLPK())
-        res = demand_points_dataframe.query(f"GEOID10 in ({[f'{i}' for i in solution.covered_demand(binary_coverage)]})")
+        res = demand_points_dataframe.query(f"GEOID10 in ({[f'{i}' for i in solution.selected_demand(binary_coverage)]})")
         coverage = math.ceil(res["Population"].sum() / demand_points_dataframe["Population"].sum() * 100)
         assert coverage == 96
 
@@ -39,7 +39,7 @@ class TestLSCP:
         selected_locations = solution.selected_supply(binary_coverage)
         selected_locations2 = solution.selected_supply(binary_coverage2)
         covered_demand = demand_points_dataframe.query(
-            f"GEOID10 in ({[f'{i}' for i in solution.covered_demand(binary_coverage)]})")
+            f"GEOID10 in ({[f'{i}' for i in solution.selected_demand(binary_coverage)]})")
         coverage = math.ceil((covered_demand[binary_coverage.demand_col].sum() / demand_points_dataframe[binary_coverage.demand_col].sum()) * 100)
         assert (len(selected_locations) == 5)
         assert (len(selected_locations2) == 19)

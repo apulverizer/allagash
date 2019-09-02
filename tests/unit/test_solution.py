@@ -42,10 +42,10 @@ class TestSolution:
 
     def test_covered_demand(self, mclp_model_solved):
         s = Solution(mclp_model_solved)
-        assert (isinstance(s.covered_demand(mclp_model_solved.coverages[0]), list))
+        assert (isinstance(s.selected_demand(mclp_model_solved.coverages[0]), list))
 
     def test_covered_demand_invalid_coverage(self, mclp_model_solved):
         s = Solution(mclp_model_solved)
         with pytest.raises(TypeError) as e:
-            s.covered_demand(None)
+            s.selected_demand(None)
         assert (e.value.args[0] == "Expected 'Coverage' type for coverage, got '<class 'NoneType'>'")
