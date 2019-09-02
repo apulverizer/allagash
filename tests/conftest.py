@@ -15,6 +15,11 @@ def demand_points_dataframe():
 
 
 @pytest.fixture(scope='class')
+def demand_polygon_dataframe():
+    return geopandas.read_file(os.path.join(dir_name, "test_data/demand_polygon.shp"))
+
+
+@pytest.fixture(scope='class')
 def facility_service_areas_dataframe():
     return geopandas.read_file(os.path.join(dir_name, "test_data/facility_service_areas.shp"))
 
@@ -32,6 +37,14 @@ def binary_coverage(demand_points_dataframe, facility_service_areas_dataframe):
 
 
 @pytest.fixture(scope="class")
+def partial_coverage(demand_polygon_dataframe, facility_service_areas_dataframe):
+    return Coverage.from_geodataframes(demand_polygon_dataframe, facility_service_areas_dataframe, "GEOID10", "ORIG_ID",
+                                       demand_col="Population",
+                                       demand_name="demand",
+                                       coverage_type="partial")
+
+
+@pytest.fixture(scope="class")
 def binary_coverage2(demand_points_dataframe, facility2_service_areas_dataframe):
     return Coverage.from_geodataframes(demand_points_dataframe, facility2_service_areas_dataframe, "GEOID10", "ORIG_ID",
                                        demand_col="Population",
@@ -44,10 +57,10 @@ def binary_coverage_dataframe(binary_coverage):
 
 
 @pytest.fixture(scope="class")
-def binary_lscp_problem(binary_coverage):
-    return Model.lscp(binary_coverage)
+def binary_lscp_problem(binary_coverage, binary_coverage2):
+    return Model.lscp([binary_coverage, binary_coverage2]).problem
 
 
 @pytest.fixture(scope="class")
 def binary_mclp_problem(binary_coverage):
-    return Model.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5})
+    return Model.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5}).problem

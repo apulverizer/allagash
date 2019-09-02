@@ -75,7 +75,7 @@ class Coverage:
                 intersection_area = supply_df.geometry.intersection(row.geometry).geometry.area
                 partial_coverage = ((intersection_area / demand_area) * row[demand_col]).tolist()
                 if demand_col:
-                    partial_coverage.inset(0, row[demand_col])
+                    partial_coverage.insert(0, row[demand_col])
                 data.append(partial_coverage)
         else:
             raise ValueError(f"Invalid coverage type '{coverage_type}'")
