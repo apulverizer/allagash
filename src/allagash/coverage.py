@@ -106,7 +106,11 @@ class Coverage:
             raise TypeError(f"Expected 'str' type for coverage_type, got '{type(coverage_type)}'")
         if demand_col and demand_col not in demand_df.columns:
             raise ValueError(f"'{demand_col}' not in dataframe")
+        if demand_id_col and demand_id_col not in demand_df.columns:
+            raise ValueError(f"'{demand_id_col}' not in dataframe")
+        if supply_id_col and supply_id_col not in supply_df.columns:
+            raise ValueError(f"'{supply_id_col}' not in dataframe")
         if coverage_type.lower() not in ("binary", "partial"):
             raise ValueError(f"Invalid coverage type '{coverage_type}'")
         if coverage_type.lower() == "partial" and demand_col is None:
-            raise ValueError(f"'demand_col' is required when generating partial coverage")
+            raise ValueError(f"demand_col is required when generating partial coverage")

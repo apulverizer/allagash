@@ -39,6 +39,11 @@ def binary_coverage2(demand_points_dataframe, facility2_service_areas_dataframe)
 
 
 @pytest.fixture(scope="class")
+def binary_coverage_dataframe(binary_coverage):
+    return binary_coverage.df
+
+
+@pytest.fixture(scope="class")
 def binary_lscp_problem(binary_coverage):
     return Model.lscp(binary_coverage)
 

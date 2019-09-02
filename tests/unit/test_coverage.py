@@ -1,108 +1,162 @@
 from allagash.coverage import Coverage
-from allagash.model import Model
 import pytest
 
 
 class TestCoverage:
 
-    def test_init(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas, 'binary')
+    def test_init(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population")
         assert(isinstance(c, Coverage))
 
-    def test_init_invalid_demand(self, facility_service_areas):
+    def test_init_invalid_demand(self):
         with pytest.raises(TypeError) as e:
-            c = Coverage(None, facility_service_areas, 'binary')
-        assert(e.value.args[0] == "Expected 'DemandDataset' type for demand_dataset, got '<class 'NoneType'>'")
+            c = Coverage(None, "Population")
+        assert(e.value.args[0] == "Expected 'Dataframe' type for dataframe, got '<class 'NoneType'>'")
 
-    def test_init_invalid_supply(self, demand_points):
+    def test_init_invalid_demand_col(self, binary_coverage_dataframe):
         with pytest.raises(TypeError) as e:
-            c = Coverage(demand_points, "invalid", 'binary')
-        assert (e.value.args[0] == "Expected 'SupplyDataset' or 'list' type for supply_datasets, got '<class 'str'>'")
+            c = Coverage(binary_coverage_dataframe, demand_col=[], coverage_type="partial")
+        assert(e.value.args[0] == "Expected 'str' type for demand_col, got '<class 'list'>'")
 
-    def test_init_none_supply(self, demand_points):
-        c = Coverage(demand_points, None, 'binary')
+    def test_init_invalid_supply_name(self, binary_coverage_dataframe):
+        with pytest.raises(TypeError) as e:
+            c = Coverage(binary_coverage_dataframe, supply_name=[])
+        assert (e.value.args[0] == "Expected 'str' type for supply_name, got '<class 'list'>'")
+
+    def test_init_invalid_demand_col2(self, binary_coverage_dataframe):
+        with pytest.raises(ValueError) as e:
+            c = Coverage(binary_coverage_dataframe, demand_col="Test", coverage_type="partial")
+        assert(e.value.args[0] == "'Test' not in dataframe")
+
+    def test_init_invalid_demand_col3(self, binary_coverage_dataframe):
+        with pytest.raises(ValueError) as e:
+            c = Coverage(binary_coverage_dataframe, demand_col=None, coverage_type="partial")
+        assert(e.value.args[0] == "'demand_col' is required when generating partial coverage")
+
+    def test_init_invalid_demand_name(self, binary_coverage_dataframe):
+        with pytest.raises(TypeError) as e:
+            c = Coverage(binary_coverage_dataframe, demand_name=[])
+        assert(e.value.args[0] == "Expected 'str' type for demand_name, got '<class 'list'>'")
+
+    def test_init_invalid_coverage_type(self, binary_coverage_dataframe):
+        with pytest.raises(TypeError) as e:
+            c = Coverage(binary_coverage_dataframe, coverage_type=[])
+        assert(e.value.args[0] == "Expected 'str' type for coverage_type, got '<class 'list'>'")
+
+    def test_init_invalid_coverage_type2(self, binary_coverage_dataframe):
+        with pytest.raises(ValueError) as e:
+            c = Coverage(binary_coverage_dataframe, coverage_type="test")
+        assert(e.value.args[0] == "Invalid coverage type 'test'")
+
+    def test_from_coverage_dataframe(self, demand_points_dataframe, facility_service_areas_dataframe):
+        c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                        "GEOID10", "ORIG_ID")
         assert(isinstance(c, Coverage))
 
-    def test_init_default_coverage_type(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        assert(c.coverage_type == 'binary')
-
-    def test_init_coverage_type_binary(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas, 'binary')
-        assert(c.coverage_type == 'binary')
-
-    def test_init_coverage_type_partial(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas, 'partial')
-        assert(c.coverage_type == 'partial')
-
-    def test_init_coverage_built(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        assert(len(c._coverage.keys()) > 0)
-
-    def test_init_do_not_build_coverage(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas, build_coverage=False)
-        assert (len(c._coverage.keys()) == 0)
-
-    def test_from_coverage_dataframe(self, demand_points, coverage_dataframe):
-        c = Coverage.from_coverage_dataframe(demand_points, coverage_dataframe)
+    def test_from_coverage_dataframe_demand_name(self, demand_points_dataframe, facility_service_areas_dataframe):
+        c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                        "GEOID10", "ORIG_ID", demand_name="test")
         assert(isinstance(c, Coverage))
-        assert(len(c._coverage.keys()) > 0)
+        assert c.demand_name == "test"
 
-    def test_demand_dataset_property(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        assert(c.demand_dataset == demand_points)
+    def test_from_coverage_dataframe_supply_name(self, demand_points_dataframe, facility_service_areas_dataframe):
+        c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                        "GEOID10", "ORIG_ID", supply_name="test")
+        assert(isinstance(c, Coverage))
+        assert c.supply_name == "test"
 
-    def test_supply_datasets_property(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        assert(isinstance(c.supply_datasets, list))
-        assert(c.supply_datasets[0] == facility_service_areas)
+    def test_from_coverage_dataframe_demand_col(self, demand_points_dataframe, facility_service_areas_dataframe):
+        c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                        "GEOID10", "ORIG_ID", demand_col="Population")
+        assert(isinstance(c, Coverage))
+        assert c.demand_col == "Population"
 
-    def test_create_lscp_model(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        model = c.create_model('lscp')
-        assert(isinstance(model, Model))
-        assert(model.model_type == 'lscp')
-        assert(model.problem.name == "LSCP")
-
-    def test_create_mclp_model(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        model = c.create_model('mclp', max_supply={facility_service_areas: 5})
-        assert(isinstance(model, Model))
-        assert(model.model_type == 'mclp')
-        assert(model.problem.name == "MCLP")
-
-    def test_create_mclp_model_no_max(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
+    def test_from_coverage_dataframe_invalid_demand_col(self, demand_points_dataframe, facility_service_areas_dataframe):
         with pytest.raises(ValueError) as e:
-            c.create_model('mclp')
-        assert(e.value.args[0] == "'max_supply' is required")
+            c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "GEOID10", "ORIG_ID", demand_col="test")
+        assert(e.value.args[0] == "'test' not in dataframe")
 
-    def test_create_mclp_model_invalid_max(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        with pytest.raises(TypeError) as e:
-            c.create_model('mclp', max_supply='test')
-        assert(e.value.args[0] == "Expected 'dict' type for max_supply, got '<class 'str'>'")
-
-    def test_create_mclp_model_empty_max(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
+    def test_from_coverage_dataframe_invalid_coverage_type(self, demand_points_dataframe, facility_service_areas_dataframe):
         with pytest.raises(ValueError) as e:
-            c.create_model('mclp', max_supply={})
-        assert(e.value.args[0] == "'max_supply' must contain at least one key/value pair")
+            c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "GEOID10", "ORIG_ID", coverage_type="test")
+        assert(e.value.args[0] == "Invalid coverage type 'test'")
 
-    def test_create_mclp_model_str_key_max(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        with pytest.raises(TypeError) as e:
-            c.create_model('mclp', max_supply={"test": 5})
-        assert(e.value.args[0] == "Expected 'SupplyDataset' type for max_supply key, got '<class 'str'>'")
-
-    def test_create_mclp_model_str_value_max(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
-        with pytest.raises(TypeError) as e:
-            c.create_model('mclp', max_supply={facility_service_areas: "test"})
-        assert(e.value.args[0] == "Expected 'int' type for max_supply value, got '<class 'str'>'")
-
-    def test_create_model_invalid_model_type(self, demand_points, facility_service_areas):
-        c = Coverage(demand_points, facility_service_areas)
+    def test_from_coverage_dataframe_demand_col_required(self, demand_points_dataframe, facility_service_areas_dataframe):
         with pytest.raises(ValueError) as e:
-            c.create_model('test')
-        assert (e.value.args[0] == f"Invalid model_type: 'test'")
+            c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "GEOID10", "ORIG_ID", coverage_type="partial")
+        assert(e.value.args[0] == "demand_col is required when generating partial coverage")
+
+    def test_from_coverage_dataframe_invalid_demand_df(self, facility_service_areas_dataframe):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_geodataframes(None, facility_service_areas_dataframe,
+                                            "GEOID10", "ORIG_ID")
+        assert(e.value.args[0] == "Expected 'Dataframe' type for demand_df, got '<class 'NoneType'>'")
+
+    def test_from_coverage_dataframe_invalid_supply_df(self, demand_points_dataframe):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_geodataframes(demand_points_dataframe, None,
+                                            "GEOID10", "ORIG_ID")
+        assert(e.value.args[0] == "Expected 'Dataframe' type for supply_df, got '<class 'NoneType'>'")
+
+    def test_from_coverage_dataframe_invalid_demand_id_col(self, demand_points_dataframe, facility_service_areas_dataframe):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            None, "ORIG_ID")
+        assert(e.value.args[0] == "Expected 'str' type for demand_id_col, got '<class 'NoneType'>'")
+
+    def test_from_coverage_dataframe_invalid_supply_id_col(self, demand_points_dataframe, facility_service_areas_dataframe):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "GEOID10", None)
+        assert(e.value.args[0] == "Expected 'str' type for demand_id_col, got '<class 'NoneType'>'")
+
+    def test_from_coverage_dataframe_invalid_supply_id_col2(self, demand_points_dataframe, facility_service_areas_dataframe):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "GEOID10", "test")
+        assert(e.value.args[0] == f"'test' not in dataframe")
+
+    def test_from_coverage_dataframe_invalid_demand_id_col2(self, demand_points_dataframe, facility_service_areas_dataframe):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "test", "ORIG_ID")
+        assert(e.value.args[0] == f"'test' not in dataframe")
+
+    def test_df_property(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population")
+        assert(c.df is binary_coverage_dataframe)
+
+    def test_demand_name_property(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population", demand_name="test")
+        assert(c.demand_name == "test")
+
+    def test_demand_name_property_default(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population")
+        assert(isinstance(c.demand_name, str))
+
+    def test_supply_name_property_default(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population")
+        assert(isinstance(c.supply_name, str))
+
+    def test_supply_name_property(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population", supply_name="test")
+        assert(c.supply_name == "test")
+
+    def test_coverage_type_property(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population", coverage_type="binary")
+        assert(c.coverage_type == "binary")
+
+    def test_coverage_type_property2(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population", coverage_type="partial")
+        assert(c.coverage_type == "partial")
+
+    def test_demand_col_property(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe, "Population")
+        assert(c.demand_col == "Population")
+
+    def test_demand_col_property2(self, binary_coverage_dataframe):
+        c = Coverage(binary_coverage_dataframe)
+        assert(c.demand_col is None)
