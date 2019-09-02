@@ -1,7 +1,5 @@
-from pandas.api.types import is_string_dtype
 import operator
 from allagash.model import Model
-from allagash.dataset import SupplyDataset
 
 
 class Solution:

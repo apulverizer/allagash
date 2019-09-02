@@ -5,8 +5,9 @@ from .coverage import Coverage
 class Model:
 
     _model_types = ['lscp', 'mclp']
+    _delineator = "$"
 
-    def __init__(self, problem, coverages, model_type, delineator="$"):
+    def __init__(self, problem, coverages, model_type):
         """
         A representation of the linear programming problem that can be solved.
         This is not intended to be created on it's own but rather from a :class:`~allagash.coverage.Coverage` using the `create_model` method.
@@ -20,21 +21,20 @@ class Model:
         :param str model_type: The type of model that was generated
         :param str delineator: The string used to split a variable in the model into two sections for parsing
         """
-        self._validate(problem, coverages, model_type, delineator)
+        self._validate(problem, coverages, model_type)
         self._problem = problem
         self._coverages = coverages
         self._model_type = model_type.lower()
-        self._delineator = delineator
 
-    def _validate(self, problem, coverage, model_type, delineator):
+    def _validate(self, problem, coverages, model_type):
         if not isinstance(problem, pulp.LpProblem):
             raise TypeError(f"Expected 'LpProblem' type for problem, got '{type(problem)}'")
         if not isinstance(model_type, str):
             raise TypeError(f"Expected 'str' type for model_type, got '{type(model_type)}'")
-        if not isinstance(delineator, str):
-            raise TypeError(f"Expected 'str' type for delineator, got '{type(delineator)}'")
         if model_type.lower() not in self._model_types:
             raise ValueError(f"Invalid model_type: '{model_type}'")
+        if not isinstance(coverages, (list, Coverage)):
+            raise TypeError(f"Expected 'coverage' or 'list' type for coverages, got '{type(coverages)}'")
 
     @property
     def problem(self):
@@ -94,27 +94,39 @@ class Model:
         return Solution(self)
 
     @classmethod
-    def lscp(cls, coverages, delineator="$"):
+    def lscp(cls, coverages):
+        if not isinstance(coverages, (Coverage, list)):
+            raise TypeError(f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'")
         if isinstance(coverages, Coverage):
             coverages = [coverages]
-        prob = cls._generate_lscp_problem(coverages, delineator=delineator)
-        return Model(prob, coverages, delineator=delineator, model_type='lscp')
+        if not all([c.coverage_type for c in coverages]):
+            raise ValueError("Invalid coverages. Coverages must have the same coverage type.")
+        if coverages[0].coverage_type != "binary":
+            raise ValueError("LSCP can only be generated from binary coverage.")
+        prob = cls._generate_lscp_problem(coverages)
+        return Model(prob, coverages, model_type='lscp')
 
     @classmethod
-    def mclp(cls, coverages, max_supply, delineator="$"):
+    def mclp(cls, coverages, max_supply):
+        if not isinstance(coverages, (Coverage, list)):
+            raise TypeError(f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'")
         if isinstance(coverages, Coverage):
             coverages = [coverages]
-        prob = cls._generate_mclp_problem(coverages, max_supply, delineator=delineator)
-        return Model(prob, coverages, delineator=delineator, model_type='mclp')
+        if not all([c.coverage_type for c in coverages]):
+            raise ValueError("Invalid coverages. Coverages must have the same coverage type.")
+        if coverages[0].coverage_type != "binary":
+            raise ValueError("MCLP can only be generated from binary coverage.")
+        prob = cls._generate_mclp_problem(coverages, max_supply)
+        return Model(prob, coverages, model_type='mclp')
 
     @staticmethod
-    def _generate_lscp_problem(coverages, delineator="$"):
+    def _generate_lscp_problem(coverages):
         demand_vars = {}
         for c in coverages:
             if c.demand_name not in demand_vars:
                 demand_vars[c.demand_name] = {}
             for index, _ in c.df.iterrows():
-                name = f"{c.demand_name}{delineator}{index}"
+                name = f"{c.demand_name}{Model._delineator}{index}"
                 demand_vars[c.demand_name][index] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
 
         supply_vars = {}
@@ -126,7 +138,7 @@ class Model:
             if c.supply_name not in supply_vars:
                 supply_vars[c.supply_name] = {}
             for s in df.columns.to_list():
-                name = f"{c.supply_name}{delineator}{s}"
+                name = f"{c.supply_name}{Model._delineator}{s}"
                 supply_vars[c.supply_name][s] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
 
         prob = pulp.LpProblem("LSCP", pulp.LpMinimize)
@@ -154,7 +166,7 @@ class Model:
         for c in coverages:
             for k, v in demand_vars[c.demand_name].items():
                 if not to_sum:
-                    sums[c.demand_name][v] = [pulp.LpVariable(f"__dummy{delineator}{v}", 0, 0, pulp.LpInteger)]
+                    sums[c.demand_name][v] = [pulp.LpVariable(f"__dummy{Model._delineator}{v}", 0, 0, pulp.LpInteger)]
 
         for demand_name, v in sums.items():
             for i, to_sum in v.items():
@@ -162,13 +174,13 @@ class Model:
         return prob
 
     @staticmethod
-    def _generate_mclp_problem(coverages, max_supply, delineator="$"):
+    def _generate_mclp_problem(coverages, max_supply):
         demand_vars = {}
         for c in coverages:
             if c.demand_name not in demand_vars:
                 demand_vars[c.demand_name] = {}
             for index, _ in c.df.iterrows():
-                name = f"{c.demand_name}{delineator}{index}"
+                name = f"{c.demand_name}{Model._delineator}{index}"
                 demand_vars[c.demand_name][index] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
 
         supply_vars = {}
@@ -180,7 +192,7 @@ class Model:
             if c.supply_name not in supply_vars:
                 supply_vars[c.supply_name] = {}
             for s in df.columns.to_list():
-                name = f"{c.supply_name}{delineator}{s}"
+                name = f"{c.supply_name}{Model._delineator}{s}"
                 supply_vars[c.supply_name][s] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
 
         # add objective
@@ -188,7 +200,7 @@ class Model:
         demands = {}
         for c in coverages:
             for _, demand_var in demand_vars[c.demand_name].items():
-                d = demand_var.name.split(delineator)[1]
+                d = demand_var.name.split(Model._delineator)[1]
                 if d not in demands:
                     demands[d] = []
                 query = f"{coverages[0].df.index.name} == '{d}'"
@@ -224,5 +236,5 @@ class Model:
             to_sum = []
             for k, v in supply_vars[c.supply_name].items():
                 to_sum.append(v)
-            prob += pulp.lpSum(to_sum) <= max_supply[c], f"Num{delineator}{c.supply_name}"
+            prob += pulp.lpSum(to_sum) <= max_supply[c], f"Num{Model._delineator}{c.supply_name}"
         return prob
