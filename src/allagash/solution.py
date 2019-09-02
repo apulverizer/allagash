@@ -41,7 +41,7 @@ class Solution:
     def covered_demand(self, coverage):
         from allagash.coverage import Coverage
         if not isinstance(coverage, Coverage):
-            raise TypeError(f"Expected 'Coverage' for coverage, got '{type(coverage)}'")
+            raise TypeError(f"Expected 'Coverage' type for coverage, got '{type(coverage)}'")
         if self._model.model_type == 'lscp':
             for c in self.model.coverages:
                 if c.demand_name == c.demand_name:

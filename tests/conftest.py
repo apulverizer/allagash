@@ -64,3 +64,19 @@ def binary_lscp_problem(binary_coverage, binary_coverage2):
 @pytest.fixture(scope="class")
 def binary_mclp_problem(binary_coverage):
     return Model.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5}).problem
+
+
+@pytest.fixture(scope="class")
+def mclp_model(binary_coverage, binary_coverage2):
+    return Model.mclp([binary_coverage, binary_coverage2], max_supply={binary_coverage: 5, binary_coverage2: 10})
+
+
+@pytest.fixture(scope="class")
+def lscp_model(binary_coverage, binary_coverage2):
+    return Model.lscp([binary_coverage, binary_coverage2])
+
+
+@pytest.fixture(scope="class")
+def mclp_model_solved(mclp_model):
+    mclp_model.solve(GLPK())
+    return mclp_model
