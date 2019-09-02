@@ -1,23 +1,26 @@
 import pulp
 import pytest
 import math
+from allagash.model import Model
 from allagash.solution import InfeasibleException, UndefinedException
 
 
 class TestMCLP:
 
-    @pytest.mark.usefixtures("demand_points", "facility_service_areas", "binary_coverage")
-    def test_single_supply(self, demand_points, facility_service_areas, binary_coverage):
-        model = binary_coverage.create_model('mclp', max_supply={facility_service_areas: 5})
-        solution = model.solve(pulp.GLPK())
-        coverage = math.ceil((solution.covered_demand()["Population"].sum() / demand_points.df["Population"].sum()) * 100)
+    @pytest.mark.usefixtures("demand_points_dataframe", "binary_coverage")
+    def test_single_supply(self, demand_points_dataframe, binary_coverage):
+        model = Model.mclp(binary_coverage, max_supply={binary_coverage: 5})
+        solution = model.solve(pulp.GLPK(msg=0))
+        res = demand_points_dataframe.query(f"GEOID10 in ({[f'{i}' for i in solution.covered_demand(binary_coverage)]})")
+        coverage = math.ceil(res["Population"].sum() / demand_points_dataframe["Population"].sum() * 100)
         assert coverage == 53
 
-    @pytest.mark.usefixtures("demand_points", "facility_service_areas", "facility2_service_areas", "binary_coverage_multiple_supply")
-    def test_multiple_supply(self, demand_points, facility_service_areas, facility2_service_areas, binary_coverage_multiple_supply):
-        model = binary_coverage_multiple_supply.create_model('mclp', max_supply={facility_service_areas: 5, facility2_service_areas: 10})
+    @pytest.mark.usefixtures("demand_points_dataframe", "binary_coverage", "binary_coverage2")
+    def test_multiple_supply(self, demand_points_dataframe, binary_coverage, binary_coverage2):
+        model = Model.mclp([binary_coverage, binary_coverage2], max_supply={binary_coverage: 5, binary_coverage2: 10})
         solution = model.solve(pulp.GLPK())
-        coverage = math.ceil((solution.covered_demand()["Population"].sum() / demand_points.df["Population"].sum()) * 100)
+        res = demand_points_dataframe.query(f"GEOID10 in ({[f'{i}' for i in solution.covered_demand(binary_coverage)]})")
+        coverage = math.ceil(res["Population"].sum() / demand_points_dataframe["Population"].sum() * 100)
         assert coverage == 96
 
 
@@ -25,13 +28,19 @@ class TestLSCP:
 
     @pytest.mark.usefixtures("binary_coverage")
     def test_single_supply(self, binary_coverage):
-        model = binary_coverage.create_model('lscp')
+        model = Model.lscp(binary_coverage)
         with pytest.raises((InfeasibleException, UndefinedException)) as e:
             model.solve(pulp.GLPK())
 
-    @pytest.mark.usefixtures("demand_points", "binary_coverage_multiple_supply")
-    def test_multiple_supply(self, demand_points, binary_coverage_multiple_supply):
-        model = binary_coverage_multiple_supply.create_model('lscp')
+    @pytest.mark.usefixtures("demand_points_dataframe", "binary_coverage", "binary_coverage2")
+    def test_multiple_supply(self, demand_points_dataframe, binary_coverage, binary_coverage2):
+        model = Model.lscp([binary_coverage, binary_coverage2])
         solution = model.solve(pulp.GLPK())
-        coverage = math.ceil((solution.covered_demand()["Population"].sum() / demand_points.df["Population"].sum()) * 100)
-        assert coverage == 100
+        selected_locations = solution.selected_supply(binary_coverage)
+        selected_locations2 = solution.selected_supply(binary_coverage2)
+        covered_demand = demand_points_dataframe.query(
+            f"GEOID10 in ({[f'{i}' for i in solution.covered_demand(binary_coverage)]})")
+        coverage = math.ceil((covered_demand[binary_coverage.demand_col].sum() / demand_points_dataframe[binary_coverage.demand_col].sum()) * 100)
+        assert (len(selected_locations) == 5)
+        assert (len(selected_locations2) == 19)
+        assert (coverage == 100)

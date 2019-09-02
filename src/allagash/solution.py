@@ -25,49 +25,35 @@ class Solution:
         """
         return self._model
 
-    def selected_supply(self, supply_name, operation=operator.eq, value=1):
-        """
-        Gets the list or dataframe represnting the supply locations that were selected when the optimization problem was solved.
-
-        :param ~allagash.dataset.SupplyDataset supply_dataset: The supply dataset that selected locations may be found in
-        :param function operation: The operation to use when determining whether a location was selected
-        :param int value: The value to apply the operation to
-        :param str output_format: The format of the return value. Options include `dataframe` and `list`.
-        :return: The list of location ids or a geodataframe of the selected locations
-        :rtype: ~geopandas.GeoDataFrame or list
-        """
-        if not isinstance(supply_name, str):
-            raise TypeError(f"Expected 'str' type for supply_name, got '{type(supply_name)}'")
+    def selected_supply(self, coverage, operation=operator.eq, value=1):
+        from allagash.coverage import Coverage
+        if not isinstance(coverage, Coverage):
+            raise TypeError(f"Expected 'Coverage' type for coverage, got '{type(coverage)}'")
         if not callable(operation):
             raise TypeError(f"Expected callable for operation, got '{type(operation)}'")
         if not isinstance(value, (int, float)):
             raise TypeError(f"Expected 'int' or 'float' for value, got '{type(value)}'")
         ids = []
         for var in self._problem.variables():
-            if var.name.split(self._model.delineator)[0] == supply_name:
+            if var.name.split(self._model.delineator)[0] == coverage.supply_name:
                 if operation(var.varValue, value):
                     ids.append(var.name.split(self._model.delineator)[1])
         return ids
 
-    def covered_demand(self, demand_name):
-        """
-
-        :param str output_format: The format of the return value. Options include `dataframe` and `list`.
-        :return: The list of location ids or a geodataframe of the covered locations
-        :rtype: ~geopandas.GeoDataFrame or list
-        """
-        if not isinstance(demand_name, str):
-            raise TypeError(f"Expected 'str' for demand_name, got '{type(demand_name)}'")
+    def covered_demand(self, coverage):
+        from allagash.coverage import Coverage
+        if not isinstance(coverage, Coverage):
+            raise TypeError(f"Expected 'Coverage' for coverage, got '{type(coverage)}'")
         if self._model.model_type == 'lscp':
             for c in self.model.coverages:
-                if c.demand_name == demand_name:
+                if c.demand_name == c.demand_name:
                     return c.df.index.tolist()
             else:
-                raise ValueError(f"Unable to find demand named '{demand_name}'")
+                raise ValueError(f"Unable to find demand named '{coverage.demand_name}'")
         else:
             ids = []
             for var in self._problem.variables():
-                if var.name.split(self._model.delineator)[0] == demand_name:
+                if var.name.split(self._model.delineator)[0] == coverage.demand_name:
                     if var.varValue >= 1:
                         ids.append(var.name.split(self._model.delineator)[1])
             return ids

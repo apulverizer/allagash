@@ -192,7 +192,7 @@ class Model:
                 if d not in demands:
                     demands[d] = []
                 query = f"{coverages[0].df.index.name} == '{d}'"
-                v = coverages[0].df.query(query)[coverages[0].demand_col].tolist()[0]
+                v = c.df.query(query)[c.demand_col].tolist()[0]
                 demands[d].append(v * demand_var)
         to_sum = []
         for k, v in demands.items():
@@ -224,5 +224,5 @@ class Model:
             to_sum = []
             for k, v in supply_vars[c.supply_name].items():
                 to_sum.append(v)
-            prob += pulp.lpSum(to_sum) <= max_supply[c.supply_name], f"Num{delineator}{c.supply_name}"
+            prob += pulp.lpSum(to_sum) <= max_supply[c], f"Num{delineator}{c.supply_name}"
         return prob

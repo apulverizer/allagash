@@ -1,6 +1,5 @@
 import pytest
 import geopandas
-from allagash import DemandDataset, SupplyDataset
 from allagash import Coverage
 from allagash import Model
 from allagash import Solution
@@ -26,51 +25,24 @@ def facility2_service_areas_dataframe():
 
 
 @pytest.fixture(scope="class")
-def demand_points(demand_points_dataframe):
-    return DemandDataset(demand_points_dataframe, "GEOID10", "Population")
+def binary_coverage(demand_points_dataframe, facility_service_areas_dataframe):
+    return Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe, "GEOID10", "ORIG_ID",
+                                       demand_col="Population",
+                                       demand_name="demand")
 
 
 @pytest.fixture(scope="class")
-def facility_service_areas(facility_service_areas_dataframe):
-    return SupplyDataset(facility_service_areas_dataframe, "ORIG_ID")
-
-
-@pytest.fixture(scope="class")
-def facility2_service_areas(facility2_service_areas_dataframe):
-    return SupplyDataset(facility2_service_areas_dataframe, "ORIG_ID")
-
-
-@pytest.fixture(scope="class")
-def binary_coverage(demand_points, facility_service_areas):
-    return Coverage(demand_points, facility_service_areas, 'binary')
-
-
-@pytest.fixture(scope="class")
-def binary_coverage_multiple_supply(demand_points, facility_service_areas, facility2_service_areas):
-    return Coverage(demand_points, [facility_service_areas, facility2_service_areas], 'binary')
-
-
-@pytest.fixture(scope="class")
-def coverage_dataframe(demand_points, facility_service_areas):
-    return Coverage(demand_points, facility_service_areas)._coverage[facility_service_areas]
+def binary_coverage2(demand_points_dataframe, facility2_service_areas_dataframe):
+    return Coverage.from_geodataframes(demand_points_dataframe, facility2_service_areas_dataframe, "GEOID10", "ORIG_ID",
+                                       demand_col="Population",
+                                       demand_name="demand")
 
 
 @pytest.fixture(scope="class")
 def binary_lscp_problem(binary_coverage):
-    return binary_coverage._generate_lscp_problem()
+    return Model.lscp(binary_coverage)
 
 
 @pytest.fixture(scope="class")
 def binary_mclp_problem(binary_coverage):
-    return binary_coverage._generate_mclp_problem(max_supply={binary_coverage.supply_datasets[0]: 5})
-
-
-@pytest.fixture(scope="class")
-def mclp_model(binary_mclp_problem, binary_coverage):
-    return Model(binary_mclp_problem, binary_coverage, 'mclp')
-
-
-@pytest.fixture(scope="class")
-def mclp_solution(mclp_model):
-    mclp_model.solve(GLPK())
-    return Solution(mclp_model)
+    return Model.mclp(binary_coverage, max_supply={binary_coverage.supply_name: 5})
