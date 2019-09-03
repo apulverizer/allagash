@@ -1,5 +1,5 @@
 # Set the base image to Ubuntu
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:4.7.10
 
 # File Author / Maintainer
 MAINTAINER Aaron Pulver <apulverizer@gmail.com>
@@ -34,21 +34,19 @@ RUN ./configure \
 ENV HOME /home/allagash-user
 RUN useradd --create-home --home-dir $HOME allagash-user\
     && chmod -R u+rwx $HOME\
-    && chown -R allagash-user:allagash-user $HOME
+    && chown -R allagash-user:allagash-user $HOME\
+    && chown -R allagash-user:allagash-user /opt/conda
 
 # switch back to user
-WORKDIR $HOME
 USER allagash-user
-
 RUN mkdir $HOME/allagash
 WORKDIR $HOME/allagash
 
 # Configure conda env
-COPY --chown=allagash-user:allagash-user environment.yml environment.yml
-RUN conda env create -f environment.yml\
-    && rm -rf environment.yml
+RUN conda create -n allagash python=3.7 \
+    && conda install --name allagash -y geopandas=0.4.1 jupyter=1.0.0 matplotlib=3.1.1 pytest=5.0.1 \
+    && /opt/conda/envs/allagash/bin/pip install pulp==1.6.10 nbval==0.9.2 \
+    && /opt/conda/envs/allagash/bin/pip install -i https://test.pypi.org/simple/ Allagash --no-deps
+
 COPY --chown=allagash-user:allagash-user src-doc/examples examples
-COPY --chown=allagash-user:allagash-user src src
-RUN $HOME/.conda/envs/allagash/bin/pip install ./src --no-deps\
-    && rm -rf src
-ENV PATH $HOME/.conda/envs/allagash/bin:$PATH
+ENV PATH /opt/conda/envs/allagash/bin:$PATH
