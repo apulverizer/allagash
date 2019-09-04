@@ -1,20 +1,21 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='Allagash',
-    version='0.0.1',
-    description='A Python Spatial Optimization Library',
-    author='Aaron Pulver',
-    author_email='apulverizer@gmail.com',
-    url='https://github.com/apulverizer/allagash',
-    packages=['allagash'],
-    license='MIT',
-    install_requires=[
-        'pulp>=1.6.1',
-        'pyshp==1.2.11',
-        'geopandas==0.4.1'
-    ],
-    classifiers=[
-      'Intended Audience :: Developers/Researchers',
-      'Programming Language :: Python :: 3.6'
-    ]
- )
+      version='0.0.3',
+      description='A Python Spatial Optimization Library',
+      long_description='A spatial optimization library for covering problems.',
+      author='Aaron Pulver',
+      author_email='apulverizer@gmail.com',
+      url='https://github.com/apulverizer/allagash',
+      packages=['allagash'],
+      license='MIT',
+      data_files=[("", ["../README.md"])],
+      install_requires=[
+          'pulp~=1.6.1',
+          'geopandas~=0.4.1'
+      ],
+      classifiers=[
+          'Intended Audience :: Science/Research',
+          'Programming Language :: Python :: 3'
+      ]
+      )

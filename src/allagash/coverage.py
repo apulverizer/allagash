@@ -1,154 +1,174 @@
-from allagash.dataset import SupplyDataset
-from allagash.model import Model, ModelType
 import pandas as pd
-import pulp
-from enum import Enum
-
-
-class CoverageType(Enum):
-    BINARY = 0
-    PARTIAL = 1
-    TRAUMAH = 2
+import random
+import string
 
 
 class Coverage:
-    def __init__(self, demand_dataset, supply_datasets, coverage_type, delineator="$", generate_coverage=True):
-        self.demand_dataset = demand_dataset
-        self.delineator = delineator
-        self._coverage = {}
-        if isinstance(supply_datasets, SupplyDataset):
-            self.supply_datasets = [supply_datasets]
+    def __init__(self, dataframe, demand_col=None, demand_name=None, supply_name=None, coverage_type="binary"):
+        """
+        An object that stores the relationship between a set of demand locations and a set of supply locations.
+        Use this initializer if the coverage matrix has already been created, otherwise this can be created from two
+        geodataframes using the :meth:`~allagash.coverage.Coverage.from_geodataframes` factory method.
+
+        .. code-block:: python
+
+            Coverage.from_geodataframes(df1, df2, "Demand_Id", "Supply_Id")
+
+        :param ~pandas.DataFrame dataframe: A dataframe containing a matrix of demand (rows) and supply (columns).
+                                        An additional column containing the demand values can optionally be provided.
+        :param str demand_col: (optional) The name of the column storing the demand value.
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
+        :param str coverage_type: (optional) The type of coverage this represents (optional). If not supplied, the default is
+                                  "binary". Options are "binary" and "partial".
+        """
+        self._validate_init(coverage_type, dataframe, demand_col, demand_name, supply_name)
+        self._demand_col = demand_col
+        self._dataframe = dataframe
+        if not demand_name:
+            self._demand_name = ''.join(random.choices(string.ascii_uppercase, k=6))
         else:
-            self.supply_datasets = supply_datasets
-        self.coverage_type = coverage_type
-        if generate_coverage:
-            if self.coverage_type == CoverageType.BINARY:
-                self._generate_binary_coverage()
-            elif self.coverage_type == CoverageType.PARTIAL:
-                self._generate_partial_coverage()
+            self._demand_name = demand_name
+        if not supply_name:
+            self._supply_name = ''.join(random.choices(string.ascii_uppercase, k=6))
+        else:
+            self._supply_name = supply_name
+        self._coverage_type = coverage_type.lower()
 
     @staticmethod
-    def from_existing_dataframes(demand_dataset, supply_coverage_mapping, coverage_type, delineator="$"):
-        c = Coverage(demand_dataset, [], coverage_type, delineator=delineator, generate_coverage=False)
-        for supply_dataset, dataframe in supply_coverage_mapping.items():
-            c.supply_datasets.append(supply_dataset)
-            c._coverage[supply_dataset] = dataframe
-        return c
+    def _validate_init(coverage_type, dataframe, demand_col, demand_name, supply_name):
+        if not isinstance(dataframe, pd.DataFrame):
+            raise TypeError(f"Expected 'Dataframe' type for dataframe, got '{type(dataframe)}'")
+        if not isinstance(demand_col, str) and demand_col is not None:
+            raise TypeError(f"Expected 'str' type for demand_col, got '{type(demand_col)}'")
+        if not isinstance(demand_name, str) and demand_name is not None:
+            raise TypeError(f"Expected 'str' type for demand_name, got '{type(demand_name)}'")
+        if not isinstance(supply_name, str) and supply_name is not None:
+            raise TypeError(f"Expected 'str' type for supply_name, got '{type(supply_name)}'")
+        if not isinstance(coverage_type, str):
+            raise TypeError(f"Expected 'str' type for coverage_type, got '{type(coverage_type)}'")
+        if demand_col and demand_col not in dataframe.columns:
+            raise ValueError(f"'{demand_col}' not in dataframe")
+        if coverage_type.lower() not in ("binary", "partial"):
+            raise ValueError(f"Invalid coverage type '{coverage_type}'")
+        if coverage_type.lower() == "partial" and demand_col is None:
+            raise ValueError(f"'demand_col' is required when generating partial coverage")
 
-    def create_model(self, model_type, **kwargs):
-        if model_type == ModelType.LSCP:
-            return self._generate_lscp(**kwargs)
-        elif model_type == ModelType.MCLP:
-            return self._generate_mclp(**kwargs)
+    @property
+    def df(self):
+        """
 
-    def _generate_lscp(self, **kwargs):
-        demand_vars = {}
-        for _, row in self.demand_dataset.df.iterrows():
-            name = f"{self.demand_dataset.name}{self.delineator}{row[self.demand_dataset.unique_field]}"
-            demand_vars[name] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+        :return: The geodataframe the dataset is based on
+        :rtype: ~geopandas.GeoDataFrame
+        """
+        return self._dataframe
 
-        supply_vars = {}
-        for supply_dataset in self.supply_datasets:
-            for _, row in supply_dataset.df.iterrows():
-                name = f"{supply_dataset.name}{self.delineator}{row[supply_dataset.unique_field]}"
-                supply_vars[name] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+    @property
+    def demand_name(self):
+        """
 
-        prob = pulp.LpProblem("LSCP", pulp.LpMinimize)
-        to_sum = []
-        for _, v in supply_vars.items():
-            to_sum.append(v)
-        prob += pulp.lpSum(to_sum)
+        :return: The name of the demand
+        :rtype: str
+        """
+        return self._demand_name
 
-        for _, demand in self.demand_dataset.df.iterrows():
-            to_sum = []
-            for supply, coverage in self._coverage.items():
-                rows = coverage.loc[coverage[self.demand_dataset.unique_field] == demand[self.demand_dataset.unique_field]].T
-                for i, row in rows.iloc[1:].iterrows():
-                    if row.values[0] is True:
-                        name = f"{supply.name}{self.delineator}{i}"
-                        to_sum.append(supply_vars[name])
-            if not to_sum:
-                to_sum = [pulp.LpVariable(f"__dummy{self.delineator}{demand[self.demand_dataset.unique_field]}", 0, 0, pulp.LpInteger)]
-            prob += pulp.lpSum(to_sum) >= 1, f"D{demand[self.demand_dataset.unique_field]}"
-        return Model(prob, self, ModelType.LSCP)
+    @property
+    def supply_name(self):
+        """
 
-    def _generate_mclp(self, **kwargs):
-        max_supply = kwargs['max_supply']
-        demand_vars = {}
-        for _, row in self.demand_dataset.df.iterrows():
-            name = f"{self.demand_dataset.name}{self.delineator}{row[self.demand_dataset.unique_field]}"
-            demand_vars[name] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+        :return: The name of the supply
+        :rtype: str
+        """
+        return self._supply_name
 
-        supply_vars = {}
-        for supply_dataset in self.supply_datasets:
-            for _, row in supply_dataset.df.iterrows():
-                name = f"{supply_dataset.name}{self.delineator}{row[supply_dataset.unique_field]}"
-                supply_vars[name] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+    @property
+    def coverage_type(self):
+        """
 
-        # add objective
-        prob = pulp.LpProblem("MCLP", pulp.LpMaximize)
-        to_sum = []
-        for _, demand_var in demand_vars.items():
-            d = demand_var.name.split(self.delineator)[1]
-            query = f"{self.demand_dataset.unique_field} == '{d}'"
-            v = self.demand_dataset.df.query(query)[self.demand_dataset._demand_field].tolist()[0]
-            to_sum.append(v * demand_var)
-        prob += pulp.lpSum(to_sum)
+        :return: The type of coverage
+        :rtype: str
+        """
+        return self._coverage_type
 
-        # add coverage constraints
-        for _, demand in self.demand_dataset.df.iterrows():
-            to_sum = []
-            for supply, coverage in self._coverage.items():
-                rows = coverage.loc[
-                    coverage[self.demand_dataset.unique_field] == demand[self.demand_dataset.unique_field]].T
-                for i, row in rows.iloc[1:].iterrows():
-                    if row.values[0] is True:
-                        name = f"{supply.name}{self.delineator}{i}"
-                        to_sum.append(supply_vars[name])
-            demand_name = f"{self.demand_dataset.name}{self.delineator}{demand[self.demand_dataset.unique_field]}"
-            prob += pulp.lpSum(to_sum) - demand_vars[demand_name] >= 0, f"D{demand[self.demand_dataset.unique_field]}"
+    @property
+    def demand_col(self):
+        """
 
-        # Number of supply locations
-        for supply_dataset in self.supply_datasets:
-            to_sum = []
-            for _, row in supply_dataset.df.iterrows():
-                name = f"{supply_dataset.name}{self.delineator}{row[supply_dataset.unique_field]}"
-                to_sum.append(supply_vars[name])
-            prob += pulp.lpSum(to_sum) <= max_supply[supply_dataset], f"Num{self.delineator}{supply_dataset.name}"
-        return Model(prob, self, ModelType.MCLP)
+        :return: The name of the demand column in the underlying dataframe
+        :rtype: str or None
+        """
+        return self._demand_col
 
-    def _generate_binary_coverage(self):
-        self._coverage = {}
-        for s in self.supply_datasets:
-            df = pd.DataFrame(columns=s.df[s.unique_field])
-            df.insert(0, self.demand_dataset.unique_field, value=None)
+    @classmethod
+    def from_geodataframes(cls, demand_df, supply_df, demand_id_col, supply_id_col, demand_name=None, supply_name=None, demand_col=None, coverage_type="binary"):
+        """
+        Creates a new Coverage from two GeoDataFrames representing the demand and supply locations. The coverage
+        is determined by intersecting the two dataframes.
 
-            data = []
-            for _, row in self.demand_dataset.df.iterrows():
-                contains = s.df.geometry.contains(row.geometry).tolist()
-                r = [row[self.demand_dataset.unique_field]]
-                r.extend(contains)
-                data.append(r)
-            columns = s.df[s.unique_field].tolist()
-            columns.insert(0, self.demand_dataset.unique_field)
-            df = pd.DataFrame.from_records(data, columns=columns)
-            self._coverage[s] = df
+        :param ~geopandas.GeoDataFrame demand_df: The GeoDataFrame containing the demand locations
+        :param ~geopandas.GeoDataFrame supply_df: The GeoDataFrame containing the supply locations
+        :param str demand_id_col: The name of the column that has unique identifiers for the demand locations
+        :param str supply_id_col: The name of the column that has unique identifiers for the supply locations
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
+        :param str demand_col: (optional) The name of the column that stores the amount of demand for the demand
+                                          locations. Required if generating partial coverage.
+        :param str coverage_type: (optional) The type of coverage this represents. If not supplied, the default is
+                                  "binary". Options are "binary" and "partial".
+        :return:
+        """
+        cls._validate_from_geodataframes(coverage_type, demand_col, demand_df, demand_id_col, demand_name, supply_df,
+                                         supply_id_col)
 
-    def _generate_partial_coverage(self):
-        self._coverage = {}
-        for s in self.supply_datasets:
-            df = pd.DataFrame(columns=s.df[s.unique_field])
-            df.insert(0, self.demand_dataset.unique_field, value=None)
-
-            data = []
-            for _, row in self.demand_dataset.df.iterrows():
+        data = []
+        if coverage_type.lower() == 'binary':
+            for index, row in demand_df.iterrows():
+                contains = supply_df.geometry.contains(row.geometry).tolist()
+                if demand_col:
+                    contains.insert(0, row[demand_col])
+                data.append(contains)
+        elif coverage_type.lower() == 'partial':
+            for index, row in demand_df.iterrows():
                 demand_area = row.geometry.area
-                intersection_area = s.df.geometry.intersection(row.geometry).geometry.area
-                partial_coverage = ((intersection_area / demand_area) * row[self.demand_dataset._demand_field]).tolist()
-                r = [row[self.demand_dataset.unique_field]]
-                r.extend(partial_coverage)
-                data.append(r)
-            columns = s.df[s.unique_field].tolist()
-            columns.insert(0, self.demand_dataset.unique_field)
-            df = pd.DataFrame.from_records(data, columns=columns)
-            self._coverage[s] = df
+                intersection_area = supply_df.geometry.intersection(row.geometry).geometry.area
+                partial_coverage = ((intersection_area / demand_area) * row[demand_col]).tolist()
+                if demand_col:
+                    partial_coverage.insert(0, row[demand_col])
+                data.append(partial_coverage)
+        else:
+            raise ValueError(f"Invalid coverage type '{coverage_type}'")
+        columns = supply_df[supply_id_col].tolist()
+        if demand_col:
+            columns.insert(0, demand_col)
+        df = pd.DataFrame.from_records(data, index=demand_df[demand_id_col], columns=columns)
+        return Coverage(df,
+                        demand_col=demand_col,
+                        demand_name=demand_name,
+                        supply_name=supply_name,
+                        coverage_type=coverage_type)
+
+    @classmethod
+    def _validate_from_geodataframes(cls, coverage_type, demand_col, demand_df, demand_id_col, demand_name, supply_df,
+                                     supply_id_col):
+        if not isinstance(demand_df, pd.DataFrame):
+            raise TypeError(f"Expected 'Dataframe' type for demand_df, got '{type(demand_df)}'")
+        if not isinstance(supply_df, pd.DataFrame):
+            raise TypeError(f"Expected 'Dataframe' type for supply_df, got '{type(supply_df)}'")
+        if not isinstance(demand_id_col, str):
+            raise TypeError(f"Expected 'str' type for demand_id_col, got '{type(demand_id_col)}'")
+        if not isinstance(supply_id_col, str):
+            raise TypeError(f"Expected 'str' type for demand_id_col, got '{type(supply_id_col)}'")
+        if not isinstance(demand_name, str) and demand_name is not None:
+            raise TypeError(f"Expected 'str' type for demand_name, got '{type(demand_name)}'")
+        if not isinstance(coverage_type, str):
+            raise TypeError(f"Expected 'str' type for coverage_type, got '{type(coverage_type)}'")
+        if demand_col and demand_col not in demand_df.columns:
+            raise ValueError(f"'{demand_col}' not in dataframe")
+        if demand_id_col and demand_id_col not in demand_df.columns:
+            raise ValueError(f"'{demand_id_col}' not in dataframe")
+        if supply_id_col and supply_id_col not in supply_df.columns:
+            raise ValueError(f"'{supply_id_col}' not in dataframe")
+        if coverage_type.lower() not in ("binary", "partial"):
+            raise ValueError(f"Invalid coverage type '{coverage_type}'")
+        if coverage_type.lower() == "partial" and demand_col is None:
+            raise ValueError(f"demand_col is required when generating partial coverage")
