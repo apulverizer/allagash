@@ -43,13 +43,11 @@ RUN mkdir $HOME/allagash
 WORKDIR $HOME/allagash
 
 COPY --chown=allagash-user:allagash-user environment.yml environment.yml
-
-# Configure conda env
-RUN conda env create -f environment.yml
-
 COPY --chown=allagash-user:allagash-user src src
 COPY --chown=allagash-user:allagash-user tests tests
 COPY --chown=allagash-user:allagash-user src-doc src-doc
 
-RUN /opt/conda/envs/allagash/bin/pip install -e ./src --no-deps
+# Configure conda env
+RUN conda env create -f environment.yml \
+    && /opt/conda/envs/allagash/bin/pip install -e ./src --no-deps
 ENV PATH /opt/conda/envs/allagash/bin:$PATH
