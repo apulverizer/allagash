@@ -22,6 +22,6 @@ jobs:
     - name: Build the Docker image for testing
       run: docker build . --file test.Dockerfile --tag apulverizer/allagash:test
     - name: Run tests in docker container
-      run: docker run -i -t --user=allagash-user apulverizer/allagash:test /bin/bash -c "py.test --nbval"
+      run: docker run --user=allagash-user apulverizer/allagash:test /bin/bash -c "py.test --nbval"
     - name: Build documentation
-      run: docker run -i -t --user=allagash-user apulverizer/allagash:test /bin/bash -c "sphinx-build -b html ./src-doc ./docs -a"
+      run: docker run --user=allagash-user apulverizer/allagash:test /bin/bash -c "sphinx-build -b html ./src-doc ./docs -a"
