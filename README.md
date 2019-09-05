@@ -15,7 +15,7 @@ A spatial optimization library for covering problems
 
 You should now be able to run the example notebooks.
 
-### Running Tests
+### Running Tests Locally
 1. Run tests `pytest --nbval`
 
 ### Building Documentation
@@ -31,4 +31,10 @@ You can build the local docker image that includes Allagash, Python, Jupyter, GL
 
 You should now be able to run the example notebooks.
 
-You can test the notebooks as well by running `docker run -i -t --user=allagash-user -p 8888:8888 apulverizer/allagash:latest /bin/bash -c "py.test --nbval"`
+You can test the notebooks as well by running `docker run --user=allagash-user apulverizer/allagash:latest /bin/bash -c "py.test --nbval"`
+
+### Running Tests with Docker
+You can build a docker container that will run the tests based on any local changes
+
+1. `docker build . --file integration.Dockerfile --tag apulverizer/allagash:integration`
+2. `docker run --user=allagash-user apulverizer/allagash:integration /bin/bash -c "py.test --nbval"`

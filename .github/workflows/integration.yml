@@ -1,0 +1,27 @@
+name: integration
+
+on:
+  pull_request:
+    branches:
+    - develop
+    - master
+    -
+  push:
+    branches:
+    - develop
+    - master
+
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image for testing
+      run: docker build . --file integration.Dockerfile --tag apulverizer/allagash:integration
+    - name: Run tests in docker container
+      run: docker run --user=allagash-user apulverizer/allagash:integration /bin/bash -c "py.test --nbval"
+    - name: Build documentation
+      run: docker run --user=allagash-user apulverizer/allagash:integration /bin/bash -c "sphinx-build -b html ./src-doc ./docs -a"
