@@ -5,6 +5,11 @@ on:
     branches:
     - develop
     - master
+    -
+  push:
+    branches:
+    - develop
+    - master
 
 jobs:
 
@@ -15,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image for testing
-      run: docker build . --file Dockerfile --tag apulverizer/allagash:test
+      run: docker build . --file test.Dockerfile --tag apulverizer/allagash:test
     - name: Run tests in docker container
       run: docker run -i -t --user=allagash-user apulverizer/allagash:test /bin/bash -c "py.test --nbval"
     - name: Build documentation
