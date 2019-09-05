@@ -9,7 +9,6 @@ setup(name='Allagash',
       url='https://github.com/apulverizer/allagash',
       packages=['allagash'],
       license='MIT',
-      data_files=[("", ["../README.md"])],
       install_requires=[
           'pulp~=1.6.1',
           'geopandas~=0.4.1'
