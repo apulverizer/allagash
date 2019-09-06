@@ -44,10 +44,10 @@ WORKDIR $HOME/allagash
 
 COPY --chown=allagash-user:allagash-user environment.yml environment.yml
 COPY --chown=allagash-user:allagash-user src src
-COPY --chown=allagash-user:allagash-user tests tests
-COPY --chown=allagash-user:allagash-user src-doc src-doc
 
 # Configure conda env
 RUN conda env create -f environment.yml \
-    && /opt/conda/envs/allagash/bin/pip install -e ./src --no-deps
+    && cd src \
+    && /opt/conda/envs/allagash/bin/python setup.py sdist bdist_wheel \
+    && /opt/conda/envs/allagash/bin/pip install allagash --no-deps --find-links dist
 ENV PATH /opt/conda/envs/allagash/bin:$PATH
