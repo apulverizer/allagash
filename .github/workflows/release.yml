@@ -1,0 +1,21 @@
+name: Upload Python Package
+
+on:
+#  release:
+#    types: [created]
+  push:
+    branches:
+    - aaron/auto-deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build docker image, build package, install package
+      run: docker build . --file build.Dockerfile --tag apulverizer/allagash:build
+    - name: Upload to PyPi
+      env:
+        PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build /bin/bash -c "twine upload -u $PYPI_USERNAME -p PYPI_PASSWORD -repository-url https://test.pypi.org/legacy/ dist/*"
