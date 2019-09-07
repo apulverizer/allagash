@@ -13,9 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build docker image, build package, install package
-      run: pip3 install setuptools
-        && VERSION=$(python3 ./src/setup.py --version)
-        && docker build . --file build.Dockerfile -t apulverizer/allagash:build -t apuverizer/allagash:$VERSION
+      run: docker build . --file build.Dockerfile -t apulverizer/allagash:build
     - name: Upload to PyPi
       env:
         PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
@@ -30,6 +28,7 @@ jobs:
       env:
         DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
         DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      run: echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+      run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python src/setup.py --version")
+        && echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
         && docker push apulverizer/allagash:$VERSION
         && docker push apulverizer/allagash:latest
