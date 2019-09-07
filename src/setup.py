@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='Allagash',
-      version='0.0.3',
+      version='0.0.4',
       description='A Python Spatial Optimization Library',
       long_description='A spatial optimization library for covering problems.',
       author='Aaron Pulver',
