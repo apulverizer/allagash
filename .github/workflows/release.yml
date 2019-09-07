@@ -27,5 +27,4 @@ jobs:
     - name: Test docker image
       run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
     - name: Deploy to docker hub
-      env:
       run: echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin && docker push apulverizer/allagash:$VERSION docker push apulverizer/allagash:latest
