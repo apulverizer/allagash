@@ -22,7 +22,7 @@ jobs:
     - name: Build public docker image
       run: docker build . --tag apulverizer/allagash:latest
     - name: Test docker image
-        run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
+      run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
     - name: Deploy to docker hub
       env:
         DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
