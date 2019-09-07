@@ -21,7 +21,8 @@ jobs:
       run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build
         /bin/bash -c "twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD --repository-url https://test.pypi.org/legacy/ dist/*"
     - name: Build public docker image
-      run: docker build . -t apulverizer/allagash:latest -t apuverizer/allagash:$VERSION
+      run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python src/setup.py --version")
+        && docker build . -t apulverizer/allagash:latest -t apuverizer/allagash:$VERSION
     - name: Test docker image
       run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
     - name: Deploy to docker hub
