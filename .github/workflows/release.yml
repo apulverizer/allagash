@@ -3,8 +3,8 @@ name: Upload Python Package
 on:
 #  release:
 #    types: [created]
-
-  branches:
+  push:
+    branches:
     - aaron/auto-deploy
 
 jobs:
