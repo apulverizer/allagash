@@ -1,5 +1,5 @@
-import pulp
 import operator
+import pulp
 from .coverage import Coverage
 
 
@@ -49,22 +49,6 @@ class Problem:
         :rtype: ~pulp.LpProblem
         """
         return self._pulp_problem
-
-    @property
-    def status(self):
-        s = self._pulp_problem.status
-        if s == 1:
-            return "optimal"
-        elif s == 0:
-            return "not solved"
-        elif s == -1:
-            return "infeasible"
-        elif s == -2:
-            return "unbounded"
-        elif s == -3:
-            return "undefined"
-        else:
-            return "unknown"
 
     @property
     def coverages(self):
@@ -282,7 +266,7 @@ class Problem:
         :return: The list of location ids of the selected locations
         :rtype: list
         """
-        if self.status != "optimal":
+        if self._pulp_problem.status != 1:
             raise RuntimeError("Problem not optimally solved yet")
         from allagash.coverage import Coverage
         if not isinstance(coverage, Coverage):
@@ -308,7 +292,7 @@ class Problem:
         :return: The list of location ids of the covered locations
         :rtype: list
         """
-        if self.status != "optimal":
+        if self._pulp_problem.status != 1:
             raise RuntimeError("Problem not optimally solved yet")
         from allagash.coverage import Coverage
         if not isinstance(coverage, Coverage):

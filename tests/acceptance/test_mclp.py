@@ -1,9 +1,9 @@
-from allagash.coverage import Coverage
-from allagash.problem import Problem
-import pulp
-import geopandas
 import math
 import os
+import geopandas
+import pulp
+from allagash.coverage import Coverage
+from allagash.problem import Problem
 
 
 class TestMCLP:

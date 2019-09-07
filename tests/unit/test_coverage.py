@@ -1,5 +1,5 @@
-from allagash.coverage import Coverage
 import pytest
+from allagash.coverage import Coverage
 
 
 class TestCoverage:
