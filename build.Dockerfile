@@ -1,5 +1,5 @@
 # Set the base image to Ubuntu
-FROM continuumio/miniconda3:4.7.10
+FROM continuumio/miniconda3:4.7.10 AS dependencies
 
 # File Author / Maintainer
 MAINTAINER Aaron Pulver <apulverizer@gmail.com>
@@ -30,6 +30,11 @@ RUN ./configure \
 	&& rm -rf /user/local/glpk-4.65.tar.gz \
 	&& apt-get clean
 
+FROM continuumio/miniconda3:4.7.10
+USER root
+COPY --from=dependencies /usr/bin/cbc /usr/bin/cbc
+COPY --from=dependencies /usr/local/bin/glpsol /usr/bin/glpsol
+
 # create a allagash user
 ENV HOME /home/allagash
 RUN useradd --create-home --home-dir $HOME allagash\
@@ -48,5 +53,6 @@ COPY --chown=allagash:allagash src src
 RUN conda env create -f environment.yml \
     && cd src \
     && /opt/conda/envs/allagash/bin/python setup.py sdist bdist_wheel \
-    && /opt/conda/envs/allagash/bin/pip install allagash --no-deps --find-links dist
+    && /opt/conda/envs/allagash/bin/pip install allagash --no-deps --find-links dist \
+    && conda clean -a -f -y
 ENV PATH /opt/conda/envs/allagash/bin:$PATH

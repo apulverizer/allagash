@@ -1,5 +1,5 @@
 # Set the base image to Ubuntu
-FROM continuumio/miniconda3:4.7.10
+FROM continuumio/miniconda3:4.7.10 AS dependencies
 
 # File Author / Maintainer
 MAINTAINER Aaron Pulver <apulverizer@gmail.com>
@@ -30,6 +30,11 @@ RUN ./configure \
 	&& rm -rf /user/local/glpk-4.65.tar.gz \
 	&& apt-get clean
 
+FROM continuumio/miniconda3:4.7.10
+USER root
+COPY --from=dependencies /usr/bin/cbc /usr/bin/cbc
+COPY --from=dependencies /usr/local/bin/glpsol /usr/bin/glpsol
+
 # create a allagash user
 ENV HOME /home/allagash
 RUN useradd --create-home --home-dir $HOME allagash\
@@ -45,7 +50,8 @@ WORKDIR $HOME
 RUN conda create -n allagash python=3.7 \
     && conda install --name allagash -y geopandas=0.4.1 jupyter=1.0.0 matplotlib=3.1.1 pytest=5.0.1 \
     && /opt/conda/envs/allagash/bin/pip install pulp==1.6.10 nbval==0.9.2 \
-    && /opt/conda/envs/allagash/bin/pip install -i https://test.pypi.org/simple/ Allagash --no-deps
+    && /opt/conda/envs/allagash/bin/pip install -i https://test.pypi.org/simple/ Allagash --no-deps \
+    && conda clean -a -f -y
 
 COPY --chown=allagash:allagash src-doc/examples examples
 ENV PATH /opt/conda/envs/allagash/bin:$PATH
