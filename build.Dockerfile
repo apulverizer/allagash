@@ -31,19 +31,18 @@ RUN ./configure \
 	&& apt-get clean
 
 # create a allagash user
-ENV HOME /home/allagash-user
-RUN useradd --create-home --home-dir $HOME allagash-user\
+ENV HOME /home/allagash
+RUN useradd --create-home --home-dir $HOME allagash\
     && chmod -R u+rwx $HOME\
-    && chown -R allagash-user:allagash-user $HOME\
-    && chown -R allagash-user:allagash-user /opt/conda
+    && chown -R allagash:allagash $HOME\
+    && chown -R allagash:allagash /opt/conda
 
 # switch back to user
-USER allagash-user
-RUN mkdir $HOME/allagash
-WORKDIR $HOME/allagash
+USER allagash
+WORKDIR $HOME
 
-COPY --chown=allagash-user:allagash-user environment.yml environment.yml
-COPY --chown=allagash-user:allagash-user src src
+COPY --chown=allagash:allagash environment.yml environment.yml
+COPY --chown=allagash:allagash src src
 
 # Configure conda env
 RUN conda env create -f environment.yml \

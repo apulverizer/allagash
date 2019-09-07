@@ -31,16 +31,15 @@ RUN ./configure \
 	&& apt-get clean
 
 # create a allagash user
-ENV HOME /home/allagash-user
-RUN useradd --create-home --home-dir $HOME allagash-user\
+ENV HOME /home/allagash
+RUN useradd --create-home --home-dir $HOME allagash\
     && chmod -R u+rwx $HOME\
-    && chown -R allagash-user:allagash-user $HOME\
-    && chown -R allagash-user:allagash-user /opt/conda
+    && chown -R allagash:allagash $HOME\
+    && chown -R allagash:allagash /opt/conda
 
 # switch back to user
-USER allagash-user
-RUN mkdir $HOME/allagash
-WORKDIR $HOME/allagash
+USER allagash
+WORKDIR $HOME
 
 # Configure conda env
 RUN conda create -n allagash python=3.7 \
@@ -48,5 +47,5 @@ RUN conda create -n allagash python=3.7 \
     && /opt/conda/envs/allagash/bin/pip install pulp==1.6.10 nbval==0.9.2 \
     && /opt/conda/envs/allagash/bin/pip install -i https://test.pypi.org/simple/ Allagash --no-deps
 
-COPY --chown=allagash-user:allagash-user src-doc/examples examples
+COPY --chown=allagash:allagash src-doc/examples examples
 ENV PATH /opt/conda/envs/allagash/bin:$PATH

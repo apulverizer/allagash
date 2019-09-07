@@ -22,6 +22,6 @@ jobs:
     - name: Build docker image, build package, install package
       run: docker build . --file build.Dockerfile --tag apulverizer/allagash:build
     - name: Run tests
-      run: docker run --user=allagash-user -v $PWD/tests:$PWD/tests -v $PWD/src-doc:$PWD/src-doc -w $PWD apulverizer/allagash:build /bin/bash -c "py.test --nbval"
+      run: docker run --user=allagash -v $PWD/tests:/home/allagash/tests -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "py.test --nbval"
     - name: Build documentation
-      run: docker run --user=allagash-user -v $PWD/src-doc:$PWD/src-doc -w $PWD apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc \$HOME/allagash/doc -a"
+      run: docker run --user=allagash -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
