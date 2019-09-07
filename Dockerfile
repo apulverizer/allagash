@@ -1,5 +1,5 @@
 # Set the base image to Ubuntu
-FROM continuumio/miniconda3:4.7.10 AS dependencies
+FROM continuumio/miniconda3:4.7.10
 
 # File Author / Maintainer
 MAINTAINER Aaron Pulver <apulverizer@gmail.com>
@@ -29,11 +29,6 @@ RUN ./configure \
 	&& ldconfig \
 	&& rm -rf /user/local/glpk-4.65.tar.gz \
 	&& apt-get clean
-
-FROM continuumio/miniconda3:4.7.10
-USER root
-COPY --from=dependencies /usr/bin/cbc /usr/bin/cbc
-COPY --from=dependencies /usr/local/bin/glpsol /usr/bin/glpsol
 
 # create a allagash user
 ENV HOME /home/allagash
