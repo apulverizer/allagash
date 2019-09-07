@@ -14,15 +14,15 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build docker image, build package, install package
       run: docker build . --file build.Dockerfile --tag apulverizer/allagash:build
-    - name: Build public docker image
-      run: docker build . --tag apulverizer/allagash:latest
-    - name: Test docker image
-      run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
     - name: Upload to PyPi
       env:
         PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
         PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build /bin/bash -c "twine upload -u $TEST_PYPI_USERNAME -p $TEST_PYPI_PASSWORD --repository-url https://test.pypi.org/legacy/ dist/*"
+    - name: Build public docker image
+      run: docker build . --tag apulverizer/allagash:latest
+    - name: Test docker image
+        run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
     - name: Deploy to docker hub
       env:
         DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
