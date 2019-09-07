@@ -3,8 +3,8 @@ name: Upload Python Package
 on:
 #  release:
 #    types: [created]
-  push:
-    branches:
+
+  branches:
     - aaron/auto-deploy
 
 jobs:
@@ -14,8 +14,17 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build docker image, build package, install package
       run: docker build . --file build.Dockerfile --tag apulverizer/allagash:build
+    - name: Build public docker image
+      run: docker build . --tag apulverizer/allagash:latest
+    - name: Test docker image
+      run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
     - name: Upload to PyPi
       env:
         PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
         PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build /bin/bash -c "twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD --repository-url https://test.pypi.org/legacy/ dist/*"
+    - name: Deploy to docker hub
+      env:
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      run: docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD && docker push apulverizer/allagash:test
