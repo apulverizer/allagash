@@ -1,9 +1,9 @@
-import pytest
+import os
 import geopandas
+from pulp.solvers import GLPK
+import pytest
 from allagash import Coverage
 from allagash import Problem
-from pulp.solvers import GLPK
-import os
 
 dir_name = os.path.dirname(__file__)
 

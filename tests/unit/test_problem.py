@@ -1,6 +1,6 @@
-from allagash.problem import Problem
 import pytest
 from pulp.solvers import GLPK
+from allagash.problem import Problem
 
 
 class TestProblem:

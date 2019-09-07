@@ -1,6 +1,6 @@
+import math
 import pulp
 import pytest
-import math
 from allagash.problem import Problem, InfeasibleException, UndefinedException
 
 

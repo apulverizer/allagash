@@ -1,10 +1,10 @@
-from allagash.coverage import Coverage
-from allagash.problem import Problem, InfeasibleException, UndefinedException
-import pulp
-import geopandas
 import math
 import os
+import geopandas
+import pulp
 import pytest
+from allagash.coverage import Coverage
+from allagash.problem import Problem, InfeasibleException, UndefinedException
 
 
 class TestLSCP:

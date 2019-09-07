@@ -19,7 +19,7 @@ You can launch a Jupyter notebook by running:
 .. code-block:: console
 
     docker pull allagash/apulverizer:latest
-    docker run -i -t --user=allagash-user -p 8888:8888 apulverizer/allagash:latest /bin/bash -c "jupyter notebook --ip='*' --port=8888 --no-browser"
+    docker run -i -t --user=allagash -p 8888:8888 apulverizer/allagash:latest /bin/bash -c "jupyter notebook --ip='*' --port=8888 --no-browser"
 
 Installing locally
 ------------------
