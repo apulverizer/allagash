@@ -12,19 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Build docker image, build package, install package
+      env:
+        VERSION: $(python3 ./src/setup.py --version)
+      run: docker build . --file build.Dockerfile -t apulverizer/allagash:build -t apuverizer/allagash:$VERSION
+    - name: Upload to PyPi
       env:
         PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
         PYPI_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
-        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-        DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        VERSION: $(python3 ./src/setup.py --version)
-    - name: Build docker image, build package, install package
-      run: docker build . --file build.Dockerfile -t apulverizer/allagash:build -t apuverizer/allagash:$VERSION
-    - name: Upload to PyPi
       run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build /bin/bash -c "twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD --repository-url https://test.pypi.org/legacy/ dist/*"
     - name: Build public docker image
-      run: docker build . --tag apulverizer/allagash:latest
+      run: docker build . -t apulverizer/allagash:latest -t apuverizer/allagash:$VERSION
     - name: Test docker image
       run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
     - name: Deploy to docker hub
+      env:
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
       run: echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin && docker push apulverizer/allagash:$VERSION docker push apulverizer/allagash:latest
