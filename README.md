@@ -33,6 +33,8 @@ You should now be able to run the example notebooks.
 
 You can test the notebooks as well by running `docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"`
 
+If you'd like to mount a directory of local data/files into the container, you can add `-v <your-local-dir>:/home/allagash/<dir-name>` when running `docker run`
+
 ### Running Tests with Docker
 You can build a docker container that will run the tests (mounted into the container)
 
