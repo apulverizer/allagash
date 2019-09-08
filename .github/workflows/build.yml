@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  pull_request:
+    branches:
+    - develop
+    - master
+
+  push:
+    branches:
+    - develop
+    - master
+
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build docker image, build package, install package
+      run: docker build . --file build.Dockerfile --tag apulverizer/allagash:build
+    - name: Run tests
+      run: docker run --user=allagash -v $PWD/tests:/home/allagash/tests -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "py.test --nbval"
+    - name: Build documentation
+      run: docker run --user=allagash -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
