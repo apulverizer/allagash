@@ -1,4 +1,4 @@
-name: Upload Python Package
+name: Deploy to PyPi and Docker Hub
 
 on:
   release:
