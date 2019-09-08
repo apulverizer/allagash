@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Maximum Coverage Location Problem (MCLP) &mdash; allagash 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="allagash.coverage module" href="allagash.coverage.html" />
+    <link rel="prev" title="Location Set Covering Problem (LSCP)" href="problems.lscp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> allagash
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Problems</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="problems.lscp.html">Location Set Covering Problem (LSCP)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Maximum Coverage Location Problem (MCLP)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source">Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="allagash.coverage.html">allagash.coverage module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="allagash.problem.html">allagash.problem module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">allagash</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Maximum Coverage Location Problem (MCLP)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/problems.mclp.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="maximum-coverage-location-problem-mclp">
+<h1>Maximum Coverage Location Problem (MCLP)<a class="headerlink" href="#maximum-coverage-location-problem-mclp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This problem is designed to maximize the total amount of demand serviced using a pre-determined number of facilities.
+To be considered covered, demand locations must be completely covered.
+It is common for polygon demand to be simplified to centroids for this problem.
+Polygons can also be considered covered however, if the entire polygon covered.
+For example, suppose your local town has funding to build 5 new libraries.
+Some GIS analysts perform a site suitability analysis and there are 200 possible locations to choose from.
+We can use the MCLP to find the 5 locations provide the most service to the population (centroids of Census block groups).</p>
+<p>Use this problem when:</p>
+<ul class="simple">
+<li><p>You have a pre-determined number of facilities to site</p></li>
+<li><p>You do not need to cover 100% of the demand</p></li>
+<li><p>You have point or polygon demand units that are either covered or not (no partial coverage)</p></li>
+</ul>
+</div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<p>Church, Richard, and Charles R. Velle. “The maximal covering location problem.” Papers in regional science 32.1 (1974): 101-118.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The following example show how an MCLP can be created and solved.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">allagash</span> <span class="kn">import</span> <span class="n">Coverage</span><span class="p">,</span> <span class="n">Problem</span>
+<span class="kn">import</span> <span class="nn">pulp</span>
+<span class="kn">import</span> <span class="nn">geopandas</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/demand_point.shp&quot;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/facility_service_areas.shp&quot;</span><span class="p">)</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/facility2_service_areas.shp&quot;</span><span class="p">)</span>
+<span class="n">coverage1</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_name</span><span class="o">=</span><span class="s2">&quot;demand&quot;</span><span class="p">)</span>
+<span class="n">coverage2</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_name</span><span class="o">=</span><span class="s2">&quot;demand&quot;</span><span class="p">)</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="o">.</span><span class="n">mclp</span><span class="p">([</span><span class="n">coverage1</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">],</span> <span class="n">max_supply</span><span class="o">=</span><span class="p">{</span><span class="n">coverage1</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">pulp</span><span class="o">.</span><span class="n">GLPK</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="allagash.coverage.html" class="btn btn-neutral float-right" title="allagash.coverage module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="problems.lscp.html" class="btn btn-neutral float-left" title="Location Set Covering Problem (LSCP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Aaron Pulver
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
