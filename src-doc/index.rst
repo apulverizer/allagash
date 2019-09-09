@@ -6,7 +6,7 @@
 Allagash |release|
 =============================
 
-Allagash can be used to generate and solve spatial optimization problems using `GeoPandas <http://geopandas.org>`_ and `PuLP <https://pythonhosted.org/PuLP/>`_.
+Allagash can be used to generate and solve spatial optimization problems using `GeoPandas <http://geopandas.org>`_ or the `ArcGIS API for Python <https://developers.arcgis.com/python/>`_  (if installed) in conjunction with `PuLP <https://pythonhosted.org/PuLP/>`_.
 
 The focus is on coverage problems though other optimization models may be added over time. Coverage modeling is generally used to find the best spatial configuration of a set of facilities that provide some level of service to units of demand. It is often necessary to “cover” demand within a prescribed time or distance.
 
