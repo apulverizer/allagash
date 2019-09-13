@@ -7,3 +7,4 @@ Examples
 
    examples/LSCP
    examples/MCLP
+   examples/Using ArcGIS
