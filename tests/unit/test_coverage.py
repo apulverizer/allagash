@@ -53,8 +53,31 @@ class TestCoverage:
                                         "GEOID10", "ORIG_ID")
         assert(isinstance(c, Coverage))
 
+    def test_from_coverage_dataframe_partial(self, demand_polygon_dataframe, facility_service_areas_dataframe):
+        c = Coverage.from_geodataframes(demand_polygon_dataframe, facility_service_areas_dataframe,
+                                        "GEOID10", "ORIG_ID", coverage_type="partial", demand_col="Population")
+        assert(isinstance(c, Coverage))
+        assert(c.coverage_type == "partial")
+
+    def test_from_spatially_enabled_dataframe(self, demand_points_sedf, facility_service_areas_sedf):
+        c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                                       "GEOID10", "ORIG_ID")
+        assert(isinstance(c, Coverage))
+
+    def test_from_spatially_enabled_dataframe_partial(self, demand_polygon_sedf, facility_service_areas_sedf):
+        c = Coverage.from_spatially_enabled_dataframes(demand_polygon_sedf, facility_service_areas_sedf,
+                                        "GEOID10", "ORIG_ID", coverage_type="partial", demand_col="Population")
+        assert(isinstance(c, Coverage))
+        assert(c.coverage_type == "partial")
+
     def test_from_coverage_dataframe_demand_name(self, demand_points_dataframe, facility_service_areas_dataframe):
         c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                        "GEOID10", "ORIG_ID", demand_name="test")
+        assert(isinstance(c, Coverage))
+        assert c.demand_name == "test"
+
+    def test_from_coverage_sedf_demand_name(self, demand_points_sedf, facility_service_areas_sedf):
+        c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
                                         "GEOID10", "ORIG_ID", demand_name="test")
         assert(isinstance(c, Coverage))
         assert c.demand_name == "test"
@@ -65,8 +88,20 @@ class TestCoverage:
         assert(isinstance(c, Coverage))
         assert c.supply_name == "test"
 
+    def test_from_coverage_sedf_supply_name(self, demand_points_sedf, facility_service_areas_sedf):
+        c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                        "GEOID10", "ORIG_ID", supply_name="test")
+        assert(isinstance(c, Coverage))
+        assert c.supply_name == "test"
+
     def test_from_coverage_dataframe_demand_col(self, demand_points_dataframe, facility_service_areas_dataframe):
         c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                        "GEOID10", "ORIG_ID", demand_col="Population")
+        assert(isinstance(c, Coverage))
+        assert c.demand_col == "Population"
+
+    def test_from_coverage_sedf_demand_col(self, demand_points_sedf, facility_service_areas_sedf):
+        c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
                                         "GEOID10", "ORIG_ID", demand_col="Population")
         assert(isinstance(c, Coverage))
         assert c.demand_col == "Population"
@@ -77,9 +112,21 @@ class TestCoverage:
                                             "GEOID10", "ORIG_ID", demand_col="test")
         assert(e.value.args[0] == "'test' not in dataframe")
 
+    def test_from_coverage_sedf_invalid_demand_col(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                            "GEOID10", "ORIG_ID", demand_col="test")
+        assert(e.value.args[0] == "'test' not in dataframe")
+
     def test_from_coverage_dataframe_invalid_coverage_type(self, demand_points_dataframe, facility_service_areas_dataframe):
         with pytest.raises(ValueError) as e:
             c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "GEOID10", "ORIG_ID", coverage_type="test")
+        assert(e.value.args[0] == "Invalid coverage type 'test'")
+
+    def test_from_coverage_sedf_invalid_coverage_type(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
                                             "GEOID10", "ORIG_ID", coverage_type="test")
         assert(e.value.args[0] == "Invalid coverage type 'test'")
 
@@ -89,9 +136,21 @@ class TestCoverage:
                                             "GEOID10", "ORIG_ID", coverage_type="partial")
         assert(e.value.args[0] == "demand_col is required when generating partial coverage")
 
+    def test_from_coverage_sedf_demand_col_required(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                            "GEOID10", "ORIG_ID", coverage_type="partial")
+        assert(e.value.args[0] == "demand_col is required when generating partial coverage")
+
     def test_from_coverage_dataframe_invalid_demand_df(self, facility_service_areas_dataframe):
         with pytest.raises(TypeError) as e:
             c = Coverage.from_geodataframes(None, facility_service_areas_dataframe,
+                                            "GEOID10", "ORIG_ID")
+        assert(e.value.args[0] == "Expected 'Dataframe' type for demand_df, got '<class 'NoneType'>'")
+
+    def test_from_coverage_sedf_invalid_demand_df(self, facility_service_areas_sedf):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(None, facility_service_areas_sedf,
                                             "GEOID10", "ORIG_ID")
         assert(e.value.args[0] == "Expected 'Dataframe' type for demand_df, got '<class 'NoneType'>'")
 
@@ -101,9 +160,21 @@ class TestCoverage:
                                             "GEOID10", "ORIG_ID")
         assert(e.value.args[0] == "Expected 'Dataframe' type for supply_df, got '<class 'NoneType'>'")
 
+    def test_from_coverage_sedf_invalid_supply_df(self, demand_points_sedf):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, None,
+                                            "GEOID10", "ORIG_ID")
+        assert(e.value.args[0] == "Expected 'Dataframe' type for supply_df, got '<class 'NoneType'>'")
+
     def test_from_coverage_dataframe_invalid_demand_id_col(self, demand_points_dataframe, facility_service_areas_dataframe):
         with pytest.raises(TypeError) as e:
             c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            None, "ORIG_ID")
+        assert(e.value.args[0] == "Expected 'str' type for demand_id_col, got '<class 'NoneType'>'")
+
+    def test_from_coverage_sedf_invalid_demand_id_col(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
                                             None, "ORIG_ID")
         assert(e.value.args[0] == "Expected 'str' type for demand_id_col, got '<class 'NoneType'>'")
 
@@ -113,9 +184,21 @@ class TestCoverage:
                                             "GEOID10", None)
         assert(e.value.args[0] == "Expected 'str' type for demand_id_col, got '<class 'NoneType'>'")
 
+    def test_from_coverage_sedf_invalid_supply_id_col(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(TypeError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                            "GEOID10", None)
+        assert(e.value.args[0] == "Expected 'str' type for demand_id_col, got '<class 'NoneType'>'")
+
     def test_from_coverage_dataframe_invalid_supply_id_col2(self, demand_points_dataframe, facility_service_areas_dataframe):
         with pytest.raises(ValueError) as e:
             c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
+                                            "GEOID10", "test")
+        assert(e.value.args[0] == f"'test' not in dataframe")
+
+    def test_from_coverage_sedf_invalid_supply_id_col2(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
                                             "GEOID10", "test")
         assert(e.value.args[0] == f"'test' not in dataframe")
 
@@ -123,6 +206,24 @@ class TestCoverage:
         with pytest.raises(ValueError) as e:
             c = Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe,
                                             "test", "ORIG_ID")
+        assert(e.value.args[0] == f"'test' not in dataframe")
+
+    def test_from_coverage_sedf_invalid_demand_id_col2(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                            "test", "ORIG_ID")
+        assert(e.value.args[0] == f"'test' not in dataframe")
+
+    def test_from_coverage_sedf_invalid_demand_geom_col(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                            "GEOID10", "ORIG_ID", demand_geometry_col="test")
+        assert(e.value.args[0] == f"'test' not in dataframe")
+
+    def test_from_coverage_sedf_invalid_supply_geom_col(self, demand_points_sedf, facility_service_areas_sedf):
+        with pytest.raises(ValueError) as e:
+            c = Coverage.from_spatially_enabled_dataframes(demand_points_sedf, facility_service_areas_sedf,
+                                            "GEOID10", "ORIG_ID", supply_geometry_col="test")
         assert(e.value.args[0] == f"'test' not in dataframe")
 
     def test_df_property(self, binary_coverage_dataframe):

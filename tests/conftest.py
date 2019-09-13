@@ -1,4 +1,5 @@
 import os
+import arcgis
 import geopandas
 from pulp.solvers import GLPK
 import pytest
@@ -14,8 +15,18 @@ def demand_points_dataframe():
 
 
 @pytest.fixture(scope='class')
+def demand_points_sedf():
+    return arcgis.GeoAccessor.from_featureclass(os.path.join(dir_name, "test_data/demand_point.shp"))
+
+
+@pytest.fixture(scope='class')
 def demand_polygon_dataframe():
     return geopandas.read_file(os.path.join(dir_name, "test_data/demand_polygon.shp"))
+
+
+@pytest.fixture(scope='class')
+def demand_polygon_sedf():
+    return arcgis.GeoAccessor.from_featureclass(os.path.join(dir_name, "test_data/demand_polygon.shp"))
 
 
 @pytest.fixture(scope='class')
@@ -24,8 +35,18 @@ def facility_service_areas_dataframe():
 
 
 @pytest.fixture(scope='class')
+def facility_service_areas_sedf():
+    return arcgis.GeoAccessor.from_featureclass(os.path.join(dir_name, "test_data/facility_service_areas.shp"))
+
+
+@pytest.fixture(scope='class')
 def facility2_service_areas_dataframe():
     return geopandas.read_file(os.path.join(dir_name, "test_data/facility2_service_areas.shp"))
+
+
+@pytest.fixture(scope='class')
+def facility2_service_areas_sedf():
+    return arcgis.GeoAccessor.from_featureclass(os.path.join(dir_name, "test_data/facility2_service_areas.shp"))
 
 
 @pytest.fixture(scope="class")

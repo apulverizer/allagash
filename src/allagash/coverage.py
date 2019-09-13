@@ -8,7 +8,8 @@ class Coverage:
         """
         An object that stores the relationship between a set of demand locations and a set of supply locations.
         Use this initializer if the coverage matrix has already been created, otherwise this can be created from two
-        geodataframes using the :meth:`~allagash.coverage.Coverage.from_geodataframes` factory method.
+        geodataframes using the :meth:`~allagash.coverage.Coverage.from_geodataframes` or
+        :meth:`~allagash.coverage.Coverage.from_spatially_enabled_dataframes` factory methods.
 
         .. code-block:: python
 
@@ -115,7 +116,9 @@ class Coverage:
                                           locations. Required if generating partial coverage.
         :param str coverage_type: (optional) The type of coverage this represents. If not supplied, the default is
                                   "binary". Options are "binary" and "partial".
-        :return:
+
+        :return: The coverage
+        :rtype: ~allagash.coverage.Coverage
         """
         cls._validate_from_geodataframes(coverage_type, demand_col, demand_df, demand_id_col, demand_name, supply_df,
                                          supply_id_col)
@@ -131,6 +134,61 @@ class Coverage:
             for index, row in demand_df.iterrows():
                 demand_area = row.geometry.area
                 intersection_area = supply_df.geometry.intersection(row.geometry).geometry.area
+                partial_coverage = ((intersection_area / demand_area) * row[demand_col]).tolist()
+                if demand_col:
+                    partial_coverage.insert(0, row[demand_col])
+                data.append(partial_coverage)
+        else:
+            raise ValueError(f"Invalid coverage type '{coverage_type}'")
+        columns = supply_df[supply_id_col].tolist()
+        if demand_col:
+            columns.insert(0, demand_col)
+        df = pd.DataFrame.from_records(data, index=demand_df[demand_id_col], columns=columns)
+        return Coverage(df,
+                        demand_col=demand_col,
+                        demand_name=demand_name,
+                        supply_name=supply_name,
+                        coverage_type=coverage_type)
+
+    @classmethod
+    def from_spatially_enabled_dataframes(cls,  demand_df, supply_df, demand_id_col, supply_id_col, demand_name=None,
+                                          supply_name=None, demand_col=None, coverage_type="binary",
+                                          demand_geometry_col='SHAPE', supply_geometry_col='SHAPE'):
+        """
+        Creates a new Coverage from two spatially enabled (arcgis) dataframes representing the demand and supply locations.
+        The coverage is determined by intersecting the two dataframes.
+
+        :param ~pandas.DataFrame demand_df: The spatially enabled dataframe containing the demand locations
+        :param ~pandas.DataFrame supply_df: The spatially enavled dataframe containing the supply locations
+        :param str demand_id_col: The name of the column that has unique identifiers for the demand locations
+        :param str supply_id_col: The name of the column that has unique identifiers for the supply locations
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
+        :param str demand_col: (optional) The name of the column that stores the amount of demand for the demand
+                                          locations. Required if generating partial coverage.
+        :param str coverage_type: (optional) The type of coverage this represents. If not supplied, the default is
+                                  "binary". Options are "binary" and "partial".
+        :param str demand_geometry_col: (optional) The name of the field storing the geometry in the demand dataframe.
+                                        If not supplied, the default is "SHAPE".
+        :param str supply_geometry_col: (optional) The name of the field storing the geometry in the supply dataframe.
+                                        If not supplied, the default is "SHAPE".
+        :return: The coverage
+        :rtype: ~allagash.coverage.Coverage
+        """
+
+        cls._validate_from_spatially_enabled_dataframes(coverage_type, demand_col, demand_df, demand_id_col, demand_name, supply_df,
+                                         supply_id_col, demand_geometry_col, supply_geometry_col)
+        data = []
+        if coverage_type.lower() == 'binary':
+            for index, row in demand_df.iterrows():
+                contains = supply_df[supply_geometry_col].geom.contains(row[demand_geometry_col]).tolist()
+                if demand_col:
+                    contains.insert(0, row[demand_col])
+                data.append(contains)
+        elif coverage_type.lower() == 'partial':
+            for index, row in demand_df.iterrows():
+                demand_area = row[demand_geometry_col].area
+                intersection_area = supply_df[supply_geometry_col].geom.intersect(row[demand_geometry_col]).geom.area
                 partial_coverage = ((intersection_area / demand_area) * row[demand_col]).tolist()
                 if demand_col:
                     partial_coverage.insert(0, row[demand_col])
@@ -168,6 +226,36 @@ class Coverage:
             raise ValueError(f"'{demand_id_col}' not in dataframe")
         if supply_id_col and supply_id_col not in supply_df.columns:
             raise ValueError(f"'{supply_id_col}' not in dataframe")
+        if coverage_type.lower() not in ("binary", "partial"):
+            raise ValueError(f"Invalid coverage type '{coverage_type}'")
+        if coverage_type.lower() == "partial" and demand_col is None:
+            raise ValueError(f"demand_col is required when generating partial coverage")
+
+    @classmethod
+    def _validate_from_spatially_enabled_dataframes(cls, coverage_type, demand_col, demand_df, demand_id_col, demand_name, supply_df,
+                                     supply_id_col, demand_geometry_col, supply_geometry_col):
+        if not isinstance(demand_df, pd.DataFrame):
+            raise TypeError(f"Expected 'Dataframe' type for demand_df, got '{type(demand_df)}'")
+        if not isinstance(supply_df, pd.DataFrame):
+            raise TypeError(f"Expected 'Dataframe' type for supply_df, got '{type(supply_df)}'")
+        if not isinstance(demand_id_col, str):
+            raise TypeError(f"Expected 'str' type for demand_id_col, got '{type(demand_id_col)}'")
+        if not isinstance(supply_id_col, str):
+            raise TypeError(f"Expected 'str' type for demand_id_col, got '{type(supply_id_col)}'")
+        if not isinstance(demand_name, str) and demand_name is not None:
+            raise TypeError(f"Expected 'str' type for demand_name, got '{type(demand_name)}'")
+        if not isinstance(coverage_type, str):
+            raise TypeError(f"Expected 'str' type for coverage_type, got '{type(coverage_type)}'")
+        if demand_col and demand_col not in demand_df.columns:
+            raise ValueError(f"'{demand_col}' not in dataframe")
+        if demand_id_col and demand_id_col not in demand_df.columns:
+            raise ValueError(f"'{demand_id_col}' not in dataframe")
+        if supply_id_col and supply_id_col not in supply_df.columns:
+            raise ValueError(f"'{supply_id_col}' not in dataframe")
+        if demand_geometry_col and demand_geometry_col not in demand_df.columns:
+            raise ValueError(f"'{demand_geometry_col}' not in dataframe")
+        if supply_geometry_col and supply_geometry_col not in supply_df.columns:
+            raise ValueError(f"'{supply_geometry_col}' not in dataframe")
         if coverage_type.lower() not in ("binary", "partial"):
             raise ValueError(f"Invalid coverage type '{coverage_type}'")
         if coverage_type.lower() == "partial" and demand_col is None:
