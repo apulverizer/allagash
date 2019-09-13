@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>allagash.coverage module &mdash; allagash 0.1.0 documentation</title>
+  <title>allagash.coverage module &mdash; allagash 0.2.0 documentation</title>
   
 
   
@@ -200,7 +200,8 @@
 <em class="property">class </em><code class="sig-prename descclassname">allagash.coverage.</code><code class="sig-name descname">Coverage</code><span class="sig-paren">(</span><em class="sig-param">dataframe</em>, <em class="sig-param">demand_col=None</em>, <em class="sig-param">demand_name=None</em>, <em class="sig-param">supply_name=None</em>, <em class="sig-param">coverage_type='binary'</em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object that stores the relationship between a set of demand locations and a set of supply locations.
 Use this initializer if the coverage matrix has already been created, otherwise this can be created from two
-geodataframes using the <a class="reference internal" href="#allagash.coverage.Coverage.from_geodataframes" title="allagash.coverage.Coverage.from_geodataframes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_geodataframes()</span></code></a> factory method.</p>
+geodataframes using the <a class="reference internal" href="#allagash.coverage.Coverage.from_geodataframes" title="allagash.coverage.Coverage.from_geodataframes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_geodataframes()</span></code></a> or
+<a class="reference internal" href="#allagash.coverage.Coverage.from_spatially_enabled_dataframes" title="allagash.coverage.Coverage.from_spatially_enabled_dataframes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_spatially_enabled_dataframes()</span></code></a> factory methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;Demand_Id&quot;</span><span class="p">,</span> <span class="s2">&quot;Supply_Id&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -290,7 +291,43 @@ locations. Required if generating partial coverage.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>The coverage</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#allagash.coverage.Coverage" title="allagash.coverage.Coverage">Coverage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="allagash.coverage.Coverage.from_spatially_enabled_dataframes">
+<em class="property">classmethod </em><code class="sig-name descname">from_spatially_enabled_dataframes</code><span class="sig-paren">(</span><em class="sig-param">demand_df</em>, <em class="sig-param">supply_df</em>, <em class="sig-param">demand_id_col</em>, <em class="sig-param">supply_id_col</em>, <em class="sig-param">demand_name=None</em>, <em class="sig-param">supply_name=None</em>, <em class="sig-param">demand_col=None</em>, <em class="sig-param">coverage_type='binary'</em>, <em class="sig-param">demand_geometry_col='SHAPE'</em>, <em class="sig-param">supply_geometry_col='SHAPE'</em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage.from_spatially_enabled_dataframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new Coverage from two spatially enabled (arcgis) dataframes representing the demand and supply locations.
+The coverage is determined by intersecting the two dataframes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>demand_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><em>DataFrame</em></a>) – The spatially enabled dataframe containing the demand locations</p></li>
+<li><p><strong>supply_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><em>DataFrame</em></a>) – The spatially enavled dataframe containing the supply locations</p></li>
+<li><p><strong>demand_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the column that has unique identifiers for the demand locations</p></li>
+<li><p><strong>supply_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the column that has unique identifiers for the supply locations</p></li>
+<li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>supply_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) The name of the supply to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) The name of the column that stores the amount of demand for the demand
+locations. Required if generating partial coverage.</p></li>
+<li><p><strong>coverage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) The type of coverage this represents. If not supplied, the default is
+“binary”. Options are “binary” and “partial”.</p></li>
+<li><p><strong>demand_geometry_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) The name of the field storing the geometry in the demand dataframe.
+If not supplied, the default is “SHAPE”.</p></li>
+<li><p><strong>supply_geometry_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – (optional) The name of the field storing the geometry in the supply dataframe.
+If not supplied, the default is “SHAPE”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The coverage</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#allagash.coverage.Coverage" title="allagash.coverage.Coverage">Coverage</a></p>
 </dd>
 </dl>
 </dd></dl>
