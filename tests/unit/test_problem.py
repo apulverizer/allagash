@@ -105,6 +105,11 @@ class TestProblem:
             p = Problem.mclp(binary_coverage, max_supply=None)
         assert (e.value.args[0] == "Expected 'dict' type for max_supply, got '<class 'NoneType'>'")
 
+    def test_mclp_invalid_coverages7(self, binary_coverage_no_demand):
+        with pytest.raises(TypeError) as e:
+            p = Problem.mclp(binary_coverage_no_demand, max_supply={binary_coverage_no_demand: 5})
+        assert (e.value.args[0] == "Coverages used in MCLP must have 'demand_col'")
+
     def test_selected_supply_list(self, mclp_problem_solved):
         assert (isinstance(mclp_problem_solved.selected_supply(mclp_problem_solved.coverages[0]), list))
 

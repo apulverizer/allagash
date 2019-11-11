@@ -131,6 +131,8 @@ class Problem:
         for k, v in max_supply.items():
             if not isinstance(k, Coverage):
                 raise TypeError(f"Expected 'Coverage' type as key in max_supply, got '{type(k)}'")
+            if k.demand_col is None:
+                raise TypeError(f"Coverages used in MCLP must have 'demand_col'")
             if not isinstance(v, int):
                 raise TypeError(f"Expected 'int' type as value in max_supply, got '{type(v)}'")
         prob = cls._generate_mclp_problem(coverages, max_supply)
