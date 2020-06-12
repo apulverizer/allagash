@@ -24,7 +24,7 @@ RUN apt-get update -y && apt-get install -y \
 USER allagash
 WORKDIR $HOME
 
-COPY --chown=allagash:allagash environment.yml environment.yml
+COPY --chown=allagash:allagash ci-environment.yml ci-environment.yml
 COPY --chown=allagash:allagash src src
 
 # Configure conda env
