@@ -1,7 +1,7 @@
 import os
 import arcgis
 import geopandas
-from pulp.solvers import GLPK
+from pulp import GLPK
 import pytest
 from allagash import Coverage
 from allagash import Problem
