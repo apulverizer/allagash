@@ -1,5 +1,5 @@
 import pytest
-from pulp.solvers import GLPK
+from pulp import GLPK
 from allagash.problem import Problem
 
 

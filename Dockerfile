@@ -24,10 +24,11 @@ RUN apt-get update -y && apt-get install -y \
 USER allagash
 WORKDIR $HOME
 
+# Copy in environment file
+COPY --chown=allagash:allagash ci-environment.yml ci-environment.yml
+
 # Configure conda env
-RUN conda create -n allagash python=3.7 \
-    && conda install -c esri --name allagash -y geopandas=0.4.1 jupyter=1.0.0 matplotlib=3.1.1 pytest=5.0.1 arcgis=1.6.2 shapely=1.6.4 \
-    && /opt/conda/envs/allagash/bin/pip install pulp==1.6.10 nbval==0.9.2 \
+RUN conda create -f ci-environment.yml
     && /opt/conda/envs/allagash/bin/pip install allagash --no-deps \
     && conda clean -a -f -y
 
