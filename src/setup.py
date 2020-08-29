@@ -30,8 +30,8 @@ setup(name='Allagash',
       packages=['allagash'],
       license='MIT',
       install_requires=[
-          'pulp~=1.6.1',
-          'geopandas~=0.4.1'
+          'pulp>=1.6.1',
+          'geopandas>=0.4.1'
       ],
       classifiers=[
           'Intended Audience :: Science/Research',

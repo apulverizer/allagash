@@ -28,7 +28,7 @@ WORKDIR $HOME
 COPY --chown=allagash:allagash ci-environment.yml ci-environment.yml
 
 # Configure conda env
-RUN conda create -f ci-environment.yml
+RUN conda env create -f ci-environment.yml \
     && /opt/conda/envs/allagash/bin/pip install allagash --no-deps \
     && conda clean -a -f -y
 

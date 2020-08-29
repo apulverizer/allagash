@@ -5,7 +5,7 @@ dependencies:
   - esri::arcgis==1.6.2
   - descartes>=1.1.0
   - shapely==1.6.4
-  - geopandas>=0.6.1
+  - geopandas>=0.8.1
   - jupyter>=1.0.0
   - pandoc>=2.2.3.2
   - pip>=20.0.2
