@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Examples &mdash; allagash 0.2.0 documentation</title>
+  <title>Examples &mdash; allagash 0.2.1 documentation</title>
   
 
   
@@ -21,10 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -86,7 +87,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/LSCP.html">Location Set Covering Problem (LSCP)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/MCLP.html">Maximum Covering Location Problem (MCLP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html">Using ArcGIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html">Using ArcGIS</a></li>
 </ul>
 </li>
 </ul>
@@ -174,13 +175,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -220,15 +221,15 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/MCLP.html#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples/Using ArcGIS.html">Using ArcGIS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Import-the-ArcGIS-API-for-Python-and-other-packages">Import the ArcGIS API for Python and other packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Load-the-data-into-spatially-enabled-dataframes">Load the data into spatially enabled dataframes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Plot-the-data">Plot the data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Create-the-coverage">Create the coverage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Create-the-problem">Create the problem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Solve-the-problem">Solve the problem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Plot-the-selected-locations">Plot the selected locations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using ArcGIS.html#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/Using%20ArcGIS.html">Using ArcGIS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Import-the-ArcGIS-API-for-Python-and-other-packages">Import the ArcGIS API for Python and other packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Load-the-data-into-spatially-enabled-dataframes">Load the data into spatially enabled dataframes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Plot-the-data">Plot the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Create-the-coverage">Create the coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Create-the-problem">Create the problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Solve-the-problem">Solve the problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Plot-the-selected-locations">Plot the selected locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
 </ul>
 </li>
 </ul>
