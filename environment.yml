@@ -1,8 +1,9 @@
 name: allagash
 channels:
+  - esri
   - defaults
 dependencies:
-  - esri::arcgis==1.6.2
+  - arcgis>=1.8.2
   - descartes>=1.1.0
   - shapely==1.6.4
   - geopandas>=0.8.1
@@ -14,7 +15,7 @@ dependencies:
   - sphinx>=3.0.3
   - conda-forge::nbsphinx>=0.4.2
   - twine>=2.0.0
-  - setuptools=41.0.1
+  - setuptools>=41.0.1
   - pip:
     - pulp~=2.1
     - sphinx-rtd-theme~=0.4.3

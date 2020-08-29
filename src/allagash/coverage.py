@@ -190,12 +190,10 @@ class Coverage:
                 partial_coverage = []
                 demand_area = row[demand_geometry_col].area
                 # Cannot vectorize this because if the intersection returns an empty polygon with rings
-                # The conversion to shapely fails
+                # The conversion to shapely fails when trying to get the area
                 for _, s_row in supply_df.iterrows():
-                    try:
-                        area = s_row[supply_geometry_col].intersect(row[demand_geometry_col]).area
-                    except IndexError:
-                        area = 0
+                    intersection = s_row[supply_geometry_col].intersect(row[demand_geometry_col])
+                    area = intersection.area if not intersection.is_empty else 0
                     partial_coverage.append((area / demand_area) * row[demand_col])
                 if demand_col:
                     partial_coverage.insert(0, row[demand_col])
