@@ -1,4 +1,4 @@
-# Allagash [![build status](https://github.com/apulverizer/allagash/workflows/build/badge.svg)](https://github.com/apulverizer/allagash/actions)
+# Allagash [![build status](https://github.com/apulverizer/allagash/workflows/Build/badge.svg)](https://github.com/apulverizer/allagash/actions)
 A spatial optimization library for covering problems. Full documentation is available [here](https://apulverizer.github.io/allagash)
 
 ### Running Locally

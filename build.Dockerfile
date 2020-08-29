@@ -24,11 +24,11 @@ RUN apt-get update -y && apt-get install -y \
 USER allagash
 WORKDIR $HOME
 
-COPY --chown=allagash:allagash environment.yml environment.yml
+COPY --chown=allagash:allagash ci-environment.yml ci-environment.yml
 COPY --chown=allagash:allagash src src
 
 # Configure conda env
-RUN conda env create -f environment.yml \
+RUN conda env create -f ci-environment.yml \
     && cd src \
     && /opt/conda/envs/allagash/bin/python setup.py sdist bdist_wheel \
     && /opt/conda/envs/allagash/bin/pip install allagash --no-deps --find-links dist \

@@ -1,7 +1,7 @@
 import os
 import arcgis
 import geopandas
-from pulp.solvers import GLPK
+from pulp import GLPK
 import pytest
 from allagash import Coverage
 from allagash import Problem
@@ -54,6 +54,11 @@ def binary_coverage(demand_points_dataframe, facility_service_areas_dataframe):
     return Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe, "GEOID10", "ORIG_ID",
                                        demand_col="Population",
                                        demand_name="demand")
+
+
+@pytest.fixture(scope="class")
+def binary_coverage_no_demand(demand_points_dataframe, facility_service_areas_dataframe):
+    return Coverage.from_geodataframes(demand_points_dataframe, facility_service_areas_dataframe, "GEOID10", "ORIG_ID")
 
 
 @pytest.fixture(scope="class")
