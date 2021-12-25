@@ -1,22 +1,21 @@
 name: allagash
 channels:
+  - conda-forge
   - esri
-  - defaults
 dependencies:
-  - arcgis>=1.8.2
+  - arcgis>=1.9.1
   - descartes>=1.1.0
-  - shapely==1.6.4
-  - geopandas>=0.8.1
+  - shapely>=1.8.0
+  - geopandas>=0.10.2
   - jupyter>=1.0.0
-  - pandoc>=2.2.3.2
-  - pip>=20.0.2
-  - pytest>=5.4.2
-  - python>=3.7
-  - sphinx>=3.0.3
-  - conda-forge::nbsphinx>=0.4.2
-  - twine>=2.0.0
-  - setuptools>=41.0.1
-  - pip:
-    - pulp~=2.1
-    - sphinx-rtd-theme~=0.4.3
-    - nbval~=0.9.5
+  - pandoc>=2.16.2
+  - pip>=21.3.1
+  - pytest>=6.2.5
+  - python>=3.8
+  - sphinx>=4.3.2
+  - nbsphinx>=0.8.7
+  - twine>=3.7.1
+  - setuptools>=60.1.0
+  - pulp>=2.6.0
+  - sphinx_rtd_theme>=1.0.0
+  - nbval>=0.9.6
