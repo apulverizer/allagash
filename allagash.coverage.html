@@ -1,68 +1,35 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>allagash.coverage module &mdash; allagash 0.2.1 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>allagash.coverage module &mdash; allagash 0.2.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="allagash.problem module" href="allagash.problem.html" />
     <link rel="prev" title="Maximum Coverage Location Problem (MCLP)" href="problems.mclp.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> allagash
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -70,28 +37,18 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Getting Started</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Problems</span></p>
+<p class="caption" role="heading"><span class="caption-text">Problems</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="problems.lscp.html">Location Set Covering Problem (LSCP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="problems.mclp.html">Maximum Coverage Location Problem (MCLP)</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">allagash.coverage module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#coverage">Coverage</a></li>
@@ -99,75 +56,35 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="allagash.problem.html">allagash.problem module</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Developer</span></p>
+<p class="caption" role="heading"><span class="caption-text">Developer</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">allagash</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>allagash.coverage module</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
-            
               <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/allagash.coverage.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   
 <style>
 /* CSS overrides for sphinx_rtd_theme */
@@ -192,13 +109,13 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="module-allagash.coverage">
-<span id="allagash-coverage-module"></span><h1>allagash.coverage module<a class="headerlink" href="#module-allagash.coverage" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="coverage">
-<h2>Coverage<a class="headerlink" href="#coverage" title="Permalink to this headline">¶</a></h2>
+<section id="module-allagash.coverage">
+<span id="allagash-coverage-module"></span><h1>allagash.coverage module<a class="headerlink" href="#module-allagash.coverage" title="Permalink to this headline"></a></h1>
+<section id="coverage">
+<h2>Coverage<a class="headerlink" href="#coverage" title="Permalink to this headline"></a></h2>
 <dl class="py class">
-<dt id="allagash.coverage.Coverage">
-<em class="property">class </em><code class="sig-prename descclassname">allagash.coverage.</code><code class="sig-name descname">Coverage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataframe</span></em>, <em class="sig-param"><span class="n">demand_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">demand_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">supply_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">coverage_type</span><span class="o">=</span><span class="default_value">'binary'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="allagash.coverage.Coverage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allagash.coverage.</span></span><span class="sig-name descname"><span class="pre">Coverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage" title="Permalink to this definition"></a></dt>
 <dd><p>An object that stores the relationship between a set of demand locations and a set of supply locations.
 Use this initializer if the coverage matrix has already been created, otherwise this can be created from two
 geodataframes using the <a class="reference internal" href="#allagash.coverage.Coverage.from_geodataframes" title="allagash.coverage.Coverage.from_geodataframes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_geodataframes()</span></code></a> or
@@ -209,85 +126,85 @@ geodataframes using the <a class="reference internal" href="#allagash.coverage.C
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataframe</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.1)"><em>DataFrame</em></a>) – A dataframe containing a matrix of demand (rows) and supply (columns).
+<li><p><strong>dataframe</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>DataFrame</em></a>) – A dataframe containing a matrix of demand (rows) and supply (columns).
 An additional column containing the demand values can optionally be provided.</p></li>
-<li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the column storing the demand value.</p></li>
-<li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, a random name is generated.</p></li>
-<li><p><strong>supply_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the supply to use. If not supplied, a random name is generated.</p></li>
-<li><p><strong>coverage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The type of coverage this represents (optional). If not supplied, the default is
+<li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the column storing the demand value.</p></li>
+<li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>supply_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the supply to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>coverage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The type of coverage this represents (optional). If not supplied, the default is
 “binary”. Options are “binary” and “partial”.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt id="allagash.coverage.Coverage.coverage_type">
-<em class="property">property </em><code class="sig-name descname">coverage_type</code><a class="headerlink" href="#allagash.coverage.Coverage.coverage_type" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="allagash.coverage.Coverage.coverage_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coverage_type</span></span><a class="headerlink" href="#allagash.coverage.Coverage.coverage_type" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The type of coverage</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="allagash.coverage.Coverage.demand_col">
-<em class="property">property </em><code class="sig-name descname">demand_col</code><a class="headerlink" href="#allagash.coverage.Coverage.demand_col" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="allagash.coverage.Coverage.demand_col">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">demand_col</span></span><a class="headerlink" href="#allagash.coverage.Coverage.demand_col" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The name of the demand column in the underlying dataframe</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)">None</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="allagash.coverage.Coverage.demand_name">
-<em class="property">property </em><code class="sig-name descname">demand_name</code><a class="headerlink" href="#allagash.coverage.Coverage.demand_name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="allagash.coverage.Coverage.demand_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">demand_name</span></span><a class="headerlink" href="#allagash.coverage.Coverage.demand_name" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The name of the demand</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="allagash.coverage.Coverage.df">
-<em class="property">property </em><code class="sig-name descname">df</code><a class="headerlink" href="#allagash.coverage.Coverage.df" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="allagash.coverage.Coverage.df">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df</span></span><a class="headerlink" href="#allagash.coverage.Coverage.df" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The geodataframe the dataset is based on</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://geopandas.org/reference/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v0.8.0)">GeoDataFrame</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v0.10.2+0.g04d377f.dirty)">GeoDataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="allagash.coverage.Coverage.from_geodataframes">
-<em class="property">classmethod </em><code class="sig-name descname">from_geodataframes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">demand_df</span></em>, <em class="sig-param"><span class="n">supply_df</span></em>, <em class="sig-param"><span class="n">demand_id_col</span></em>, <em class="sig-param"><span class="n">supply_id_col</span></em>, <em class="sig-param"><span class="n">demand_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">supply_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">demand_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">coverage_type</span><span class="o">=</span><span class="default_value">'binary'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage.from_geodataframes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="allagash.coverage.Coverage.from_geodataframes">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_geodataframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">demand_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_id_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_id_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage.from_geodataframes" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new Coverage from two GeoDataFrames representing the demand and supply locations. The coverage
 is determined by intersecting the two dataframes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>demand_df</strong> (<a class="reference external" href="https://geopandas.org/reference/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v0.8.0)"><em>GeoDataFrame</em></a>) – The GeoDataFrame containing the demand locations</p></li>
-<li><p><strong>supply_df</strong> (<a class="reference external" href="https://geopandas.org/reference/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v0.8.0)"><em>GeoDataFrame</em></a>) – The GeoDataFrame containing the supply locations</p></li>
-<li><p><strong>demand_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name of the column that has unique identifiers for the demand locations</p></li>
-<li><p><strong>supply_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name of the column that has unique identifiers for the supply locations</p></li>
-<li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, a random name is generated.</p></li>
-<li><p><strong>supply_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the supply to use. If not supplied, a random name is generated.</p></li>
-<li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the column that stores the amount of demand for the demand
+<li><p><strong>demand_df</strong> (<a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v0.10.2+0.g04d377f.dirty)"><em>GeoDataFrame</em></a>) – The GeoDataFrame containing the demand locations</p></li>
+<li><p><strong>supply_df</strong> (<a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v0.10.2+0.g04d377f.dirty)"><em>GeoDataFrame</em></a>) – The GeoDataFrame containing the supply locations</p></li>
+<li><p><strong>demand_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the column that has unique identifiers for the demand locations</p></li>
+<li><p><strong>supply_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the column that has unique identifiers for the supply locations</p></li>
+<li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>supply_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the supply to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the column that stores the amount of demand for the demand
 locations. Required if generating partial coverage.</p></li>
-<li><p><strong>coverage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The type of coverage this represents. If not supplied, the default is
+<li><p><strong>coverage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The type of coverage this represents. If not supplied, the default is
 “binary”. Options are “binary” and “partial”.</p></li>
 </ul>
 </dd>
@@ -301,26 +218,26 @@ locations. Required if generating partial coverage.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="allagash.coverage.Coverage.from_spatially_enabled_dataframes">
-<em class="property">classmethod </em><code class="sig-name descname">from_spatially_enabled_dataframes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">demand_df</span></em>, <em class="sig-param"><span class="n">supply_df</span></em>, <em class="sig-param"><span class="n">demand_id_col</span></em>, <em class="sig-param"><span class="n">supply_id_col</span></em>, <em class="sig-param"><span class="n">demand_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">supply_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">demand_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">coverage_type</span><span class="o">=</span><span class="default_value">'binary'</span></em>, <em class="sig-param"><span class="n">demand_geometry_col</span><span class="o">=</span><span class="default_value">'SHAPE'</span></em>, <em class="sig-param"><span class="n">supply_geometry_col</span><span class="o">=</span><span class="default_value">'SHAPE'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage.from_spatially_enabled_dataframes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="allagash.coverage.Coverage.from_spatially_enabled_dataframes">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_spatially_enabled_dataframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">demand_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_id_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_id_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coverage_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand_geometry_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SHAPE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supply_geometry_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SHAPE'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.coverage.Coverage.from_spatially_enabled_dataframes" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new Coverage from two spatially enabled (arcgis) dataframes representing the demand and supply locations.
 The coverage is determined by intersecting the two dataframes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>demand_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.1)"><em>DataFrame</em></a>) – The spatially enabled dataframe containing the demand locations</p></li>
-<li><p><strong>supply_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.1)"><em>DataFrame</em></a>) – The spatially enavled dataframe containing the supply locations</p></li>
-<li><p><strong>demand_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name of the column that has unique identifiers for the demand locations</p></li>
-<li><p><strong>supply_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name of the column that has unique identifiers for the supply locations</p></li>
-<li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, a random name is generated.</p></li>
-<li><p><strong>supply_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the supply to use. If not supplied, a random name is generated.</p></li>
-<li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the column that stores the amount of demand for the demand
+<li><p><strong>demand_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>DataFrame</em></a>) – The spatially enabled dataframe containing the demand locations</p></li>
+<li><p><strong>supply_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>DataFrame</em></a>) – The spatially enavled dataframe containing the supply locations</p></li>
+<li><p><strong>demand_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the column that has unique identifiers for the demand locations</p></li>
+<li><p><strong>supply_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The name of the column that has unique identifiers for the supply locations</p></li>
+<li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>supply_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the supply to use. If not supplied, a random name is generated.</p></li>
+<li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the column that stores the amount of demand for the demand
 locations. Required if generating partial coverage.</p></li>
-<li><p><strong>coverage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The type of coverage this represents. If not supplied, the default is
+<li><p><strong>coverage_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The type of coverage this represents. If not supplied, the default is
 “binary”. Options are “binary” and “partial”.</p></li>
-<li><p><strong>demand_geometry_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the field storing the geometry in the demand dataframe.
+<li><p><strong>demand_geometry_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the field storing the geometry in the demand dataframe.
 If not supplied, the default is “SHAPE”.</p></li>
-<li><p><strong>supply_geometry_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – (optional) The name of the field storing the geometry in the supply dataframe.
+<li><p><strong>supply_geometry_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – (optional) The name of the field storing the geometry in the supply dataframe.
 If not supplied, the default is “SHAPE”.</p></li>
 </ul>
 </dd>
@@ -333,71 +250,53 @@ If not supplied, the default is “SHAPE”.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="allagash.coverage.Coverage.supply_name">
-<em class="property">property </em><code class="sig-name descname">supply_name</code><a class="headerlink" href="#allagash.coverage.Coverage.supply_name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="allagash.coverage.Coverage.supply_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supply_name</span></span><a class="headerlink" href="#allagash.coverage.Coverage.supply_name" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The name of the supply</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="allagash.problem.html" class="btn btn-neutral float-right" title="allagash.problem module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="problems.mclp.html" class="btn btn-neutral float-left" title="Maximum Coverage Location Problem (MCLP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="problems.mclp.html" class="btn btn-neutral float-left" title="Maximum Coverage Location Problem (MCLP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="allagash.problem.html" class="btn btn-neutral float-right" title="allagash.problem module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2019, Aaron Pulver
-
-    </p>
+    <p>&#169; Copyright 2019, Aaron Pulver.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
