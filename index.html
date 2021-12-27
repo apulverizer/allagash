@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Allagash 0.2.3 &mdash; allagash 0.2.3 documentation</title>
+  <title>Allagash 0.3.0 &mdash; allagash 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -71,7 +71,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>Allagash 0.2.3</li>
+      <li>Allagash 0.3.0</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/index.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -106,7 +106,7 @@
 }
 </style>
 <section id="allagash-release">
-<h1>Allagash 0.2.3<a class="headerlink" href="#allagash-release" title="Permalink to this headline"></a></h1>
+<h1>Allagash 0.3.0<a class="headerlink" href="#allagash-release" title="Permalink to this headline"></a></h1>
 <p>Allagash can be used to generate and solve spatial optimization problems using <a class="reference external" href="http://geopandas.org">GeoPandas</a> or the <a class="reference external" href="https://developers.arcgis.com/python/">ArcGIS API for Python</a>  (if installed) in conjunction with <a class="reference external" href="https://pythonhosted.org/PuLP/">PuLP</a>.</p>
 <p>The focus is on coverage problems though other optimization models may be added over time. Coverage modeling is generally used to find the best spatial configuration of a set of facilities that provide some level of service to units of demand. It is often necessary to “cover” demand within a prescribed time or distance.</p>
 <p>A simple use case is shown in the image below. Suppose we have 7 possible facility locations (represented by the black triangles) and need to locate 5 facilities so that we get the most coverage. We can apply the MCLP to find the best configuration that reaches the most people (black-outlined polygons, Census block groups that have population). The service areas shown in green represent the 5 facilities that were selected by the problem. The service areas shown in red, represent the 2 facilities that were not chosen. In this simple case it might be easy enough to try every possible configuration, but when we start to have hundreds to thousands of facilities, it becomes infeasible and an optimization problem must be used.</p>
