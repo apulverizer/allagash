@@ -17,9 +17,17 @@ You should now be able to run the example notebooks.
 
 ### Installing with pip
 
-You can install Allagash using `pip` but may need to manually configure certain dependencies if using Windows.
+To install with geopandas run:
 
-1. Run `pip install allagash`
+`pip install allagash[geopandas]`
+
+To install with arcgis run:
+
+`pip install allagash[arcgis]`
+
+To install without a spatial library run:
+
+`pip install allagash`
 
 ### Running Tests Locally
 1. Run tests `pytest --nbval`
