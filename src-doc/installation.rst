@@ -4,7 +4,19 @@ Installation
 Installing with Pip
 ------------------------------
 
-Allagash can be installed with pip, if all dependencies can be installed as well. Depending on your platform, you might need to compile and install certain C dependencies manually. Using conda (see below) to create the virtual environment avoids the need to compile the dependencies yourself. A docker image is also provided.
+To install with geopandas run:
+
+.. code-block:: console
+
+    pip install allagash[geopandas]
+
+To install with arcgis run:
+
+.. code-block:: console
+
+    pip install allagash[arcgis]
+
+To install without a spatial library run:
 
 .. code-block:: console
 
