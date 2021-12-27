@@ -27,7 +27,7 @@ WORKDIR $HOME
 COPY --chown=allagash:allagash ci-environment.yml ci-environment.yml
 
 # Copy the license and readme file into the source so it will be included in the built package
-COPY --chown=allagash:allagash src LICENSE README.md src
+COPY --chown=allagash:allagash src LICENSE README.md src/
 
 # Configure conda env
 RUN conda env create -f ci-environment.yml \
