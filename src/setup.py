@@ -29,11 +29,15 @@ setup(name='Allagash',
       url='https://github.com/apulverizer/allagash',
       packages=['allagash'],
       license='MIT',
+      python_requires='>=3.6',
       install_requires=[
-          'geopandas>=0.4.1',
           'pandas>=0.23.0',
           'pulp>=1.6.1'
       ],
+      extras_require={
+          "arcgis": ["arcgis>=1.8.2"],
+          "geopandas": ["geopandas>=0.4.1"]
+      },
       classifiers=[
           'Intended Audience :: Science/Research',
           'Programming Language :: Python :: 3'
