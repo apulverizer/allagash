@@ -1,6 +1,27 @@
 Installation
 ============
 
+Installing with Conda
+------------------------------
+
+To install with geopandas run:
+
+.. code-block:: console
+
+    conda install -c conda-forge allagash geopandas
+
+To install with arcgis run:
+
+.. code-block:: console
+
+    conda install -c conda-forge -c esri allagash arcgis
+
+To install without a spatial library run:
+
+.. code-block:: console
+
+    conda install -c conda-forge allagash
+
 Installing with Pip
 ------------------------------
 
