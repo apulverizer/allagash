@@ -1,6 +1,8 @@
 # Allagash [![build status](https://github.com/apulverizer/allagash/workflows/Build/badge.svg)](https://github.com/apulverizer/allagash/actions)
 A spatial optimization library for covering problems. Full documentation is available [here](https://apulverizer.github.io/allagash)
 
+----
+
 ### Installing with conda
 
 To install with geopandas run:
@@ -15,6 +17,8 @@ To install without a spatial library run:
 
 `conda install -c conda-forge allagash`
 
+----
+
 ### Installing with pip
 
 To install with geopandas run:
@@ -28,6 +32,8 @@ To install with arcgis run:
 To install without a spatial library run:
 
 `pip install allagash`
+
+----
 
 ### Running Locally
 1. Clone the repo `git clone git@github.com:apulverizer/allagash.git`
@@ -46,10 +52,14 @@ You should now be able to run the example notebooks.
 ### Running Tests Locally
 1. Run tests `pytest --nbval`
 
+----
+
 ### Building Documentation
 1. From the repo directory run `sphinx-build -b html ./src-doc ./docs -a`
 
 This will deploy html documentation to the docs folder.
+
+----
 
 ### Running with Docker
 You can build the local docker image that includes Allagash, Python, Jupyter, GLPK, and COIN-OR CBC.
@@ -62,6 +72,8 @@ You should now be able to run the example notebooks.
 You can test the notebooks as well by running `docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"`
 
 If you'd like to mount a directory of local data/files into the container, you can add `-v <your-local-dir>:/home/allagash/<dir-name>` when running `docker run`
+
+----
 
 ### Running Tests with Docker
 You can build a docker container that will run the tests (mounted into the container)
