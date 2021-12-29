@@ -1,19 +1,19 @@
 # Allagash [![build status](https://github.com/apulverizer/allagash/workflows/Build/badge.svg)](https://github.com/apulverizer/allagash/actions)
 A spatial optimization library for covering problems. Full documentation is available [here](https://apulverizer.github.io/allagash)
 
-### Running Locally
-1. Clone the repo `git clone git@github.com:apulverizer/allagash.git`
-2. Create the conda environment `conda env create --file environment.yml`
-3. Activate the new environment `conda activate allagash`
-4. Install allagash locally `pip install -e ./src --no-deps`
-5. Install a solver that is supported by [Pulp](https://github.com/coin-or/pulp)
-    1. [GLPK](https://www.gnu.org/software/glpk/)
-    2. [COIN-OR CBC](https://github.com/coin-or/Cbc)
-    3. [CPLEX](https://www.ibm.com/analytics/cplex-optimizer)
-    4. [Gurobi](https://www.gurobi.com/)
-6. Launch jupyter notebook `jupyter notebook`
+### Installing with conda
 
-You should now be able to run the example notebooks.
+To install with geopandas run:
+
+`conda install -c conda-forge allagash geopandas`
+
+To install with arcgis run:
+
+`conda install -c conda-forge -c esri allagash arcgis`
+
+To install without a spatial library run:
+
+`conda install -c conda-forge allagash`
 
 ### Installing with pip
 
@@ -28,6 +28,20 @@ To install with arcgis run:
 To install without a spatial library run:
 
 `pip install allagash`
+
+### Running Locally
+1. Clone the repo `git clone git@github.com:apulverizer/allagash.git`
+2. Create the conda environment `conda env create --file environment.yml`
+3. Activate the new environment `conda activate allagash`
+4. Install allagash locally `pip install -e ./src --no-deps`
+5. Install a solver that is supported by [Pulp](https://github.com/coin-or/pulp)
+    1. [GLPK](https://www.gnu.org/software/glpk/)
+    2. [COIN-OR CBC](https://github.com/coin-or/Cbc)
+    3. [CPLEX](https://www.ibm.com/analytics/cplex-optimizer)
+    4. [Gurobi](https://www.gurobi.com/)
+6. Launch jupyter notebook `jupyter notebook`
+
+You should now be able to run the example notebooks.
 
 ### Running Tests Locally
 1. Run tests `pytest --nbval`
