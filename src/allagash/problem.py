@@ -5,7 +5,7 @@ from .coverage import Coverage
 
 class Problem:
 
-    _problem_types = ['lscp', 'mclp']
+    _problem_types = ["lscp", "mclp"]
     _delineator = "$"
 
     def __init__(self, pulp_problem, coverages, problem_type):
@@ -33,13 +33,19 @@ class Problem:
 
     def _validate(self, problem, coverages, problem_type):
         if not isinstance(problem, pulp.LpProblem):
-            raise TypeError(f"Expected 'LpProblem' type for problem, got '{type(problem)}'")
+            raise TypeError(
+                f"Expected 'LpProblem' type for problem, got '{type(problem)}'"
+            )
         if not isinstance(problem_type, str):
-            raise TypeError(f"Expected 'str' type for problem_type, got '{type(problem_type)}'")
+            raise TypeError(
+                f"Expected 'str' type for problem_type, got '{type(problem_type)}'"
+            )
         if problem_type.lower() not in self._problem_types:
             raise ValueError(f"Invalid problem_type: '{problem_type}'")
         if not isinstance(coverages, (list, Coverage)):
-            raise TypeError(f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'")
+            raise TypeError(
+                f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'"
+            )
 
     @property
     def pulp_problem(self):
@@ -76,16 +82,18 @@ class Problem:
         :rtype: ~allagash.problem.Problem
         """
         if not isinstance(solver, pulp.LpSolver):
-            raise TypeError(f"Expected 'LpSolver' type for solver, got '{type(solver)}'")
+            raise TypeError(
+                f"Expected 'LpSolver' type for solver, got '{type(solver)}'"
+            )
         self._pulp_problem.solve(solver)
         if self._pulp_problem.status == 0:
-            raise NotSolvedException('Unable to solve the problem')
+            raise NotSolvedException("Unable to solve the problem")
         elif self._pulp_problem.status == -1:
-            raise InfeasibleException('Infeasible problem')
+            raise InfeasibleException("Infeasible problem")
         elif self._pulp_problem.status == -2:
-            raise UnboundedException('Unbounded problem')
+            raise UnboundedException("Unbounded problem")
         elif self._pulp_problem.status == -3:
-            raise UndefinedException('Undefined problem')
+            raise UndefinedException("Undefined problem")
         return self
 
     @classmethod
@@ -98,15 +106,19 @@ class Problem:
         :rtype: ~allagash.problem.Problem
         """
         if not isinstance(coverages, (Coverage, list)):
-            raise TypeError(f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'")
+            raise TypeError(
+                f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'"
+            )
         if isinstance(coverages, Coverage):
             coverages = [coverages]
         if not all([c.coverage_type == coverages[0].coverage_type for c in coverages]):
-            raise ValueError("Invalid coverages. Coverages must have the same coverage type.")
+            raise ValueError(
+                "Invalid coverages. Coverages must have the same coverage type."
+            )
         if coverages[0].coverage_type != "binary":
             raise ValueError("LSCP can only be generated from binary coverage.")
         prob = cls._generate_lscp_problem(coverages)
-        return Problem(prob, coverages, problem_type='lscp')
+        return Problem(prob, coverages, problem_type="lscp")
 
     @classmethod
     def mclp(cls, coverages, max_supply):
@@ -119,34 +131,46 @@ class Problem:
         :rtype: ~allagash.problem.Problem
         """
         if not isinstance(coverages, (Coverage, list)):
-            raise TypeError(f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'")
+            raise TypeError(
+                f"Expected 'Coverage' or 'list' type for coverages, got '{type(coverages)}'"
+            )
         if isinstance(coverages, Coverage):
             coverages = [coverages]
         if not all([c.coverage_type == coverages[0].coverage_type for c in coverages]):
-            raise ValueError("Invalid coverages. Coverages must have the same coverage type.")
+            raise ValueError(
+                "Invalid coverages. Coverages must have the same coverage type."
+            )
         if coverages[0].coverage_type != "binary":
             raise ValueError("MCLP can only be generated from binary coverage.")
         if not isinstance(max_supply, dict):
-            raise TypeError(f"Expected 'dict' type for max_supply, got '{type(max_supply)}'")
+            raise TypeError(
+                f"Expected 'dict' type for max_supply, got '{type(max_supply)}'"
+            )
         for k, v in max_supply.items():
             if not isinstance(k, Coverage):
-                raise TypeError(f"Expected 'Coverage' type as key in max_supply, got '{type(k)}'")
+                raise TypeError(
+                    f"Expected 'Coverage' type as key in max_supply, got '{type(k)}'"
+                )
             if k.demand_col is None:
-                raise TypeError(f"Coverages used in MCLP must have 'demand_col'")
+                raise TypeError("Coverages used in MCLP must have 'demand_col'")
             if not isinstance(v, int):
-                raise TypeError(f"Expected 'int' type as value in max_supply, got '{type(v)}'")
+                raise TypeError(
+                    f"Expected 'int' type as value in max_supply, got '{type(v)}'"
+                )
         prob = cls._generate_mclp_problem(coverages, max_supply)
-        return Problem(prob, coverages, problem_type='mclp')
+        return Problem(prob, coverages, problem_type="mclp")
 
     @staticmethod
-    def _generate_lscp_problem(coverages):
+    def _generate_lscp_problem(coverages):  # noqa: C901
         demand_vars = {}
         for c in coverages:
             if c.demand_name not in demand_vars:
                 demand_vars[c.demand_name] = {}
             for index, _ in c.df.iterrows():
                 name = f"{c.demand_name}{Problem._delineator}{index}"
-                demand_vars[c.demand_name][index] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+                demand_vars[c.demand_name][index] = pulp.LpVariable(
+                    name, 0, 1, pulp.LpInteger
+                )
 
         supply_vars = {}
         for c in coverages:
@@ -158,7 +182,9 @@ class Problem:
                 supply_vars[c.supply_name] = {}
             for s in df.columns.to_list():
                 name = f"{c.supply_name}{Problem._delineator}{s}"
-                supply_vars[c.supply_name][s] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+                supply_vars[c.supply_name][s] = pulp.LpVariable(
+                    name, 0, 1, pulp.LpInteger
+                )
 
         prob = pulp.LpProblem("LSCP", pulp.LpMinimize)
         to_sum = []
@@ -185,7 +211,11 @@ class Problem:
         for c in coverages:
             for k, v in demand_vars[c.demand_name].items():
                 if not to_sum:
-                    sums[c.demand_name][v] = [pulp.LpVariable(f"__dummy{Problem._delineator}{v}", 0, 0, pulp.LpInteger)]
+                    sums[c.demand_name][v] = [
+                        pulp.LpVariable(
+                            f"__dummy{Problem._delineator}{v}", 0, 0, pulp.LpInteger
+                        )
+                    ]
 
         for demand_name, v in sums.items():
             for i, to_sum in v.items():
@@ -193,14 +223,16 @@ class Problem:
         return prob
 
     @staticmethod
-    def _generate_mclp_problem(coverages, max_supply):
+    def _generate_mclp_problem(coverages, max_supply):  # noqa: C901
         demand_vars = {}
         for c in coverages:
             if c.demand_name not in demand_vars:
                 demand_vars[c.demand_name] = {}
             for index, _ in c.df.iterrows():
                 name = f"{c.demand_name}{Problem._delineator}{index}"
-                demand_vars[c.demand_name][index] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+                demand_vars[c.demand_name][index] = pulp.LpVariable(
+                    name, 0, 1, pulp.LpInteger
+                )
 
         supply_vars = {}
         for c in coverages:
@@ -212,7 +244,9 @@ class Problem:
                 supply_vars[c.supply_name] = {}
             for s in df.columns.to_list():
                 name = f"{c.supply_name}{Problem._delineator}{s}"
-                supply_vars[c.supply_name][s] = pulp.LpVariable(name, 0, 1, pulp.LpInteger)
+                supply_vars[c.supply_name][s] = pulp.LpVariable(
+                    name, 0, 1, pulp.LpInteger
+                )
 
         # add objective
         prob = pulp.LpProblem("MCLP", pulp.LpMaximize)
@@ -255,7 +289,10 @@ class Problem:
             to_sum = []
             for k, v in supply_vars[c.supply_name].items():
                 to_sum.append(v)
-            prob += pulp.lpSum(to_sum) <= max_supply[c], f"Num{Problem._delineator}{c.supply_name}"
+            prob += (
+                pulp.lpSum(to_sum) <= max_supply[c],
+                f"Num{Problem._delineator}{c.supply_name}",
+            )
         return prob
 
     def selected_supply(self, coverage, operation=operator.eq, value=1):
@@ -271,8 +308,11 @@ class Problem:
         if self._pulp_problem.status != 1:
             raise RuntimeError("Problem not optimally solved yet")
         from allagash.coverage import Coverage
+
         if not isinstance(coverage, Coverage):
-            raise TypeError(f"Expected 'Coverage' type for coverage, got '{type(coverage)}'")
+            raise TypeError(
+                f"Expected 'Coverage' type for coverage, got '{type(coverage)}'"
+            )
         if not callable(operation):
             raise TypeError(f"Expected callable for operation, got '{type(operation)}'")
         if not isinstance(value, (int, float)):
@@ -297,14 +337,19 @@ class Problem:
         if self._pulp_problem.status != 1:
             raise RuntimeError("Problem not optimally solved yet")
         from allagash.coverage import Coverage
+
         if not isinstance(coverage, Coverage):
-            raise TypeError(f"Expected 'Coverage' type for coverage, got '{type(coverage)}'")
-        if self.problem_type == 'lscp':
+            raise TypeError(
+                f"Expected 'Coverage' type for coverage, got '{type(coverage)}'"
+            )
+        if self.problem_type == "lscp":
             for c in self.coverages:
                 if c.demand_name == c.demand_name:
                     return c.df.index.tolist()
             else:
-                raise ValueError(f"Unable to find demand named '{coverage.demand_name}'")
+                raise ValueError(
+                    f"Unable to find demand named '{coverage.demand_name}'"
+                )
         else:
             ids = []
             for var in self._pulp_problem.variables():
@@ -352,4 +397,3 @@ class UndefinedException(Exception):
         :param str message: A descriptive message about the exception
         """
         super().__init__(message)
-
