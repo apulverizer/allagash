@@ -1,4 +1,9 @@
-# Allagash [![build status](https://github.com/apulverizer/allagash/workflows/Build/badge.svg)](https://github.com/apulverizer/allagash/actions)
+# Allagash 
+
+[![build status](https://github.com/apulverizer/allagash/workflows/Build/badge.svg)](https://github.com/apulverizer/allagash/actions)
+[![MIT License](https://anaconda.org/conda-forge/allagash/badges/license.svg)](LICENSE)
+[![Install with conda](https://anaconda.org/conda-forge/allagash/badges/installer/conda.svg)](https://anaconda.org/conda-forge/allagash)
+
 A spatial optimization library for covering problems. Full documentation is available [here](https://apulverizer.github.io/allagash)
 
 ----
@@ -39,15 +44,19 @@ To install without a spatial library run:
 1. Clone the repo `git clone git@github.com:apulverizer/allagash.git`
 2. Create the conda environment `conda env create --file environment.yml`
 3. Activate the new environment `conda activate allagash`
-4. Install allagash locally `pip install -e ./src --no-deps`
-5. Install a solver that is supported by [Pulp](https://github.com/coin-or/pulp)
-    1. [GLPK](https://www.gnu.org/software/glpk/)
-    2. [COIN-OR CBC](https://github.com/coin-or/Cbc)
-    3. [CPLEX](https://www.ibm.com/analytics/cplex-optimizer)
-    4. [Gurobi](https://www.gurobi.com/)
+4. Install pre-commit hooks `pre-commit install`
+5. Install allagash locally `pip install -e ./src --no-deps`
 6. Launch jupyter notebook `jupyter notebook`
 
 You should now be able to run the example notebooks.
+
+You can choose to install and use another solver that is supported by [Pulp](https://github.com/coin-or/pulp):
+- [GLPK](https://www.gnu.org/software/glpk/) (included in conda environment)
+- [COIN-OR CBC](https://github.com/coin-or/Cbc)
+- [CPLEX](https://www.ibm.com/analytics/cplex-optimizer)
+- [Gurobi](https://www.gurobi.com/)
+
+----
 
 ### Running Tests Locally
 1. Run tests `pytest --nbval`
