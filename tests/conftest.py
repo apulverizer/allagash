@@ -69,7 +69,6 @@ def binary_coverage(demand_points_dataframe, facility_service_areas_dataframe):
         "GEOID10",
         "ORIG_ID",
         demand_col="Population",
-        demand_name="demand",
     )
 
 
@@ -79,6 +78,20 @@ def binary_coverage_no_demand(
 ):
     return Coverage.from_geodataframes(
         demand_points_dataframe, facility_service_areas_dataframe, "GEOID10", "ORIG_ID"
+    )
+
+
+@pytest.fixture(scope="class")
+def binary_coverage2_other_demand_name(
+    demand_points_dataframe, facility2_service_areas_dataframe
+):
+    return Coverage.from_geodataframes(
+        demand_points_dataframe,
+        facility2_service_areas_dataframe,
+        "GEOID10",
+        "ORIG_ID",
+        demand_col="Population",
+        demand_name="other",
     )
 
 
@@ -97,7 +110,6 @@ def binary_coverage_using_all_supply(
         "GEOID10",
         "ORIG_ID",
         demand_col="Population",
-        demand_name="demand",
         coverage_type="binary",
     )
 
@@ -110,7 +122,6 @@ def partial_coverage(demand_polygon_dataframe, facility_service_areas_dataframe)
         "GEOID10",
         "ORIG_ID",
         demand_col="Population",
-        demand_name="demand",
         coverage_type="partial",
     )
 
@@ -123,7 +134,6 @@ def binary_coverage2(demand_points_dataframe, facility2_service_areas_dataframe)
         "GEOID10",
         "ORIG_ID",
         demand_col="Population",
-        demand_name="demand",
     )
 
 

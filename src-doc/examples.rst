@@ -7,4 +7,5 @@ Examples
 
    examples/LSCP
    examples/MCLP
+   examples/BCLP
    examples/Using ArcGIS

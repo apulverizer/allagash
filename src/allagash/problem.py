@@ -117,6 +117,8 @@ class Problem:
             )
         if coverages[0].coverage_type != "binary":
             raise ValueError("LSCP can only be generated from binary coverage.")
+        if not all(x.demand_name == coverages[0].demand_name for x in coverages):
+            raise ValueError("All Coverages must have the same 'demand_name'")
         prob = cls._generate_lscp_problem(coverages)
         return Problem(prob, coverages, problem_type="lscp")
 
@@ -157,6 +159,8 @@ class Problem:
                 raise TypeError(
                     f"Expected 'int' type as value in max_supply, got '{type(v)}'"
                 )
+        if not all(x.demand_name == coverages[0].demand_name for x in coverages):
+            raise ValueError("All Coverages must have the same 'demand_name'")
         prob = cls._generate_bclp_problem(coverages, max_supply)
         return Problem(prob, coverages, problem_type="bclp")
 
@@ -197,6 +201,9 @@ class Problem:
                 raise TypeError(
                     f"Expected 'int' type as value in max_supply, got '{type(v)}'"
                 )
+        if not all(x.demand_name == coverages[0].demand_name for x in coverages):
+            raise ValueError("All Coverages must have the same 'demand_name'")
+
         prob = cls._generate_mclp_problem(coverages, max_supply)
         return Problem(prob, coverages, problem_type="mclp")
 

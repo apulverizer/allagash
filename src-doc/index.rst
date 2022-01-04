@@ -27,6 +27,7 @@ A simple use case is shown in the image below. Suppose we have 7 possible facili
 
    problems.lscp
    problems.mclp
+   problems.bclp
 
 .. toctree::
    :maxdepth: 2

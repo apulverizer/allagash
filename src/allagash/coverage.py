@@ -128,7 +128,7 @@ class Coverage:
         supply_df,
         demand_id_col,
         supply_id_col,
-        demand_name=None,
+        demand_name="demand",
         supply_name=None,
         demand_col=None,
         coverage_type="binary",
@@ -141,7 +141,7 @@ class Coverage:
         :param ~geopandas.GeoDataFrame supply_df: The GeoDataFrame containing the supply locations
         :param str demand_id_col: The name of the column that has unique identifiers for the demand locations
         :param str supply_id_col: The name of the column that has unique identifiers for the supply locations
-        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, 'demand' is used.
         :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
         :param str demand_col: (optional) The name of the column that stores the amount of demand for the demand
                                           locations. Required if generating partial coverage.
@@ -203,7 +203,7 @@ class Coverage:
         supply_df,
         demand_id_col,
         supply_id_col,
-        demand_name=None,
+        demand_name="demand",
         supply_name=None,
         demand_col=None,
         coverage_type="binary",
@@ -218,7 +218,7 @@ class Coverage:
         :param ~pandas.DataFrame supply_df: The spatially enavled dataframe containing the supply locations
         :param str demand_id_col: The name of the column that has unique identifiers for the demand locations
         :param str supply_id_col: The name of the column that has unique identifiers for the supply locations
-        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, 'demand' is used'.
         :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
         :param str demand_col: (optional) The name of the column that stores the amount of demand for the demand
                                           locations. Required if generating partial coverage.

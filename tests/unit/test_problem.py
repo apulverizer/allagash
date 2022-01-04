@@ -148,6 +148,13 @@ class TestLSCPProblem:
             Problem.lscp(partial_coverage)
         assert e.value.args[0] == "LSCP can only be generated from binary coverage."
 
+    def test_lscp_invalid_coverages4(
+        self, binary_coverage, binary_coverage2_other_demand_name
+    ):
+        with pytest.raises(ValueError) as e:
+            Problem.lscp([binary_coverage, binary_coverage2_other_demand_name])
+        assert e.value.args[0] == "All Coverages must have the same 'demand_name'"
+
 
 class TestMCLPProblem:
     def test_mclp(self, binary_coverage, binary_coverage2):
@@ -212,6 +219,16 @@ class TestMCLPProblem:
             )
         assert e.value.args[0] == "Coverages used in MCLP must have 'demand_col'"
 
+    def test_mclp_invalid_coverages8(
+        self, binary_coverage, binary_coverage2_other_demand_name
+    ):
+        with pytest.raises(ValueError) as e:
+            Problem.mclp(
+                [binary_coverage, binary_coverage2_other_demand_name],
+                max_supply={binary_coverage: 5, binary_coverage2_other_demand_name: 10},
+            )
+        assert e.value.args[0] == "All Coverages must have the same 'demand_name'"
+
 
 class TestBCLPProblem:
     def test_bclp(self, binary_coverage, binary_coverage2):
@@ -275,3 +292,13 @@ class TestBCLPProblem:
                 binary_coverage_no_demand, max_supply={binary_coverage_no_demand: 5}
             )
         assert e.value.args[0] == "Coverages used in BCLP must have 'demand_col'"
+
+    def test_bclp_invalid_coverages8(
+        self, binary_coverage, binary_coverage2_other_demand_name
+    ):
+        with pytest.raises(ValueError) as e:
+            Problem.bclp(
+                [binary_coverage, binary_coverage2_other_demand_name],
+                max_supply={binary_coverage: 5, binary_coverage2_other_demand_name: 10},
+            )
+        assert e.value.args[0] == "All Coverages must have the same 'demand_name'"
