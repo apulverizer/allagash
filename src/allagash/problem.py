@@ -142,13 +142,17 @@ class Problem:
             )
         if coverages[0].coverage_type != "binary":
             raise ValueError("BCLP can only be generated from binary coverage.")
+        if not isinstance(max_supply, dict):
+            raise TypeError(
+                f"Expected 'dict' type for max_supply, got '{type(max_supply)}'"
+            )
         for k, v in max_supply.items():
             if not isinstance(k, Coverage):
                 raise TypeError(
                     f"Expected 'Coverage' type as key in max_supply, got '{type(k)}'"
                 )
             if k.demand_col is None:
-                raise TypeError("Coverages used in MCLP must have 'demand_col'")
+                raise TypeError("Coverages used in BCLP must have 'demand_col'")
             if not isinstance(v, int):
                 raise TypeError(
                     f"Expected 'int' type as value in max_supply, got '{type(v)}'"
