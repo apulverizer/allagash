@@ -8,7 +8,7 @@ class Coverage:
         self,
         dataframe,
         demand_col=None,
-        demand_name=None,
+        demand_name="demand",
         supply_name=None,
         coverage_type="binary",
     ):
@@ -25,9 +25,9 @@ class Coverage:
         :param ~pandas.DataFrame dataframe: A dataframe containing a matrix of demand (rows) and supply (columns).
                                         An additional column containing the demand values can optionally be provided.
         :param str demand_col: (optional) The name of the column storing the demand value.
-        :param str demand_name: (optional) The name of the demand to use. If not supplied, a random name is generated.
+        :param str demand_name: (optional) The name of the demand to use. If not supplied, 'demand' is used'.
         :param str supply_name: (optional) The name of the supply to use. If not supplied, a random name is generated.
-        :param str coverage_type: (optional) The type of coverage this represents (optional). If not supplied, the default is
+        :param str coverage_type: (optional) The type of coverage this represents. If not supplied, the default is
                                   "binary". Options are "binary" and "partial".
         """
         self._validate_init(
