@@ -160,15 +160,22 @@ class Coverage:
             supply_df,
             supply_id_col,
         )
-
-        data = []
+        if demand_col:
+            df = pd.DataFrame(
+                {
+                    demand_col: demand_df[demand_col],
+                    demand_id_col: demand_df[demand_id_col],
+                }
+            )
+        else:
+            df = pd.DataFrame({demand_id_col: demand_df[demand_id_col]})
         if coverage_type.lower() == "binary":
-            for index, row in demand_df.iterrows():
-                contains = supply_df.geometry.contains(row.geometry).tolist()
-                if demand_col:
-                    contains.insert(0, row[demand_col])
-                data.append(contains)
+            for index, row in supply_df.iterrows():
+                within = demand_df.geometry.within(row.geometry)
+                df[row[supply_id_col]] = within
+            df.set_index(demand_id_col, inplace=True, drop=True)
         elif coverage_type.lower() == "partial":
+            data = []
             for index, row in demand_df.iterrows():
                 demand_area = row.geometry.area
                 intersection_area = supply_df.geometry.intersection(
@@ -180,14 +187,14 @@ class Coverage:
                 if demand_col:
                     partial_coverage.insert(0, row[demand_col])
                 data.append(partial_coverage)
+            columns = supply_df[supply_id_col].tolist()
+            if demand_col:
+                columns.insert(0, demand_col)
+            df = pd.DataFrame.from_records(
+                data, index=demand_df[demand_id_col], columns=columns
+            )
         else:
             raise ValueError(f"Invalid coverage type '{coverage_type}'")
-        columns = supply_df[supply_id_col].tolist()
-        if demand_col:
-            columns.insert(0, demand_col)
-        df = pd.DataFrame.from_records(
-            data, index=demand_df[demand_id_col], columns=columns
-        )
         return Coverage(
             df,
             demand_col=demand_col,
