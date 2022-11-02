@@ -14,7 +14,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -53,6 +55,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="problems.lscp.html">Location Set Covering Problem (LSCP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="problems.mclp.html">Maximum Coverage Location Problem (MCLP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="problems.bclp.html">Backup Coverage Location Problem (BCLP)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -113,9 +116,9 @@
 }
 </style>
 <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <section id="installing-with-conda">
-<h2>Installing with Conda<a class="headerlink" href="#installing-with-conda" title="Permalink to this headline"></a></h2>
+<h2>Installing with Conda<a class="headerlink" href="#installing-with-conda" title="Permalink to this heading"></a></h2>
 <p>To install with geopandas run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda install -c conda-forge allagash geopandas</span>
 </pre></div>
@@ -130,7 +133,7 @@
 </div>
 </section>
 <section id="installing-with-pip">
-<h2>Installing with Pip<a class="headerlink" href="#installing-with-pip" title="Permalink to this headline"></a></h2>
+<h2>Installing with Pip<a class="headerlink" href="#installing-with-pip" title="Permalink to this heading"></a></h2>
 <p>To install with geopandas run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install allagash[geopandas]</span>
 </pre></div>
@@ -145,7 +148,7 @@
 </div>
 </section>
 <section id="installing-with-docker">
-<h2>Installing with Docker<a class="headerlink" href="#installing-with-docker" title="Permalink to this headline"></a></h2>
+<h2>Installing with Docker<a class="headerlink" href="#installing-with-docker" title="Permalink to this heading"></a></h2>
 <p>A docker image has been provided which contains the GLPK solver, COIN OR CBC solver, Python, Allagash and any other required dependencies.
 You can launch a Jupyter notebook by running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker pull apulverizer/allagash:latest</span>
@@ -154,7 +157,7 @@ You can launch a Jupyter notebook by running:</p>
 </div>
 </section>
 <section id="installing-locally">
-<h2>Installing locally<a class="headerlink" href="#installing-locally" title="Permalink to this headline"></a></h2>
+<h2>Installing locally<a class="headerlink" href="#installing-locally" title="Permalink to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>Clone the repo</p></li>
 </ol>

@@ -14,7 +14,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -44,6 +46,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/LSCP.html">Location Set Covering Problem (LSCP)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/MCLP.html">Maximum Covering Location Problem (MCLP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html">Backup Covering Location Problem (BCLP)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html">Using ArcGIS</a></li>
 </ul>
 </li>
@@ -52,6 +55,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="problems.lscp.html">Location Set Covering Problem (LSCP)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="problems.mclp.html">Maximum Coverage Location Problem (MCLP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="problems.bclp.html">Backup Coverage Location Problem (BCLP)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -112,7 +116,7 @@
 }
 </style>
 <section id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h1>
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -124,7 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/LSCP.html#Create-the-problem">Create the problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/LSCP.html#Solve-the-problem">Solve the problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/LSCP.html#Plot-the-selected-locations">Plot the selected locations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/LSCP.html#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/LSCP.html#Find-the-total-number-of-locations-required">Find the total number of locations required</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples/MCLP.html">Maximum Covering Location Problem (MCLP)</a><ul>
@@ -136,6 +140,20 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/MCLP.html#Solve-the-problem">Solve the problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/MCLP.html#Plot-the-selected-locations">Plot the selected locations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/MCLP.html#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/MCLP.html#Find-total-number-of-facilities">Find total number of facilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/BCLP.html">Backup Covering Location Problem (BCLP)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Import-the-required-modules">Import the required modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Load-the-data">Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Plot-the-data">Plot the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Create-the-coverage">Create the coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Create-the-problem">Create the problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Solve-the-problem">Solve the problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Plot-the-selected-locations">Plot the selected locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Find-the-demand-that-is-provided-backup-coverage">Find the demand that is provided backup coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/BCLP.html#Find-total-number-of-facilities">Find total number of facilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples/Using%20ArcGIS.html">Using ArcGIS</a><ul>
@@ -146,7 +164,7 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Create-the-problem">Create the problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Solve-the-problem">Solve the problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Plot-the-selected-locations">Plot the selected locations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/Using%20ArcGIS.html#Find-the-total-number-of-locations-required">Find the total number of locations required</a></li>
 </ul>
 </li>
 </ul>

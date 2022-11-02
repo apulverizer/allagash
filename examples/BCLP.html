@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Location Set Covering Problem (LSCP) &mdash; allagash 0.3.0 documentation</title>
+  <title>Backup Covering Location Problem (BCLP) &mdash; allagash 0.3.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -23,8 +23,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Maximum Covering Location Problem (MCLP)" href="MCLP.html" />
-    <link rel="prev" title="Examples" href="../examples.html" /> 
+    <link rel="next" title="Using ArcGIS" href="Using%20ArcGIS.html" />
+    <link rel="prev" title="Maximum Covering Location Problem (MCLP)" href="MCLP.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,7 +46,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Location Set Covering Problem (LSCP)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LSCP.html">Location Set Covering Problem (LSCP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MCLP.html">Maximum Covering Location Problem (MCLP)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Backup Covering Location Problem (BCLP)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Import-the-required-modules">Import the required modules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Load-the-data">Load the data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Plot-the-data">Plot the data</a></li>
@@ -54,11 +56,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#Create-the-problem">Create the problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Solve-the-problem">Solve the problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Plot-the-selected-locations">Plot the selected locations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Find-the-total-number-of-locations-required">Find the total number of locations required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Find-the-total-demand-that-is-covered">Find the total demand that is covered</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Find-the-demand-that-is-provided-backup-coverage">Find the demand that is provided backup coverage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Find-total-number-of-facilities">Find total number of facilities</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="MCLP.html">Maximum Covering Location Problem (MCLP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="BCLP.html">Backup Covering Location Problem (BCLP)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Using%20ArcGIS.html">Using ArcGIS</a></li>
 </ul>
 </li>
@@ -94,9 +96,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../examples.html">Examples</a> &raquo;</li>
-      <li>Location Set Covering Problem (LSCP)</li>
+      <li>Backup Covering Location Problem (BCLP)</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/examples/LSCP.ipynb" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/examples/BCLP.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -382,8 +384,8 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Location-Set-Covering-Problem-(LSCP)">
-<h1>Location Set Covering Problem (LSCP)<a class="headerlink" href="#Location-Set-Covering-Problem-(LSCP)" title="Permalink to this heading"></a></h1>
+<section id="Backup-Covering-Location-Problem-(BCLP)">
+<h1>Backup Covering Location Problem (BCLP)<a class="headerlink" href="#Backup-Covering-Location-Problem-(BCLP)" title="Permalink to this heading"></a></h1>
 <section id="Import-the-required-modules">
 <h2>Import the required modules<a class="headerlink" href="#Import-the-required-modules" title="Permalink to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
@@ -432,7 +434,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LSCP_6_0.png" src="../_images/examples_LSCP_6_0.png" />
+<img alt="../_images/examples_BCLP_6_0.png" src="../_images/examples_BCLP_6_0.png" />
 </div>
 </div>
 </section>
@@ -442,8 +444,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coverage1</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">)</span>
-<span class="n">coverage2</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coverage1</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_col</span><span class="o">=</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="n">coverage2</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_col</span><span class="o">=</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -454,7 +456,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="o">.</span><span class="n">lscp</span><span class="p">([</span><span class="n">coverage1</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="o">.</span><span class="n">bclp</span><span class="p">([</span><span class="n">coverage1</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">],</span> <span class="n">max_supply</span><span class="o">=</span><span class="p">{</span><span class="n">coverage1</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">:</span> <span class="mi">19</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -491,17 +493,56 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_LSCP_14_0.png" src="../_images/examples_LSCP_14_0.png" />
+<img alt="../_images/examples_BCLP_14_0.png" src="../_images/examples_BCLP_14_0.png" />
 </div>
 </div>
 </section>
-<section id="Find-the-total-number-of-locations-required">
-<h2>Find the total number of locations required<a class="headerlink" href="#Find-the-total-number-of-locations-required" title="Permalink to this heading"></a></h2>
+<section id="Find-the-total-demand-that-is-covered">
+<h2>Find the total demand that is covered<a class="headerlink" href="#Find-the-total-demand-that-is-covered" title="Permalink to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">problem</span><span class="o">.</span><span class="n">pulp_problem</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">covered_demand</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GEOID10 in (</span><span class="si">{</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">problem</span><span class="o">.</span><span class="n">selected_demand</span><span class="p">(</span><span class="n">coverage1</span><span class="p">)]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">(</span><span class="n">covered_demand</span><span class="p">[</span><span class="s2">&quot;Population&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;Population&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="si">:</span><span class="s1">0.2f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+100.00%
+</pre></div></div>
+</div>
+</section>
+<section id="Find-the-demand-that-is-provided-backup-coverage">
+<h2>Find the demand that is provided backup coverage<a class="headerlink" href="#Find-the-demand-that-is-provided-backup-coverage" title="Permalink to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">(</span><span class="n">problem</span><span class="o">.</span><span class="n">pulp_problem</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;Population&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="si">:</span><span class="s1">0.2f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+55.44%
+</pre></div></div>
+</div>
+</section>
+<section id="Find-total-number-of-facilities">
+<h2>Find total number of facilities<a class="headerlink" href="#Find-total-number-of-facilities" title="Permalink to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_locations</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_locations2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -520,8 +561,8 @@ div.rendered_html tbody tr:hover {
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="MCLP.html" class="btn btn-neutral float-right" title="Maximum Covering Location Problem (MCLP)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MCLP.html" class="btn btn-neutral float-left" title="Maximum Covering Location Problem (MCLP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Using%20ArcGIS.html" class="btn btn-neutral float-right" title="Using ArcGIS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

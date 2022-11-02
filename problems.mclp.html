@@ -14,12 +14,14 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="allagash.coverage module" href="allagash.coverage.html" />
+    <link rel="next" title="Backup Coverage Location Problem (BCLP)" href="problems.bclp.html" />
     <link rel="prev" title="Location Set Covering Problem (LSCP)" href="problems.lscp.html" /> 
 </head>
 
@@ -52,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="problems.bclp.html">Backup Coverage Location Problem (BCLP)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -112,9 +115,9 @@
 }
 </style>
 <section id="maximum-coverage-location-problem-mclp">
-<h1>Maximum Coverage Location Problem (MCLP)<a class="headerlink" href="#maximum-coverage-location-problem-mclp" title="Permalink to this headline"></a></h1>
+<h1>Maximum Coverage Location Problem (MCLP)<a class="headerlink" href="#maximum-coverage-location-problem-mclp" title="Permalink to this heading"></a></h1>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>This problem is designed to maximize the total amount of demand serviced using a pre-determined number of facilities.
 To be considered covered, demand locations must be completely covered.
 It is common for polygon demand to be simplified to centroids for this problem.
@@ -130,11 +133,11 @@ We can use the MCLP to find the 5 locations provide the most service to the popu
 </ul>
 </section>
 <section id="source">
-<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline"></a></h2>
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this heading"></a></h2>
 <p>Church, Richard, and Charles R. Velle. “The maximal covering location problem.” Papers in regional science 32.1 (1974): 101-118.</p>
 </section>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
 <p>The following example show how an MCLP can be created and solved.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">allagash</span> <span class="kn">import</span> <span class="n">Coverage</span><span class="p">,</span> <span class="n">Problem</span>
 <span class="kn">import</span> <span class="nn">pulp</span>
@@ -143,8 +146,8 @@ We can use the MCLP to find the 5 locations provide the most service to the popu
 <span class="n">d</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/demand_point.shp&quot;</span><span class="p">)</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/facility_service_areas.shp&quot;</span><span class="p">)</span>
 <span class="n">s2</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/facility2_service_areas.shp&quot;</span><span class="p">)</span>
-<span class="n">coverage1</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_name</span><span class="o">=</span><span class="s2">&quot;demand&quot;</span><span class="p">)</span>
-<span class="n">coverage2</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_name</span><span class="o">=</span><span class="s2">&quot;demand&quot;</span><span class="p">)</span>
+<span class="n">coverage1</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_col</span><span class="o">=</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="n">coverage2</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_col</span><span class="o">=</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
 <span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="o">.</span><span class="n">mclp</span><span class="p">([</span><span class="n">coverage1</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">],</span> <span class="n">max_supply</span><span class="o">=</span><span class="p">{</span><span class="n">coverage1</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
 <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">pulp</span><span class="o">.</span><span class="n">GLPK</span><span class="p">())</span>
 </pre></div>
@@ -157,7 +160,7 @@ We can use the MCLP to find the 5 locations provide the most service to the popu
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="problems.lscp.html" class="btn btn-neutral float-left" title="Location Set Covering Problem (LSCP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="allagash.coverage.html" class="btn btn-neutral float-right" title="allagash.coverage module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="problems.bclp.html" class="btn btn-neutral float-right" title="Backup Coverage Location Problem (BCLP)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

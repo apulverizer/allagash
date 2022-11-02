@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Location Set Covering Problem (LSCP) &mdash; allagash 0.3.0 documentation</title>
+  <title>Backup Coverage Location Problem (BCLP) &mdash; allagash 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -21,8 +21,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Maximum Coverage Location Problem (MCLP)" href="problems.mclp.html" />
-    <link rel="prev" title="Using ArcGIS" href="examples/Using%20ArcGIS.html" /> 
+    <link rel="next" title="allagash.coverage module" href="allagash.coverage.html" />
+    <link rel="prev" title="Maximum Coverage Location Problem (MCLP)" href="problems.mclp.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,14 +47,14 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Problems</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Location Set Covering Problem (LSCP)</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="problems.lscp.html">Location Set Covering Problem (LSCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="problems.mclp.html">Maximum Coverage Location Problem (MCLP)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Backup Coverage Location Problem (BCLP)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#source">Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="problems.mclp.html">Maximum Coverage Location Problem (MCLP)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="problems.bclp.html">Backup Coverage Location Problem (BCLP)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -80,9 +80,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Location Set Covering Problem (LSCP)</li>
+      <li>Backup Coverage Location Problem (BCLP)</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/problems.lscp.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/problems.bclp.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -114,25 +114,24 @@
     text-align: unset;
 }
 </style>
-<section id="location-set-covering-problem-lscp">
-<h1>Location Set Covering Problem (LSCP)<a class="headerlink" href="#location-set-covering-problem-lscp" title="Permalink to this heading"></a></h1>
+<section id="backup-coverage-location-problem-bclp">
+<h1>Backup Coverage Location Problem (BCLP)<a class="headerlink" href="#backup-coverage-location-problem-bclp" title="Permalink to this heading"></a></h1>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
-<p>This is one of the earliest spatial optimization problems. It aims to minimize the total number of facilities while ensuring that every demand location is covered at least once.
-For example, you want to implement a new bus system and ensure that every neighborhood has access to at least one bus.</p>
-<p>Use this problem when:</p>
+<p>This model aims to cover every demand unit at least once, while trying to increase the amount backup/secondary coverage. For example, you want to implement a new bus system and ensure that every neighborhood has access to at least one bus. You also want to maximize the number of neighborhoods that have 2 buses. You could apply the BCLP to solve this problem.</p>
+<p>When to use this model:</p>
 <ul class="simple">
-<li><p>You need to cover every demand location</p></li>
-<li><p>You have demand that is covered or not (binary)</p></li>
+<li><p>You want to cover 100% of the demand and increase the demand units that are covered twice</p></li>
+<li><p>You have point (or polygon) demand</p></li>
 </ul>
 </section>
 <section id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this heading"></a></h2>
-<p>Toregas, Constantine, et al. “The location of emergency service facilities.” Operations Research 19.6 (1971): 1363-1373.</p>
+<p>Hogan, Kathleen, and Charles Revelle. 1986. Concepts and Applications of Backup Coverage. Management Science 32 (11):1434-1444.</p>
 </section>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
-<p>The following example show how an LSCP can be created and solved.</p>
+<p>The following example show how an BCLP can be created and solved.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">allagash</span> <span class="kn">import</span> <span class="n">Coverage</span><span class="p">,</span> <span class="n">Problem</span>
 <span class="kn">import</span> <span class="nn">pulp</span>
 <span class="kn">import</span> <span class="nn">geopandas</span>
@@ -140,9 +139,9 @@ For example, you want to implement a new bus system and ensure that every neighb
 <span class="n">d</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/demand_point.shp&quot;</span><span class="p">)</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/facility_service_areas.shp&quot;</span><span class="p">)</span>
 <span class="n">s2</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;sample_data/facility2_service_areas.shp&quot;</span><span class="p">)</span>
-<span class="n">coverage1</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">)</span>
-<span class="n">coverage2</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">)</span>
-<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="o">.</span><span class="n">lscp</span><span class="p">([</span><span class="n">coverage1</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">])</span>
+<span class="n">coverage1</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_col</span><span class="o">=</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="n">coverage2</span> <span class="o">=</span> <span class="n">Coverage</span><span class="o">.</span><span class="n">from_geodataframes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="s2">&quot;GEOID10&quot;</span><span class="p">,</span> <span class="s2">&quot;ORIG_ID&quot;</span><span class="p">,</span> <span class="n">demand_col</span><span class="o">=</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="o">.</span><span class="n">bclp</span><span class="p">([</span><span class="n">coverage1</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">],</span> <span class="n">max_supply</span><span class="o">=</span><span class="p">{</span><span class="n">coverage1</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">coverage2</span><span class="p">:</span> <span class="mi">19</span><span class="p">})</span>
 <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">pulp</span><span class="o">.</span><span class="n">GLPK</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -153,8 +152,8 @@ For example, you want to implement a new bus system and ensure that every neighb
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="examples/Using%20ArcGIS.html" class="btn btn-neutral float-left" title="Using ArcGIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="problems.mclp.html" class="btn btn-neutral float-right" title="Maximum Coverage Location Problem (MCLP)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="problems.mclp.html" class="btn btn-neutral float-left" title="Maximum Coverage Location Problem (MCLP)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="allagash.coverage.html" class="btn btn-neutral float-right" title="allagash.coverage module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
