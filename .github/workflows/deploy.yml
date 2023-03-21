@@ -10,8 +10,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-      with:
-        ref: master
     - name: Build docker image, build package, install package
       run: docker build . --file build.Dockerfile -t apulverizer/allagash:build
 
