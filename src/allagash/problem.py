@@ -4,7 +4,6 @@ from .coverage import Coverage
 
 
 class Problem:
-
     _problem_types = ["lscp", "mclp", "bclp"]
     _delineator = "$"
 
