@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>allagash.problem module &mdash; allagash 0.3.0 documentation</title>
+  <title>allagash.problem module &mdash; allagash 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -30,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> allagash
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            allagash
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -119,8 +122,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>allagash.problem module</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">allagash.problem module</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/apulverizer/allagash/blob/master/src-doc/allagash.problem.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -130,31 +133,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="module-allagash.problem">
+  <section id="module-allagash.problem">
 <span id="allagash-problem-module"></span><h1>allagash.problem module<a class="headerlink" href="#module-allagash.problem" title="Permalink to this heading"></a></h1>
 <section id="problem">
 <h2>Problem<a class="headerlink" href="#problem" title="Permalink to this heading"></a></h2>
@@ -169,9 +148,9 @@ This is not intended to be created on it’s own but rather from one of the fact
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pulp_problem</strong> (<a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#pulp.LpProblem" title="(in PuLP v2.6)"><em>LpProblem</em></a>) – The pulp problem that will be solved</p></li>
+<li><p><strong>pulp_problem</strong> (<a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#pulp.LpProblem" title="(in PuLP v2.7)"><em>LpProblem</em></a>) – The pulp problem that will be solved</p></li>
 <li><p><strong>coverages</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>[</em><a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a><em>]</em>) – The coverages that were used to build the problem</p></li>
 <li><p><strong>problem_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The type of problem that was generated</p></li>
 </ul>
@@ -182,16 +161,16 @@ This is not intended to be created on it’s own but rather from one of the fact
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bclp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coverages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_supply</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.Problem.bclp" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new <a class="reference internal" href="#allagash.problem.Problem" title="allagash.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Problem</span></code></a> object representing the Backup Covering Location Problem</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coverages</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>[</em><a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a><em>]</em>) – The coverages to be used to create the problem</p></li>
 <li><p><strong>max_supply</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a><em>[</em><a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The maximum number of supply locations to allow</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The created problem</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#allagash.problem.Problem" title="allagash.problem.Problem"><em>Problem</em></a></p>
 </dd>
 </dl>
@@ -201,10 +180,10 @@ This is not intended to be created on it’s own but rather from one of the fact
 <dt class="sig sig-object py" id="allagash.problem.Problem.coverages">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coverages</span></span><a class="headerlink" href="#allagash.problem.Problem.coverages" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The coverage used to create the problem</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a>]</p>
 </dd>
 </dl>
@@ -215,13 +194,13 @@ This is not intended to be created on it’s own but rather from one of the fact
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lscp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coverages</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.Problem.lscp" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new <a class="reference internal" href="#allagash.problem.Problem" title="allagash.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Problem</span></code></a> object representing the Location Covering Set Problem</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>coverages</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>[</em><a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a><em>]</em>) – The coverages to be used to create the problem</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The created problem</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#allagash.problem.Problem" title="allagash.problem.Problem"><em>Problem</em></a></p>
 </dd>
 </dl>
@@ -232,16 +211,16 @@ This is not intended to be created on it’s own but rather from one of the fact
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mclp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coverages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_supply</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.Problem.mclp" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new <a class="reference internal" href="#allagash.problem.Problem" title="allagash.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Problem</span></code></a> object representing the Maximum Covering Location Problem</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coverages</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>[</em><a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a><em>]</em>) – The coverages to be used to create the problem</p></li>
 <li><p><strong>max_supply</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a><em>[</em><a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The maximum number of supply locations to allow</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The created problem</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#allagash.problem.Problem" title="allagash.problem.Problem"><em>Problem</em></a></p>
 </dd>
 </dl>
@@ -251,10 +230,10 @@ This is not intended to be created on it’s own but rather from one of the fact
 <dt class="sig sig-object py" id="allagash.problem.Problem.problem_type">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">problem_type</span></span><a class="headerlink" href="#allagash.problem.Problem.problem_type" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The type of problem that this is</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
@@ -264,11 +243,11 @@ This is not intended to be created on it’s own but rather from one of the fact
 <dt class="sig sig-object py" id="allagash.problem.Problem.pulp_problem">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pulp_problem</span></span><a class="headerlink" href="#allagash.problem.Problem.pulp_problem" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The pulp problem</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#pulp.LpProblem" title="(in PuLP v2.6)"><em>LpProblem</em></a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://coin-or.github.io/pulp/technical/pulp.html#pulp.LpProblem" title="(in PuLP v2.7)"><em>LpProblem</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -278,15 +257,15 @@ This is not intended to be created on it’s own but rather from one of the fact
 <span class="sig-name descname"><span class="pre">selected_demand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coverage</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.Problem.selected_demand" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the list of the demand locations that were selected when the optimization problem was solved.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>coverage</strong> (<a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a>) – The coverage that the demand locations may be found in. If multiple
 coverages were used that have the same demand, locations covered by any other coverages will also
 be returned.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The list of location ids of the covered locations</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
@@ -297,17 +276,17 @@ be returned.</p>
 <span class="sig-name descname"><span class="pre">selected_supply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coverage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation=&lt;built-in</span> <span class="pre">function</span> <span class="pre">eq&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value=1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.Problem.selected_supply" title="Permalink to this definition"></a></dt>
 <dd><p>Gets the list of the supply locations that were selected when the optimization problem was solved.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coverage</strong> (<a class="reference internal" href="allagash.coverage.html#allagash.coverage.Coverage" title="allagash.coverage.Coverage"><em>Coverage</em></a>) – The coverage that selected locations may be found in.</p></li>
 <li><p><strong>operation</strong> (<em>function</em>) – The operation to use when determining whether a location was selected</p></li>
 <li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The value to apply the operation to</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The list of location ids of the selected locations</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
@@ -317,13 +296,13 @@ be returned.</p>
 <dt class="sig sig-object py" id="allagash.problem.Problem.solve">
 <span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.Problem.solve" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>solver</strong> (<em>LpSolver</em>) – The solver to use for this problem</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The solution for this problem</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#allagash.problem.Problem" title="allagash.problem.Problem"><em>Problem</em></a></p>
 </dd>
 </dl>
@@ -339,7 +318,7 @@ be returned.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allagash.problem.</span></span><span class="sig-name descname"><span class="pre">NotSolvedException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.NotSolvedException" title="Permalink to this definition"></a></dt>
 <dd><p>An exception indicating the problem was not solved</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – A descriptive message about the exception</p>
 </dd>
 </dl>
@@ -360,7 +339,7 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allagash.problem.</span></span><span class="sig-name descname"><span class="pre">InfeasibleException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.InfeasibleException" title="Permalink to this definition"></a></dt>
 <dd><p>An exception indicating the problem as an infeasible solution</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – A descriptive message about the exception</p>
 </dd>
 </dl>
@@ -381,7 +360,7 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allagash.problem.</span></span><span class="sig-name descname"><span class="pre">UnboundedException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.UnboundedException" title="Permalink to this definition"></a></dt>
 <dd><p>An exception indicating the solution is unbounded</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – A descriptive message about the exception</p>
 </dd>
 </dl>
@@ -402,7 +381,7 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">allagash.problem.</span></span><span class="sig-name descname"><span class="pre">UndefinedException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#allagash.problem.UndefinedException" title="Permalink to this definition"></a></dt>
 <dd><p>An exception indicating the problem was not solved for an undefined reason</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – A descriptive message about the exception</p>
 </dd>
 </dl>
