@@ -2,7 +2,7 @@
 
 [![build status](https://github.com/apulverizer/allagash/workflows/Build/badge.svg)](https://github.com/apulverizer/allagash/actions)
 [![MIT License](https://anaconda.org/conda-forge/allagash/badges/license.svg)](LICENSE)
-[![Install with conda](https://anaconda.org/conda-forge/allagash/badges/installer/conda.svg)](https://anaconda.org/conda-forge/allagash)
+[![Install with conda](https://anaconda.org/conda-forge/allagash/badges/version.svg)](https://anaconda.org/conda-forge/allagash)
 
 A spatial optimization library for covering problems. Full documentation is available [here](https://apulverizer.github.io/allagash)
 
