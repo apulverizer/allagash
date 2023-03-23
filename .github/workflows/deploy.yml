@@ -19,10 +19,9 @@ jobs:
 
     - name: Upload to PyPi
       env:
-        PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
       run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build
-        /bin/bash -c "twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/*"
+        /bin/bash -c "twine upload -u __token__ -p $PYPI_API_TOKEN dist/*"
 
     - name: Build public docker image
       run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python src/setup.py --version")
