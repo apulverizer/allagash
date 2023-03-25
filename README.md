@@ -45,7 +45,7 @@ To install without a spatial library run:
 2. Create the conda environment `conda env create --file environment.yml`
 3. Activate the new environment `conda activate allagash`
 4. Install pre-commit hooks `pre-commit install`
-5. Install allagash locally `pip install -e ./src --no-deps`
+5. Install allagash locally `pip install -e . --no-deps`
 6. Launch jupyter notebook `jupyter notebook`
 
 You should now be able to run the example notebooks.

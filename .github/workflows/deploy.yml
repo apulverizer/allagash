@@ -24,8 +24,8 @@ jobs:
         /bin/bash -c "twine upload -u __token__ -p $PYPI_API_TOKEN dist/*"
 
     - name: Build public docker image
-      run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python src/setup.py --version")
-        && docker build . -t apulverizer/allagash:latest -t apulverizer/allagash:$VERSION
+      run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python -c 'import allagash;print(allagash.__version__)'")
+        && docker build --build-arg VERSION=$VERSION . -t apulverizer/allagash:latest -t apulverizer/allagash:$VERSION
 
     - name: Test docker image
       run: docker run --user=allagash apulverizer/allagash:latest /bin/bash -c "py.test --nbval"
@@ -34,7 +34,7 @@ jobs:
       env:
         DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
         DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python src/setup.py --version")
+      run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python -c 'import allagash;print(allagash.__version__)'")
         && echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
         && docker push apulverizer/allagash:$VERSION
         && docker push apulverizer/allagash:latest
