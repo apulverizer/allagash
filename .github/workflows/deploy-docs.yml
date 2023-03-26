@@ -1,0 +1,24 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build docker image, build package, install package
+      run: docker build . --file build.Dockerfile -t apulverizer/allagash:build
+
+    - name: Build docs
+      run: docker run --user=allagash -v $PWD/doc:/home/allagash/doc -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
+
+    - name: Deploy docs
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: $PWD/doc
+        branch: docs
