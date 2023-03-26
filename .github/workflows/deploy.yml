@@ -23,7 +23,7 @@ jobs:
     - name: Upload to PyPi
       env:
         PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-      run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build
+      run: docker run --user=allagash apulverizer/allagash:build
         /bin/bash -c "twine upload -u __token__ -p $PYPI_API_TOKEN dist/*"
 
     - name: Build docs
