@@ -27,12 +27,12 @@ WORKDIR $HOME
 COPY --chown=allagash:allagash ci-environment.yml ci-environment.yml
 
 # Copy the license and readme file into the source so it will be included in the built package
-COPY --chown=allagash:allagash src LICENSE README.md src/
+COPY --chown=allagash:allagash src LICENSE README.md pyproject.toml ./
 
 # Configure conda env
-RUN conda env create -f ci-environment.yml \
-    && cd src \
-    && /opt/conda/envs/allagash/bin/python setup.py sdist bdist_wheel \
-    && /opt/conda/envs/allagash/bin/pip install allagash --no-deps --no-index --find-links dist \
+RUN conda env create -f ci-environment.yml
+RUN /opt/conda/envs/allagash/bin/python -m pip install build \
+    && /opt/conda/envs/allagash/bin/python -m build \
+    && /opt/conda/envs/allagash/bin/python -m pip install allagash --no-deps --no-index --find-links dist \
     && conda clean -a -f -y
 ENV PATH /opt/conda/envs/allagash/bin:$PATH

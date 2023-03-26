@@ -1,5 +1,6 @@
 # Set the base image to Ubuntu
 FROM continuumio/miniconda3:4.10.3
+ARG VERSION
 
 # File Author / Maintainer
 MAINTAINER Aaron Pulver <apulverizer@gmail.com>
@@ -29,7 +30,7 @@ COPY --chown=allagash:allagash ci-environment.yml ci-environment.yml
 
 # Configure conda env
 RUN conda env create -f ci-environment.yml \
-    && /opt/conda/envs/allagash/bin/pip install allagash --no-deps \
+    && /opt/conda/envs/allagash/bin/pip install allagash==${VERSION} --no-deps \
     && conda clean -a -f -y
 
 COPY --chown=allagash:allagash src-doc/examples examples

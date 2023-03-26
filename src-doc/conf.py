@@ -15,7 +15,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 import codecs
 import os
-import re
+import tomli
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -25,12 +25,10 @@ def read(*parts):
         return fp.read()
 
 
-def find_version(*file_paths):
-    version_file = read(*file_paths)
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
-    if version_match:
-        return version_match.group(1)
-    raise RuntimeError("Unable to find version string.")
+def find_version(pyproject_file):
+    with open(os.path.abspath(pyproject_file), "rb") as f:
+        toml_dict = tomli.load(f)
+        return toml_dict["project"]["version"]
 
 
 # -- Project information -----------------------------------------------------
@@ -41,7 +39,7 @@ copyright = "2019, Aaron Pulver"
 author = "Aaron Pulver"
 
 # The full version, including alpha/beta/rc tags
-release = find_version(r"../src/allagash", "__init__.py")
+release = find_version("../pyproject.toml")
 
 
 # -- General configuration ---------------------------------------------------
