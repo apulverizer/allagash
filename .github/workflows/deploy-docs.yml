@@ -18,7 +18,7 @@ jobs:
       run: docker build . --file build.Dockerfile -t apulverizer/allagash:build
 
     - name: Build docs
-      run: docker run --user=allagash -v $PWD/doc:/home/allagash/doc -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
+      run: docker run --user=root -v $PWD/doc:/home/allagash/doc -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
 
     - name: Deploy docs
       uses: JamesIves/github-pages-deploy-action@v4
