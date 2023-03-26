@@ -19,4 +19,4 @@ jobs:
     - name: Run tests
       run: docker run --user=allagash -v $PWD/tests:/home/allagash/tests -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "py.test --nbval"
     - name: Build documentation
-      run: docker run --user=allagash -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
+      run: docker run --user=root -v $PWD/doc:/home/allagash/doc -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
