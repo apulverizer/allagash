@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,6 +25,16 @@ jobs:
         PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
       run: docker run --user=allagash -w /home/allagash/src apulverizer/allagash:build
         /bin/bash -c "twine upload -u __token__ -p $PYPI_API_TOKEN dist/*"
+
+    - name: Build docs
+      # Run as root so results can be saved to GHA runner host
+      run: docker run --user=root -v $PWD/doc:/home/allagash/doc -v $PWD/src-doc:/home/allagash/src-doc apulverizer/allagash:build /bin/bash -c "sphinx-build -b html ./src-doc ./doc -a"
+
+    - name: Deploy docs
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: doc
+        branch: gh-pages
 
     - name: Build public docker image
       run: VERSION=$(docker run --user=allagash apulverizer/allagash:build /bin/bash -c "python -c 'import allagash;print(allagash.__version__)'")
