@@ -9,6 +9,8 @@ dependencies:
   - flake8>=4.0.1
   - geopandas>=0.10.2
   - glpk>=5.0
+  # Fixes bug with arcgis map widget
+  - ipywidgets>=7.6.0,<8
   - jupyter>=1.0.0
   - nbsphinx>=0.8.7
   - nbval>=0.9.6
@@ -16,7 +18,7 @@ dependencies:
   - pip>=21.3.1
   - pre-commit>=2.16
   - pytest>=6.2.5
-  - python>=3.8
+  - python>=3.9
   - pulp>=2.6.0
   - shapely>=1.8.0
   - sphinx>=4.3.2
