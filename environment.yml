@@ -1,4 +1,4 @@
-name: allagash-new
+name: allagash
 channels:
   - conda-forge
   - esri
