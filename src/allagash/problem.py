@@ -1,6 +1,7 @@
 import operator
 import pulp
 from .coverage import Coverage
+from pandas.api.types import is_string_dtype
 
 
 class Problem:
@@ -301,7 +302,10 @@ class Problem:
             for _, demand_var in demand_vars[c.demand_name].items():
                 d = demand_var.name.split(Problem._delineator)[1]
                 if d not in demands:
-                    query = f"{coverages[0].df.index.name} == '{d}'"
+                    if is_string_dtype(coverages[0].df.index.dtype):
+                        query = f"{coverages[0].df.index.name} == '{d}'"
+                    else:
+                        query = f"{coverages[0].df.index.name} == {d}"
                     v = c.df.query(query)[c.demand_col].tolist()[0]
                     demands[d] = v * demand_var
         to_sum = []
@@ -376,7 +380,10 @@ class Problem:
             for _, demand_var in demand_vars[c.demand_name].items():
                 d = demand_var.name.split(Problem._delineator)[1]
                 if d not in demands:
-                    query = f"{coverages[0].df.index.name} == '{d}'"
+                    if is_string_dtype(coverages[0].df.index.dtype):
+                        query = f"{coverages[0].df.index.name} == '{d}'"
+                    else:
+                        query = f"{coverages[0].df.index.name} == {d}"
                     v = c.df.query(query)[c.demand_col].tolist()[0]
                     demands[d] = v * demand_var
         to_sum = []

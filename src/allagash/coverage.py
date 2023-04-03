@@ -167,6 +167,8 @@ class Coverage:
                 contains = supply_df.geometry.contains(row.geometry).tolist()
                 if demand_col:
                     contains.insert(0, row[demand_col])
+                # Add the id column to the end, it will be used as index and removed later
+                contains.append(row[demand_id_col])
                 data.append(contains)
         elif coverage_type.lower() == "partial":
             for index, row in demand_df.iterrows():
@@ -179,15 +181,17 @@ class Coverage:
                 ).tolist()
                 if demand_col:
                     partial_coverage.insert(0, row[demand_col])
+                partial_coverage.insert(0, row[demand_id_col])
                 data.append(partial_coverage)
         else:
             raise ValueError(f"Invalid coverage type '{coverage_type}'")
         columns = supply_df[supply_id_col].tolist()
         if demand_col:
             columns.insert(0, demand_col)
-        df = pd.DataFrame.from_records(
-            data, index=demand_df[demand_id_col], columns=columns
-        )
+        # id column will be used as index when dataframe is created
+        columns.append(demand_id_col)
+        # Set index after to avoid issue with multiindex being created
+        df = pd.DataFrame.from_records(data, columns=columns).set_index(demand_id_col)
         return Coverage(
             df,
             demand_col=demand_col,
@@ -253,6 +257,8 @@ class Coverage:
                 )
                 if demand_col:
                     contains.insert(0, row[demand_col])
+                # Add the id column to the end, it will be used as index and removed later
+                contains.append(row[demand_id_col])
                 data.append(contains)
         elif coverage_type.lower() == "partial":
             for index, row in demand_df.iterrows():
@@ -268,15 +274,16 @@ class Coverage:
                     partial_coverage.append((area / demand_area) * row[demand_col])
                 if demand_col:
                     partial_coverage.insert(0, row[demand_col])
+                # Add the id column to the end, it will be used as index and removed later
+                partial_coverage.append(row[demand_id_col])
                 data.append(partial_coverage)
         else:
             raise ValueError(f"Invalid coverage type '{coverage_type}'")
         columns = supply_df[supply_id_col].tolist()
         if demand_col:
             columns.insert(0, demand_col)
-        df = pd.DataFrame.from_records(
-            data, index=demand_df[demand_id_col], columns=columns
-        )
+        columns.append(demand_id_col)
+        df = pd.DataFrame.from_records(data, columns=columns).set_index(demand_id_col)
         return Coverage(
             df,
             demand_col=demand_col,
