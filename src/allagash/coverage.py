@@ -164,7 +164,9 @@ class Coverage:
         data = []
         if coverage_type.lower() == "binary":
             for index, row in demand_df.iterrows():
-                contains = supply_df.geometry.contains(row.geometry).tolist()
+                contains = supply_df.geometry.contains(
+                    row[demand_df._geometry_column_name]
+                ).tolist()
                 if demand_col:
                     contains.insert(0, row[demand_col])
                 # Add the id column to the end, it will be used as index and removed later
@@ -172,9 +174,9 @@ class Coverage:
                 data.append(contains)
         elif coverage_type.lower() == "partial":
             for index, row in demand_df.iterrows():
-                demand_area = row.geometry.area
+                demand_area = row[demand_df._geometry_column_name].area
                 intersection_area = supply_df.geometry.intersection(
-                    row.geometry
+                    row[demand_df._geometry_column_name]
                 ).geometry.area
                 partial_coverage = (
                     (intersection_area / demand_area) * row[demand_col]

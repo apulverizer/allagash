@@ -7,7 +7,6 @@ from allagash.problem import Problem
 
 
 class TestMCLP:
-
     dir_name = os.path.dirname(__file__)
 
     def test_single_supply(self):
