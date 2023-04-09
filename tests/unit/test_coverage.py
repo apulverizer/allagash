@@ -4,12 +4,12 @@ from allagash.coverage import Coverage
 
 class TestCoverage:
     def test_init(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population")
+        c = Coverage(binary_coverage_dataframe, "Value")
         assert isinstance(c, Coverage)
 
     def test_init_invalid_demand(self):
         with pytest.raises(TypeError) as e:
-            Coverage(None, "Population")
+            Coverage(None, "Value")
         assert (
             e.value.args[0]
             == "Expected 'Dataframe' type for dataframe, got '<class 'NoneType'>'"
@@ -75,8 +75,8 @@ class TestCoverage:
         c = Coverage.from_geodataframes(
             demand_points_dataframe,
             facility_service_areas_dataframe,
-            "GEOID10",
-            "ORIG_ID",
+            "DemandIdentifier",
+            "SupplyIdentifier",
         )
         assert isinstance(c, Coverage)
 
@@ -86,10 +86,10 @@ class TestCoverage:
         c = Coverage.from_geodataframes(
             demand_polygon_dataframe,
             facility_service_areas_dataframe,
-            "GEOID10",
-            "ORIG_ID",
+            "DemandIdentifier",
+            "SupplyIdentifier",
             coverage_type="partial",
-            demand_col="Population",
+            demand_col="Value",
         )
         assert isinstance(c, Coverage)
         assert c.coverage_type == "partial"
@@ -98,7 +98,12 @@ class TestCoverage:
         self, demand_points_sedf, facility_service_areas_sedf
     ):
         c = Coverage.from_spatially_enabled_dataframes(
-            demand_points_sedf, facility_service_areas_sedf, "GEOID10", "ORIG_ID"
+            demand_points_sedf,
+            facility_service_areas_sedf,
+            "DemandIdentifier",
+            "SupplyIdentifier",
+            demand_geometry_col="geometry",
+            supply_geometry_col="geometry",
         )
         assert isinstance(c, Coverage)
 
@@ -108,10 +113,12 @@ class TestCoverage:
         c = Coverage.from_spatially_enabled_dataframes(
             demand_polygon_sedf,
             facility_service_areas_sedf,
-            "GEOID10",
-            "ORIG_ID",
+            "DemandIdentifier",
+            "SupplyIdentifier",
             coverage_type="partial",
-            demand_col="Population",
+            demand_col="Value",
+            demand_geometry_col="geometry",
+            supply_geometry_col="geometry",
         )
         assert isinstance(c, Coverage)
         assert c.coverage_type == "partial"
@@ -122,8 +129,8 @@ class TestCoverage:
         c = Coverage.from_geodataframes(
             demand_points_dataframe,
             facility_service_areas_dataframe,
-            "GEOID10",
-            "ORIG_ID",
+            "DemandIdentifier",
+            "SupplyIdentifier",
             demand_name="test",
         )
         assert isinstance(c, Coverage)
@@ -135,9 +142,11 @@ class TestCoverage:
         c = Coverage.from_spatially_enabled_dataframes(
             demand_points_sedf,
             facility_service_areas_sedf,
-            "GEOID10",
-            "ORIG_ID",
+            "DemandIdentifier",
+            "SupplyIdentifier",
             demand_name="test",
+            demand_geometry_col="geometry",
+            supply_geometry_col="geometry",
         )
         assert isinstance(c, Coverage)
         assert c.demand_name == "test"
@@ -148,8 +157,8 @@ class TestCoverage:
         c = Coverage.from_geodataframes(
             demand_points_dataframe,
             facility_service_areas_dataframe,
-            "GEOID10",
-            "ORIG_ID",
+            "DemandIdentifier",
+            "SupplyIdentifier",
             supply_name="test",
         )
         assert isinstance(c, Coverage)
@@ -161,9 +170,11 @@ class TestCoverage:
         c = Coverage.from_spatially_enabled_dataframes(
             demand_points_sedf,
             facility_service_areas_sedf,
-            "GEOID10",
-            "ORIG_ID",
+            "DemandIdentifier",
+            "SupplyIdentifier",
             supply_name="test",
+            demand_geometry_col="geometry",
+            supply_geometry_col="geometry",
         )
         assert isinstance(c, Coverage)
         assert c.supply_name == "test"
@@ -174,12 +185,12 @@ class TestCoverage:
         c = Coverage.from_geodataframes(
             demand_points_dataframe,
             facility_service_areas_dataframe,
-            "GEOID10",
-            "ORIG_ID",
-            demand_col="Population",
+            "DemandIdentifier",
+            "SupplyIdentifier",
+            demand_col="Value",
         )
         assert isinstance(c, Coverage)
-        assert c.demand_col == "Population"
+        assert c.demand_col == "Value"
 
     def test_from_coverage_sedf_demand_col(
         self, demand_points_sedf, facility_service_areas_sedf
@@ -187,12 +198,14 @@ class TestCoverage:
         c = Coverage.from_spatially_enabled_dataframes(
             demand_points_sedf,
             facility_service_areas_sedf,
-            "GEOID10",
-            "ORIG_ID",
-            demand_col="Population",
+            "DemandIdentifier",
+            "SupplyIdentifier",
+            demand_col="Value",
+            demand_geometry_col="geometry",
+            supply_geometry_col="geometry",
         )
         assert isinstance(c, Coverage)
-        assert c.demand_col == "Population"
+        assert c.demand_col == "Value"
 
     def test_from_coverage_dataframe_invalid_demand_col(
         self, demand_points_dataframe, facility_service_areas_dataframe
@@ -201,8 +214,8 @@ class TestCoverage:
             Coverage.from_geodataframes(
                 demand_points_dataframe,
                 facility_service_areas_dataframe,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
                 demand_col="test",
             )
         assert e.value.args[0] == "'test' not in dataframe"
@@ -214,9 +227,11 @@ class TestCoverage:
             Coverage.from_spatially_enabled_dataframes(
                 demand_points_sedf,
                 facility_service_areas_sedf,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
                 demand_col="test",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert e.value.args[0] == "'test' not in dataframe"
 
@@ -227,8 +242,8 @@ class TestCoverage:
             Coverage.from_geodataframes(
                 demand_points_dataframe,
                 facility_service_areas_dataframe,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
                 coverage_type="test",
             )
         assert e.value.args[0] == "Invalid coverage type 'test'"
@@ -240,9 +255,11 @@ class TestCoverage:
             Coverage.from_spatially_enabled_dataframes(
                 demand_points_sedf,
                 facility_service_areas_sedf,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
                 coverage_type="test",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert e.value.args[0] == "Invalid coverage type 'test'"
 
@@ -253,8 +270,8 @@ class TestCoverage:
             Coverage.from_geodataframes(
                 demand_points_dataframe,
                 facility_service_areas_dataframe,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
                 coverage_type="partial",
             )
         assert (
@@ -268,9 +285,11 @@ class TestCoverage:
             Coverage.from_spatially_enabled_dataframes(
                 demand_points_sedf,
                 facility_service_areas_sedf,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
                 coverage_type="partial",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert (
             e.value.args[0] == "demand_col is required when generating partial coverage"
@@ -281,7 +300,10 @@ class TestCoverage:
     ):
         with pytest.raises(TypeError) as e:
             Coverage.from_geodataframes(
-                None, facility_service_areas_dataframe, "GEOID10", "ORIG_ID"
+                None,
+                facility_service_areas_dataframe,
+                "DemandIdentifier",
+                "SupplyIdentifier",
             )
         assert (
             e.value.args[0]
@@ -291,7 +313,12 @@ class TestCoverage:
     def test_from_coverage_sedf_invalid_demand_df(self, facility_service_areas_sedf):
         with pytest.raises(TypeError) as e:
             Coverage.from_spatially_enabled_dataframes(
-                None, facility_service_areas_sedf, "GEOID10", "ORIG_ID"
+                None,
+                facility_service_areas_sedf,
+                "DemandIdentifier",
+                "SupplyIdentifier",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert (
             e.value.args[0]
@@ -301,7 +328,7 @@ class TestCoverage:
     def test_from_coverage_dataframe_invalid_supply_df(self, demand_points_dataframe):
         with pytest.raises(TypeError) as e:
             Coverage.from_geodataframes(
-                demand_points_dataframe, None, "GEOID10", "ORIG_ID"
+                demand_points_dataframe, None, "DemandIdentifier", "SupplyIdentifier"
             )
         assert (
             e.value.args[0]
@@ -311,7 +338,12 @@ class TestCoverage:
     def test_from_coverage_sedf_invalid_supply_df(self, demand_points_sedf):
         with pytest.raises(TypeError) as e:
             Coverage.from_spatially_enabled_dataframes(
-                demand_points_sedf, None, "GEOID10", "ORIG_ID"
+                demand_points_sedf,
+                None,
+                "DemandIdentifier",
+                "SupplyIdentifier",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert (
             e.value.args[0]
@@ -326,7 +358,7 @@ class TestCoverage:
                 demand_points_dataframe,
                 facility_service_areas_dataframe,
                 None,
-                "ORIG_ID",
+                "SupplyIdentifier",
             )
         assert (
             e.value.args[0]
@@ -338,7 +370,12 @@ class TestCoverage:
     ):
         with pytest.raises(TypeError) as e:
             Coverage.from_spatially_enabled_dataframes(
-                demand_points_sedf, facility_service_areas_sedf, None, "ORIG_ID"
+                demand_points_sedf,
+                facility_service_areas_sedf,
+                None,
+                "SupplyIdentifier",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert (
             e.value.args[0]
@@ -352,7 +389,7 @@ class TestCoverage:
             Coverage.from_geodataframes(
                 demand_points_dataframe,
                 facility_service_areas_dataframe,
-                "GEOID10",
+                "DemandIdentifier",
                 None,
             )
         assert (
@@ -365,7 +402,12 @@ class TestCoverage:
     ):
         with pytest.raises(TypeError) as e:
             Coverage.from_spatially_enabled_dataframes(
-                demand_points_sedf, facility_service_areas_sedf, "GEOID10", None
+                demand_points_sedf,
+                facility_service_areas_sedf,
+                "DemandIdentifier",
+                None,
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert (
             e.value.args[0]
@@ -379,7 +421,7 @@ class TestCoverage:
             Coverage.from_geodataframes(
                 demand_points_dataframe,
                 facility_service_areas_dataframe,
-                "GEOID10",
+                "DemandIdentifier",
                 "test",
             )
         assert e.value.args[0] == "'test' not in dataframe"
@@ -389,7 +431,12 @@ class TestCoverage:
     ):
         with pytest.raises(ValueError) as e:
             Coverage.from_spatially_enabled_dataframes(
-                demand_points_sedf, facility_service_areas_sedf, "GEOID10", "test"
+                demand_points_sedf,
+                facility_service_areas_sedf,
+                "DemandIdentifier",
+                "test",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert e.value.args[0] == "'test' not in dataframe"
 
@@ -401,7 +448,7 @@ class TestCoverage:
                 demand_points_dataframe,
                 facility_service_areas_dataframe,
                 "test",
-                "ORIG_ID",
+                "SupplyIdentifier",
             )
         assert e.value.args[0] == "'test' not in dataframe"
 
@@ -410,7 +457,12 @@ class TestCoverage:
     ):
         with pytest.raises(ValueError) as e:
             Coverage.from_spatially_enabled_dataframes(
-                demand_points_sedf, facility_service_areas_sedf, "test", "ORIG_ID"
+                demand_points_sedf,
+                facility_service_areas_sedf,
+                "test",
+                "SupplyIdentifier",
+                demand_geometry_col="geometry",
+                supply_geometry_col="geometry",
             )
         assert e.value.args[0] == "'test' not in dataframe"
 
@@ -421,9 +473,10 @@ class TestCoverage:
             Coverage.from_spatially_enabled_dataframes(
                 demand_points_sedf,
                 facility_service_areas_sedf,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
                 demand_geometry_col="test",
+                supply_geometry_col="geometry",
             )
         assert e.value.args[0] == "'test' not in dataframe"
 
@@ -434,43 +487,44 @@ class TestCoverage:
             Coverage.from_spatially_enabled_dataframes(
                 demand_points_sedf,
                 facility_service_areas_sedf,
-                "GEOID10",
-                "ORIG_ID",
+                "DemandIdentifier",
+                "SupplyIdentifier",
+                demand_geometry_col="geometry",
                 supply_geometry_col="test",
             )
         assert e.value.args[0] == "'test' not in dataframe"
 
     def test_df_property(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population")
+        c = Coverage(binary_coverage_dataframe, "Value")
         assert c.df is binary_coverage_dataframe
 
     def test_demand_name_property(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population", demand_name="test")
+        c = Coverage(binary_coverage_dataframe, "Value", demand_name="test")
         assert c.demand_name == "test"
 
     def test_demand_name_property_default(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population")
+        c = Coverage(binary_coverage_dataframe, "Value")
         assert isinstance(c.demand_name, str)
 
     def test_supply_name_property_default(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population")
+        c = Coverage(binary_coverage_dataframe, "Value")
         assert isinstance(c.supply_name, str)
 
     def test_supply_name_property(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population", supply_name="test")
+        c = Coverage(binary_coverage_dataframe, "Value", supply_name="test")
         assert c.supply_name == "test"
 
     def test_coverage_type_property(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population", coverage_type="binary")
+        c = Coverage(binary_coverage_dataframe, "Value", coverage_type="binary")
         assert c.coverage_type == "binary"
 
     def test_coverage_type_property2(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population", coverage_type="partial")
+        c = Coverage(binary_coverage_dataframe, "Value", coverage_type="partial")
         assert c.coverage_type == "partial"
 
     def test_demand_col_property(self, binary_coverage_dataframe):
-        c = Coverage(binary_coverage_dataframe, "Population")
-        assert c.demand_col == "Population"
+        c = Coverage(binary_coverage_dataframe, "Value")
+        assert c.demand_col == "Value"
 
     def test_demand_col_property2(self, binary_coverage_dataframe):
         c = Coverage(binary_coverage_dataframe)
