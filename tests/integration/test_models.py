@@ -1,8 +1,6 @@
-import geopandas
 import math
 import pulp
 import pytest
-import pandas as pd
 from allagash.problem import Coverage, Problem, InfeasibleException, UndefinedException
 
 
@@ -38,54 +36,34 @@ class TestMCLP:
         )
         assert coverage == 100
 
-    def test_with_string_id_column(self):
-        demand_df = pd.DataFrame(
-            {
-                "Name": ["Demand_1", "Demand_2", "Demand_3", "Demand_4", "Demand_5"],
-                "Identifier": [1, 2, 3, 4, 5],
-                "Value": [100, 200, 300, 400, 500],
-                "Latitude": [1, 2, 3, 4, 5],
-                "Longitude": [1, 2, 3, 4, 5],
-            }
+    def test_with_string_id_column(
+        self,
+        demand_points_dataframe,
+        facility_service_areas_dataframe,
+        facility2_service_areas_dataframe,
+    ):
+        all_facility_service_areas = facility_service_areas_dataframe.append(
+            facility2_service_areas_dataframe
         )
 
-        demand_gdf = geopandas.GeoDataFrame(
-            demand_df,
-            geometry=geopandas.points_from_xy(demand_df.Longitude, demand_df.Latitude),
-        )
-
-        supply_df = pd.DataFrame(
-            {
-                "Name": ["Supply_1", "Supply_2", "Supply_3", "Supply_4", "Supply_5"],
-                "Identifier": [1, 2, 3, 4, 5],
-                "Coordinates": [
-                    "POLYGON((0 0, 0 3.5, 3.5 3.5, 3.5 0, 0 0))",  # Covers Demand 1, 2, 3
-                    "POLYGON((2.5 0, 2.5 3.5, 3.5 3.5, 3.5 0, 2.5 0))",  # Covers Demand 3
-                    "POLYGON((2.5 2.5, 2.5 4.5, 4.5 4.5, 4.5 2.5, 2.5 2.5))",  # Covers Demand 3, 4
-                    "POLYGON((0 0, 0 1.5, 1.5 1.5, 1.5 0, 0 0))",  # Covers Demand 1
-                    "POLYGON((3.5 3.5, 3.5 5.5, 5.5 5.5, 5.5 3.5, 3.5 3.5))",  # Covers Demand 4, 5
-                ],
-            }
-        )
-
-        supply_df["Coordinates"] = geopandas.GeoSeries.from_wkt(
-            supply_df["Coordinates"]
-        )
-        supply_gdf = geopandas.GeoDataFrame(supply_df, geometry="Coordinates")
         coverage = Coverage.from_geodataframes(
-            demand_gdf, supply_gdf, "Name", "Name", demand_col="Value"
+            demand_points_dataframe,
+            all_facility_service_areas,
+            "Name",
+            "Name",
+            demand_col="Value",
         )
 
         # MCLP
         problem = Problem.mclp([coverage], max_supply={coverage: 3})
         problem.solve(pulp.GLPK(msg=False))
 
-        selected_locations = supply_gdf.query(
+        selected_locations = all_facility_service_areas.query(
             f"""Name in [{','.join([f"'{f}'" for f in problem.selected_supply(coverage)])}]"""
         )
         assert len(selected_locations) == 2
-        assert selected_locations["Identifier"].iloc[0] == 1
-        assert selected_locations["Identifier"].iloc[1] == 5
+        assert selected_locations["Name"].iloc[0] == "Supply_1"
+        assert selected_locations["Name"].iloc[1] == "Supply_5"
 
 
 class TestLSCP:
@@ -213,51 +191,31 @@ class TestBCLP:
             == 54
         )
 
-    def test_with_string_id_column(self):
-        demand_df = pd.DataFrame(
-            {
-                "Name": ["Demand_1", "Demand_2", "Demand_3", "Demand_4", "Demand_5"],
-                "Identifier": [1, 2, 3, 4, 5],
-                "Value": [100, 200, 300, 400, 500],
-                "Latitude": [1, 2, 3, 4, 5],
-                "Longitude": [1, 2, 3, 4, 5],
-            }
+    def test_with_string_id_column(
+        self,
+        demand_points_dataframe,
+        facility_service_areas_dataframe,
+        facility2_service_areas_dataframe,
+    ):
+        all_facility_service_areas = facility_service_areas_dataframe.append(
+            facility2_service_areas_dataframe
         )
 
-        demand_gdf = geopandas.GeoDataFrame(
-            demand_df,
-            geometry=geopandas.points_from_xy(demand_df.Longitude, demand_df.Latitude),
-        )
-
-        supply_df = pd.DataFrame(
-            {
-                "Name": ["Supply_1", "Supply_2", "Supply_3", "Supply_4", "Supply_5"],
-                "Identifier": [1, 2, 3, 4, 5],
-                "Coordinates": [
-                    "POLYGON((0 0, 0 3.5, 3.5 3.5, 3.5 0, 0 0))",  # Covers Demand 1, 2, 3
-                    "POLYGON((2.5 0, 2.5 3.5, 3.5 3.5, 3.5 0, 2.5 0))",  # Covers Demand 3
-                    "POLYGON((2.5 2.5, 2.5 4.5, 4.5 4.5, 4.5 2.5, 2.5 2.5))",  # Covers Demand 3, 4
-                    "POLYGON((0 0, 0 1.5, 1.5 1.5, 1.5 0, 0 0))",  # Covers Demand 1
-                    "POLYGON((3.5 3.5, 3.5 5.5, 5.5 5.5, 5.5 3.5, 3.5 3.5))",  # Covers Demand 4, 5
-                ],
-            }
-        )
-
-        supply_df["Coordinates"] = geopandas.GeoSeries.from_wkt(
-            supply_df["Coordinates"]
-        )
-        supply_gdf = geopandas.GeoDataFrame(supply_df, geometry="Coordinates")
         coverage = Coverage.from_geodataframes(
-            demand_gdf, supply_gdf, "Name", "Name", demand_col="Value"
+            demand_points_dataframe,
+            all_facility_service_areas,
+            "Name",
+            "Name",
+            demand_col="Value",
         )
 
         problem = Problem.bclp([coverage], max_supply={coverage: 3})
         problem.solve(pulp.GLPK(msg=False))
 
-        selected_locations = supply_gdf.query(
+        selected_locations = all_facility_service_areas.query(
             f"""Name in [{','.join([f"'{f}'" for f in problem.selected_supply(coverage)])}]"""
         )
         assert len(selected_locations) == 3
-        assert selected_locations["Identifier"].iloc[0] == 1
-        assert selected_locations["Identifier"].iloc[1] == 3
-        assert selected_locations["Identifier"].iloc[2] == 5
+        assert selected_locations["Name"].iloc[0] == "Supply_1"
+        assert selected_locations["Name"].iloc[1] == "Supply_3"
+        assert selected_locations["Name"].iloc[2] == "Supply_5"

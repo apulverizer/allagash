@@ -1,6 +1,5 @@
 import math
 import os
-import geopandas
 import pulp
 from allagash.coverage import Coverage
 from allagash.problem import Problem
@@ -9,65 +8,73 @@ from allagash.problem import Problem
 class TestMCLP:
     dir_name = os.path.dirname(__file__)
 
-    def test_single_supply(self):
-        demand_id_col = "GEOID10"
-        supply_id_col = "ORIG_ID"
-        demand_col = "Population"
-        d = geopandas.read_file(
-            os.path.join(self.dir_name, "../test_data/demand_point.shp")
-        )
-        s = geopandas.read_file(
-            os.path.join(self.dir_name, "../test_data/facility_service_areas.shp")
-        )
+    def test_single_supply(
+        self, demand_points_dataframe, facility_service_areas_dataframe
+    ):
+        demand_id_col = "DemandIdentifier"
+        supply_id_col = "SupplyIdentifier"
+        demand_col = "Value"
         coverage = Coverage.from_geodataframes(
-            d, s, demand_id_col, supply_id_col, demand_col=demand_col
+            demand_points_dataframe,
+            facility_service_areas_dataframe,
+            demand_id_col,
+            supply_id_col,
+            demand_col=demand_col,
         )
-        problem = Problem.mclp(coverage, max_supply={coverage: 5})
+        problem = Problem.mclp(coverage, max_supply={coverage: 1})
         problem.solve(pulp.GLPK())
-        covered_demand = d.query(
-            f"{demand_id_col} in ({[f'{i}' for i in problem.selected_demand(coverage)]})"
+        covered_demand = demand_points_dataframe.query(
+            f"{demand_id_col} in ({','.join(map(str, problem.selected_demand(coverage)))})"
         )
         result = math.ceil(
-            (covered_demand[demand_col].sum() / d[demand_col].sum()) * 100
+            (
+                covered_demand[demand_col].sum()
+                / demand_points_dataframe[demand_col].sum()
+            )
+            * 100
         )
-        assert result == 53
+        assert result == 47
 
-    def test_multiple_supply(self):
-        demand_id_col = "GEOID10"
-        supply_id_col = "ORIG_ID"
-        demand_col = "Population"
-        d = geopandas.read_file(
-            os.path.join(self.dir_name, "../test_data/demand_point.shp")
-        )
-        s = geopandas.read_file(
-            os.path.join(self.dir_name, "../test_data/facility_service_areas.shp")
-        )
-        s2 = geopandas.read_file(
-            os.path.join(self.dir_name, "../test_data/facility2_service_areas.shp")
-        )
+    def test_multiple_supply(
+        self,
+        demand_points_dataframe,
+        facility_service_areas_dataframe,
+        facility2_service_areas_dataframe,
+    ):
+        demand_id_col = "DemandIdentifier"
+        supply_id_col = "SupplyIdentifier"
+        demand_col = "Value"
         coverage = Coverage.from_geodataframes(
-            d, s, demand_id_col, supply_id_col, demand_col=demand_col
+            demand_points_dataframe,
+            facility_service_areas_dataframe,
+            demand_id_col,
+            supply_id_col,
+            demand_col=demand_col,
         )
         coverage2 = Coverage.from_geodataframes(
-            d,
-            s2,
+            demand_points_dataframe,
+            facility2_service_areas_dataframe,
             demand_id_col,
             supply_id_col,
             demand_col=demand_col,
             demand_name=coverage.demand_name,
         )
         problem = Problem.mclp(
-            [coverage, coverage2], max_supply={coverage: 5, coverage2: 10}
+            [coverage, coverage2], max_supply={coverage: 2, coverage2: 2}
         )
         problem.solve(pulp.GLPK())
         selected_locations = problem.selected_supply(coverage)
         selected_locations2 = problem.selected_supply(coverage2)
-        covered_demand = d.query(
-            f"{demand_id_col} in ({[f'{i}' for i in problem.selected_demand(coverage)]})"
+        covered_demand = demand_points_dataframe.query(
+            f"{demand_id_col} in ({','.join(map(str, problem.selected_demand(coverage)))})"
         )
         result = math.ceil(
-            (covered_demand[demand_col].sum() / d[demand_col].sum()) * 100
+            (
+                covered_demand[demand_col].sum()
+                / demand_points_dataframe[demand_col].sum()
+            )
+            * 100
         )
-        assert len(selected_locations) == 5
-        assert len(selected_locations2) == 10
-        assert result == 96
+        assert len(selected_locations) == 1
+        assert len(selected_locations2) == 1
+        assert result == 100
