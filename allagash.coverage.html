@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>allagash.coverage module &mdash; allagash 0.4.2 documentation</title>
+  <title>allagash.coverage module &mdash; allagash 0.4.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -120,7 +120,7 @@ geodataframes using the <a class="reference internal" href="#allagash.coverage.C
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataframe</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><em>DataFrame</em></a>) – A dataframe containing a matrix of demand (rows) and supply (columns).
+<li><p><strong>dataframe</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.0)"><em>DataFrame</em></a>) – A dataframe containing a matrix of demand (rows) and supply (columns).
 An additional column containing the demand values can optionally be provided.</p></li>
 <li><p><strong>demand_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – (optional) The name of the column storing the demand value.</p></li>
 <li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, ‘demand’ is used’.</p></li>
@@ -219,8 +219,8 @@ The coverage is determined by intersecting the two dataframes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>demand_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><em>DataFrame</em></a>) – The spatially enabled dataframe containing the demand locations</p></li>
-<li><p><strong>supply_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.3)"><em>DataFrame</em></a>) – The spatially enavled dataframe containing the supply locations</p></li>
+<li><p><strong>demand_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.0)"><em>DataFrame</em></a>) – The spatially enabled dataframe containing the demand locations</p></li>
+<li><p><strong>supply_df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.0)"><em>DataFrame</em></a>) – The spatially enavled dataframe containing the supply locations</p></li>
 <li><p><strong>demand_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the column that has unique identifiers for the demand locations</p></li>
 <li><p><strong>supply_id_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The name of the column that has unique identifiers for the supply locations</p></li>
 <li><p><strong>demand_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – (optional) The name of the demand to use. If not supplied, ‘demand’ is used’.</p></li>
