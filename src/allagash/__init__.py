@@ -1,5 +1,3 @@
-import importlib.metadata
-
 from .problem import (
     Problem,
     UnboundedException,
@@ -18,4 +16,4 @@ __all__ = [
     "Coverage",
 ]
 
-__version__ = importlib.metadata.version(__package__ or __name__)
+__version__ = "0.4.3"
