@@ -1,5 +1,5 @@
 # Set the base image to Ubuntu
-FROM continuumio/miniconda3:23.3.1-0
+FROM continuumio/miniconda3:23.5.2-0
 ARG VERSION
 
 # File Author / Maintainer
